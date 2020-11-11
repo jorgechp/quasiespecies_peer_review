@@ -19,38 +19,58 @@ def create_connection(name: str) -> sqlite3.Connection:
         exit(1)
 
 
-connection_articles = create_connection('articles.db')
-connection_users = create_connection('users.db')
+connection_journals = create_connection('articles.db')
 
-#CREATING JOURNALS
+#CREATING JOURNALS AND ARTICLES
 
 try:
-    cursorObj = connection_articles.cursor()
+    cursorObj = connection_journals.cursor()
+
     cursorObj.execute(
         """
-            CREATE TABLE journal(
-                        idJournal INTEGER PRIMARY KEY,
+            CREATE TABLE area(
+                        idArea INTEGER PRIMARY KEY AUTOINCREMENT,
                         name TEXT NOT NULL,
-                        quartile INTEGER NOT NULL
+                        year INTEGER NOT NULL   
                 )
         """
     )
+
+    cursorObj.execute(
+        """
+            CREATE TABLE journal(
+                        idJournal INTEGER PRIMARY KEY AUTOINCREMENT,
+                        name TEXT NOT NULL,
+                        quartile INTEGER NOT NULL,
+                        impact INTEGER NOT NULL,
+                        idArea INTEGER NOT NULL,
+                        
+                        FOREIGN KEY(idArea) REFERENCES area(idArea)
+                )
+        """
+    )
+
     cursorObj.execute(
         """
             CREATE TABLE article(
-                        id INTEGER PRIMARY KEY, 
+                        id INTEGER PRIMARY KEY AUTOINCREMENT, 
                         title TEXT NOT NULL, 
                         abstract TEXT NOT NULL, 
-                        keywords TEXT,
+                        authors_keywords TEXT,
+                        keywords_plus TEXT,
                         idJournal INTEGER,
                         
                         FOREIGN KEY(idJournal) REFERENCES journal(idJournal)
                 )
         """
     )
-    connection_articles.commit()
+    connection_journals.commit()
+    connection_journals.close()
 except sqlite3.Error as er:
     print(er)
+
+
+connection_users = create_connection('users.db')
 
 # CREATING USERS
 try:
@@ -58,7 +78,7 @@ try:
     cursorObj.execute(
         """
             CREATE TABLE user(
-                        idUser INTEGER PRIMARY KEY,
+                        idUser INTEGER PRIMARY KEY AUTOINCREMENT,
                         mail TEXT NOT NULL                        
                 )
         """
@@ -121,6 +141,7 @@ try:
     )
 
 
-    connection_articles.commit()
+    connection_users.commit()
+    connection_users.close()
 except sqlite3.Error as er:
     print(er)
