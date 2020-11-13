@@ -19,12 +19,11 @@ def create_connection(name: str) -> sqlite3.Connection:
         exit(1)
 
 
-connection_journals = create_connection('articles.db')
+connection = create_connection('db/peer_review.db')
 
-#CREATING JOURNALS AND ARTICLES
 
 try:
-    cursorObj = connection_journals.cursor()
+    cursorObj = connection.cursor()
 
     cursorObj.execute(
         """
@@ -53,7 +52,7 @@ try:
     cursorObj.execute(
         """
             CREATE TABLE article(
-                        id INTEGER PRIMARY KEY AUTOINCREMENT, 
+                        idArticle INTEGER PRIMARY KEY AUTOINCREMENT, 
                         title TEXT NOT NULL, 
                         abstract TEXT NOT NULL, 
                         authors_keywords TEXT,
@@ -64,22 +63,29 @@ try:
                 )
         """
     )
-    connection_journals.commit()
-    connection_journals.close()
-except sqlite3.Error as er:
-    print(er)
 
-
-connection_users = create_connection('users.db')
-
-# CREATING USERS
-try:
-    cursorObj = connection_users.cursor()
     cursorObj.execute(
         """
             CREATE TABLE user(
                         idUser INTEGER PRIMARY KEY AUTOINCREMENT,
                         mail TEXT NOT NULL                        
+                )
+        """
+    )
+
+    cursorObj.execute(
+        """
+            CREATE TABLE user_answer_article(
+                        idUser INTEGER NOT NULL,
+                        idArticle INTEGER NOT NULL,
+                        idJournal INTEGER NOT NULL,
+                        date DATETIME DEFAULT CURRENT_TIMESTAMP,
+                        
+                        PRIMARY KEY(idUser, idArticle, idJournal),
+                        
+                        FOREIGN KEY(idUser) REFERENCES user(idUser),
+                        FOREIGN KEY(idArticle) REFERENCES article(idArticle),
+                        FOREIGN KEY(idJournal) REFERENCES journal(idJournal)                                               
                 )
         """
     )
@@ -141,7 +147,7 @@ try:
     )
 
 
-    connection_users.commit()
-    connection_users.close()
+    connection.commit()
+    connection.close()
 except sqlite3.Error as er:
     print(er)

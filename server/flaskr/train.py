@@ -6,10 +6,14 @@ from flask import (
 bp = Blueprint('train', __name__, url_prefix='/train')
 
 
-@bp.route('/register', methods=('GET', 'POST'))
+@bp.route('/article', methods='POST')
+def get_article():
     if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
+        idUser = request.form['idUser']
+
+
+
+
         db = get_db()
         error = None
 

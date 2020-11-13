@@ -77,8 +77,8 @@ JOURNAL_LIST = "peer_review/journals/"
 ARTICLES_LIST = "peer_review/articles/"
 
 journal_areas = os.listdir(JOURNAL_LIST)
-connection_journals = create_connection('articles.db')
-cursorObj = connection_journals.cursor()
+connection = create_connection('db/peer_review.db')
+cursorObj = connection.cursor()
 
 general_journal_name_id_dict = dict()
 
@@ -111,6 +111,6 @@ for area in articles_areas:
     for article_csv in articles_list:
         read_articles_list(ARTICLES_LIST + area + '/' + article_csv, cursorObj)
 
-connection_journals.commit()
-connection_journals.close()
+connection.commit()
+connection.close()
 

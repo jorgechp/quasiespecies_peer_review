@@ -13,9 +13,9 @@ def launch_api(instance_path=None,test_config=None) -> Flask:
     app = Flask(__name__, instance_relative_config=True, instance_path=instance_path)
     app.config.from_mapping(
         SECRET_KEY='dev',
-        DATABASE_USERS=os.path.join(app.instance_path + "/db/", 'users.db'),
-        DATABASE_ARTICLES=os.path.join(app.instance_path + "/db/", 'articles.sqlite')
+        DATABASE=os.path.join(app.instance_path + "/db/", 'peer_review.db')
     )
+
 
     if test_config is None:
         # load the instance config, if it exists, when not testing
