@@ -1,11 +1,15 @@
 import os
 
-import sqlite3
-
 
 from flask import Flask
+from flask import g
 
-from . import db, train
+from . import db
+from .train import construct_train_blueprint
+from .user import construct_user_blueprint
+from ..db.database_manager import DatabaseManager
+from ..management.train_manager import TrainManager
+from ..management.user_manager import UserManager
 
 
 def launch_api(instance_path=None,test_config=None) -> Flask:
@@ -15,7 +19,6 @@ def launch_api(instance_path=None,test_config=None) -> Flask:
         SECRET_KEY='dev',
         DATABASE=os.path.join(app.instance_path + "/db/", 'peer_review.db')
     )
-
 
     if test_config is None:
         # load the instance config, if it exists, when not testing
@@ -30,9 +33,20 @@ def launch_api(instance_path=None,test_config=None) -> Flask:
     except OSError:
         pass
 
-    db.init_app(app)
+    app.app_context().push()
 
-    app.register_blueprint(train.bp)
+    db.init_app(app)
+    g.database_path = app.config['DATABASE']
+    database_manager = DatabaseManager(db.get_db)
+    user_manager = UserManager(database_manager, 'security/key')
+    train_manager = TrainManager(database_manager)
+
+    @app.before_request
+    def before_request_func():
+        g.database_path = app.config['DATABASE']
+
+    app.register_blueprint(construct_train_blueprint(train_manager))
+    app.register_blueprint(construct_user_blueprint(user_manager))
 
 
 

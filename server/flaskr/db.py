@@ -1,17 +1,15 @@
 import sqlite3
-
-import click
-from flask import current_app, g
-from flask.cli import with_appcontext
+from flask import g
 
 
 def init_app(app):
     app.teardown_appcontext(close_db)
 
-def get_db(database_name: str):
+
+def get_db() -> sqlite3.Connection:
     if 'db' not in g:
         g.db = sqlite3.connect(
-            database_name,
+            g.database_path,
             detect_types=sqlite3.PARSE_DECLTYPES
         )
         g.db.row_factory = sqlite3.Row

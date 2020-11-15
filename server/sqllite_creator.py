@@ -68,6 +68,7 @@ try:
         """
             CREATE TABLE user(
                         idUser INTEGER PRIMARY KEY AUTOINCREMENT,
+                        nick TEXT UNIQUE NOT NULL,
                         password TEXT NOT NULL,
                         mail TEXT NOT NULL                        
                 )
