@@ -68,6 +68,7 @@ try:
         """
             CREATE TABLE user(
                         idUser INTEGER PRIMARY KEY AUTOINCREMENT,
+                        password TEXT NOT NULL,
                         mail TEXT NOT NULL                        
                 )
         """
@@ -80,6 +81,7 @@ try:
                         idArticle INTEGER NOT NULL,
                         idJournal INTEGER NOT NULL,
                         date DATETIME DEFAULT CURRENT_TIMESTAMP,
+                        score INTEGER NOT NULL,
                         
                         PRIMARY KEY(idUser, idArticle, idJournal),
                         
