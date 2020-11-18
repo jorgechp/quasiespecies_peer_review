@@ -23,6 +23,11 @@ def construct_user_blueprint(user_manager: UserManager):
 
             return jsonify(is_correct_login)
 
+    @bp.route('/login', methods=['DELETE'])
+    def login_user():
+        session.clear()
+        return jsonify(True)
+
     @bp.route('/', methods=['POST'])
     def add_user_answer():
         if request.method == 'POST':
