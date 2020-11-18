@@ -19,7 +19,7 @@ def create_connection(name: str) -> sqlite3.Connection:
         exit(1)
 
 
-connection = create_connection('instance/peer_review.db')
+connection = create_connection('./instance/peer_review.db')
 
 
 try:

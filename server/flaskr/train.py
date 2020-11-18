@@ -11,13 +11,21 @@ def construct_train_blueprint(train_manager: TrainManager):
 
 
     @bp.route('/article', methods=['GET'])
-    def get_article():
+    def get_random_article():
         if 'username' not in session:
             abort(401)
 
         random_article = train_manager.get_random_article()
         session['last_article'] = random_article.id
         return jsonify(random_article)
+
+    @bp.route('/article/last', methods=['GET'])
+    def get_article():
+        if 'username' in session and 'last_article' in session:
+            last_article = train_manager.get_article(session['last_article'])
+            return jsonify(last_article)
+        else:
+            abort(410)
 
     @bp.route('/article', methods=['PUT'])
     def add_user_answer():

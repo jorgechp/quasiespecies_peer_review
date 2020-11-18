@@ -41,18 +41,17 @@ def construct_user_blueprint(user_manager: UserManager):
 
     @bp.route('/', methods=['POST'])
     def add_user_answer():
-        if request.method == 'POST':
-            json_request = request.get_json()
+        json_request = request.get_json()
 
-            if 'mail' not in json_request or 'nick' not in json_request or 'password' not in json_request:
-                abort(400, 'User data not provided.')
+        if 'mail' not in json_request or 'nick' not in json_request or 'password' not in json_request:
+            abort(400, 'User data not provided.')
 
-            plain_mail = json_request['mail']
-            nick = json_request['nick']
-            plain_password = json_request['password']
+        plain_mail = json_request['mail']
+        nick = json_request['nick']
+        plain_password = json_request['password']
 
-            new_user = user_manager.add_user(nick, plain_mail, plain_password)
-            if new_user == -1:
-                abort(400,'Duplicated user')
-            return jsonify(new_user)
+        new_user = user_manager.add_user(nick, plain_mail, plain_password)
+        if new_user == -1:
+            abort(400,'Duplicated user')
+        return jsonify(new_user)
     return bp

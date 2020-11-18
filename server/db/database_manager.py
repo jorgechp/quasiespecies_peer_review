@@ -17,6 +17,15 @@ class DatabaseManager(object):
         cursor.close()
         db.cursor()
 
+    @staticmethod
+    def convert_quartile_to_impact(quartile: int) -> str:
+        if quartile <= 2:
+            return "HIGH IMPACT"
+        elif quartile == 3:
+            return "MEDIUM IMPACT"
+        else:
+            return "LOW IMPACT"
+
     def get_number_of_articles(self) -> int:
         """
         Returns the name of articles stored in the database.
@@ -27,6 +36,19 @@ class DatabaseManager(object):
         db, cursor = self.__get_cursor()
         cursor.execute("SELECT COUNT(idArticle) FROM 'article' ")
         response = cursor.fetchone()[0]
+        DatabaseManager.close_connections(db, cursor)
+        return response
+
+    def get_article(self, id_article: int):
+        """
+        Returns an article from the database. Identified by its id
+
+        :return: A row with the article information.
+        """
+
+        db, cursor = self.__get_cursor()
+        cursor.execute("SELECT * FROM article WHERE idArticle = {};".format(id_article))
+        response = cursor.fetchone()
         DatabaseManager.close_connections(db, cursor)
         return response
 
@@ -77,12 +99,30 @@ class DatabaseManager(object):
         DatabaseManager.close_connections(db, cursor)
         return response
 
-    def add_user_answer(self, id_user: int, id_article: int, quartile: int, score: int) -> None:
+    def add_user_answer(self, id_user: int, id_article: int, quartile: int, score: int) -> None or bool:
+        impact_type_description = DatabaseManager.convert_quartile_to_impact(quartile)
+
         db, cursor = self.__get_cursor()
+
         cursor.execute("""
-                            INSERT INTO user_answer_article(idUser, idArticle, quartile, score) 
-                            VALUES ({},{},{},{})
-                        """.format(id_user, id_article, quartile, score)
+                            SELECT idImpactType FROM impact_type WHERE description LIKE '{}'
+                        """.format(impact_type_description)
+                       )
+
+        data = cursor.fetchone()
+        if data is not None:
+            impact_id = data[0]
+        else:
+            return False
+
+        cursor.execute("""
+                            INSERT INTO user_answer_article(idUser,
+                                                            idArticle,
+                                                            user_answer_quartile,
+                                                            idImpactType,
+                                                            score) 
+                            VALUES ({},{},{},{},{})
+                        """.format(id_user, id_article, quartile, impact_id, score)
                        )
         DatabaseManager.close_connections(db, cursor)
 

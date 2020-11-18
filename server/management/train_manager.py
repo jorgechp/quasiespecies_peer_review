@@ -43,7 +43,7 @@ class TrainManager(object):
         self._database_manager = database_manager
         self._num_articles = database_manager.get_number_of_articles()
 
-    def get_random_article(self):
+    def get_random_article(self) -> Article:
         returned_article_information = self._database_manager.get_random_article()
         return Article(returned_article_information[0],
                        returned_article_information[1],
@@ -63,6 +63,14 @@ class TrainManager(object):
         self._database_manager.add_user_answer(id_user, id_article, quartile, score)
 
         return AnswerResult(quartile, real_journal_quality, user_journal_quality, score)
+
+    def get_article(self, id_article: int) -> Article:
+        returned_article_information = self._database_manager.get_article(id_article)
+        return Article(returned_article_information[0],
+                       returned_article_information[1],
+                       returned_article_information[2],
+                       returned_article_information[3].replace(' ', ';'),
+                       returned_article_information[4].replace(' ', ';'))
 
 
 
