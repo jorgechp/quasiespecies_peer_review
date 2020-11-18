@@ -77,7 +77,7 @@ JOURNAL_LIST = "peer_review/journals/"
 ARTICLES_LIST = "peer_review/articles/"
 
 journal_areas = os.listdir(JOURNAL_LIST)
-connection = create_connection('db/peer_review.db')
+connection = create_connection('instance/peer_review.db')
 cursorObj = connection.cursor()
 
 general_journal_name_id_dict = dict()

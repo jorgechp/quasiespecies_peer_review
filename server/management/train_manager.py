@@ -1,13 +1,16 @@
 from dataclasses import dataclass
+from dataclasses_json import dataclass_json
 from enum import Enum
 
 from server.db.database_manager import DatabaseManager
 
+@dataclass_json
 class Impact(Enum):
     LOW = 1
     MEDIUM = 2
     HIGH = 3
 
+@dataclass_json
 @dataclass
 class Article:
     id: int
@@ -16,6 +19,7 @@ class Article:
     authors_keywords: str
     keywords_plus: str
 
+@dataclass_json
 @dataclass
 class AnswerResult:
     user_id_journal: int
@@ -54,7 +58,7 @@ class TrainManager(object):
         real_quartile = self._database_manager.get_quartile_from_article(id_article)
         real_journal_quality = TrainManager.__convert_quartile_to_impact(real_quartile)
         user_journal_quality = TrainManager.__convert_quartile_to_impact(quartile)
-        score = 1 if real_quartile == quartile else 0
+        score = 1 if real_journal_quality == user_journal_quality else 0
 
         self._database_manager.add_user_answer(id_user, id_article, quartile, score)
 

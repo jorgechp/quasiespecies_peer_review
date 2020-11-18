@@ -25,7 +25,7 @@ class DatabaseManager(object):
         """
 
         db, cursor = self.__get_cursor()
-        cursor.execute("SELECT seq FROM 'sqlite_sequence' WHERE name = 'article' ")
+        cursor.execute("SELECT COUNT(idArticle) FROM 'article' ")
         response = cursor.fetchone()[0]
         DatabaseManager.close_connections(db, cursor)
         return response
@@ -77,12 +77,12 @@ class DatabaseManager(object):
         DatabaseManager.close_connections(db, cursor)
         return response
 
-    def add_user_answer(self, id_user: int, id_article: int, id_journal: int, score: int) -> None:
+    def add_user_answer(self, id_user: int, id_article: int, quartile: int, score: int) -> None:
         db, cursor = self.__get_cursor()
         cursor.execute("""
-                            INSERT INTO user_answer_article(idUser, idArticle, idJournal, score) 
+                            INSERT INTO user_answer_article(idUser, idArticle, quartile, score) 
                             VALUES ({},{},{},{})
-                        """.format(id_user, id_article, id_journal, score)
+                        """.format(id_user, id_article, quartile, score)
                        )
         DatabaseManager.close_connections(db, cursor)
 

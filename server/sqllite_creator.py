@@ -19,7 +19,7 @@ def create_connection(name: str) -> sqlite3.Connection:
         exit(1)
 
 
-connection = create_connection('db/peer_review.db')
+connection = create_connection('instance/peer_review.db')
 
 
 try:
@@ -28,7 +28,7 @@ try:
     cursorObj.execute(
         """
             CREATE TABLE area(
-                        idArea INTEGER PRIMARY KEY AUTOINCREMENT,
+                        idArea INTEGER PRIMARY KEY,
                         name TEXT NOT NULL,
                         year INTEGER NOT NULL   
                 )
@@ -38,7 +38,7 @@ try:
     cursorObj.execute(
         """
             CREATE TABLE journal(
-                        idJournal INTEGER PRIMARY KEY AUTOINCREMENT,
+                        idJournal INTEGER PRIMARY KEY,
                         name TEXT NOT NULL,
                         quartile INTEGER NOT NULL,
                         impact INTEGER NOT NULL,
@@ -52,7 +52,7 @@ try:
     cursorObj.execute(
         """
             CREATE TABLE article(
-                        idArticle INTEGER PRIMARY KEY AUTOINCREMENT, 
+                        idArticle INTEGER PRIMARY KEY, 
                         title TEXT NOT NULL, 
                         abstract TEXT NOT NULL, 
                         authors_keywords TEXT,
@@ -67,7 +67,7 @@ try:
     cursorObj.execute(
         """
             CREATE TABLE user(
-                        user_id INTEGER PRIMARY KEY AUTOINCREMENT,
+                        idUser INTEGER PRIMARY KEY,
                         nick TEXT UNIQUE NOT NULL,
                         password TEXT NOT NULL,
                         mail TEXT NOT NULL                        
@@ -78,17 +78,16 @@ try:
     cursorObj.execute(
         """
             CREATE TABLE user_answer_article(
-                        user_id INTEGER NOT NULL,
+                        idAnswer INTEGER PRIMARY KEY,
+                        idUser INTEGER NOT NULL,
                         idArticle INTEGER NOT NULL,
-                        idJournal INTEGER NOT NULL,
                         date DATETIME DEFAULT CURRENT_TIMESTAMP,
-                        score INTEGER NOT NULL,
+                        quartile INTEGER NOT NULL,                        
+                        score INTEGER NOT NULL,                       
                         
-                        PRIMARY KEY(user_id, idArticle, idJournal),
                         
-                        FOREIGN KEY(user_id) REFERENCES user(user_id),
-                        FOREIGN KEY(idArticle) REFERENCES article(idArticle),
-                        FOREIGN KEY(idJournal) REFERENCES journal(idJournal)                                               
+                        FOREIGN KEY(idUser) REFERENCES user(idUser),
+                        FOREIGN KEY(idArticle) REFERENCES article(idArticle)                                           
                 )
         """
     )
@@ -120,13 +119,13 @@ try:
     cursorObj.execute(
         """
             CREATE TABLE user_partitions(
-                        user_id INTEGER NOT NULL,
+                        idUser INTEGER NOT NULL,
                         idArticleType TEXT NOT NULL,
                         idPartition INTEGER NOT NULL,
                         
-                        PRIMARY KEY(user_id, idArticleType),
+                        PRIMARY KEY(idUser, idArticleType),
                         
-                        FOREIGN KEY(user_id) REFERENCES user(user_id),
+                        FOREIGN KEY(idUser) REFERENCES user(idUser),
                         FOREIGN KEY(idArticleType) REFERENCES article_type(idArticleType),       
                         FOREIGN KEY(idPartition) REFERENCES partition(idPartition)                                          
                 )
@@ -136,13 +135,13 @@ try:
     cursorObj.execute(
         """
             CREATE TABLE submission_profile(
-                        user_id INTEGER NOT NULL,                        
+                        idUser INTEGER NOT NULL,                        
                         idPartition INTEGER NOT NULL,
                         idSubmissionResponse TEXT NOT NULL,
 
-                        PRIMARY KEY(user_id, idPartition, idSubmissionResponse),
+                        PRIMARY KEY(idUser, idPartition, idSubmissionResponse),
 
-                        FOREIGN KEY(user_id) REFERENCES user(user_id),
+                        FOREIGN KEY(idUser) REFERENCES user(idUser),
                         FOREIGN KEY(idPartition) REFERENCES partition(idPartition),       
                         FOREIGN KEY(idSubmissionResponse) REFERENCES submission_response(idSubmissionResponse)                                          
                 )
