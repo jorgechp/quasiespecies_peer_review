@@ -67,7 +67,7 @@ try:
     cursorObj.execute(
         """
             CREATE TABLE user(
-                        idUser INTEGER PRIMARY KEY AUTOINCREMENT,
+                        user_id INTEGER PRIMARY KEY AUTOINCREMENT,
                         nick TEXT UNIQUE NOT NULL,
                         password TEXT NOT NULL,
                         mail TEXT NOT NULL                        
@@ -78,15 +78,15 @@ try:
     cursorObj.execute(
         """
             CREATE TABLE user_answer_article(
-                        idUser INTEGER NOT NULL,
+                        user_id INTEGER NOT NULL,
                         idArticle INTEGER NOT NULL,
                         idJournal INTEGER NOT NULL,
                         date DATETIME DEFAULT CURRENT_TIMESTAMP,
                         score INTEGER NOT NULL,
                         
-                        PRIMARY KEY(idUser, idArticle, idJournal),
+                        PRIMARY KEY(user_id, idArticle, idJournal),
                         
-                        FOREIGN KEY(idUser) REFERENCES user(idUser),
+                        FOREIGN KEY(user_id) REFERENCES user(user_id),
                         FOREIGN KEY(idArticle) REFERENCES article(idArticle),
                         FOREIGN KEY(idJournal) REFERENCES journal(idJournal)                                               
                 )
@@ -120,13 +120,13 @@ try:
     cursorObj.execute(
         """
             CREATE TABLE user_partitions(
-                        idUser INTEGER NOT NULL,
+                        user_id INTEGER NOT NULL,
                         idArticleType TEXT NOT NULL,
                         idPartition INTEGER NOT NULL,
                         
-                        PRIMARY KEY(idUser, idArticleType),
+                        PRIMARY KEY(user_id, idArticleType),
                         
-                        FOREIGN KEY(idUser) REFERENCES user(idUser),
+                        FOREIGN KEY(user_id) REFERENCES user(user_id),
                         FOREIGN KEY(idArticleType) REFERENCES article_type(idArticleType),       
                         FOREIGN KEY(idPartition) REFERENCES partition(idPartition)                                          
                 )
@@ -136,13 +136,13 @@ try:
     cursorObj.execute(
         """
             CREATE TABLE submission_profile(
-                        idUser INTEGER NOT NULL,                        
+                        user_id INTEGER NOT NULL,                        
                         idPartition INTEGER NOT NULL,
                         idSubmissionResponse TEXT NOT NULL,
 
-                        PRIMARY KEY(idUser, idPartition, idSubmissionResponse),
+                        PRIMARY KEY(user_id, idPartition, idSubmissionResponse),
 
-                        FOREIGN KEY(idUser) REFERENCES user(idUser),
+                        FOREIGN KEY(user_id) REFERENCES user(user_id),
                         FOREIGN KEY(idPartition) REFERENCES partition(idPartition),       
                         FOREIGN KEY(idSubmissionResponse) REFERENCES submission_response(idSubmissionResponse)                                          
                 )

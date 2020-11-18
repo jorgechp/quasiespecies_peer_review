@@ -29,11 +29,13 @@ class UserManager(object):
         hashed_password = self._security_manager.hash_password(plain_password)
 
         id_user = self._database_manager.add_user(nick, encrypted_mail, hashed_password)
+        if id_user == -1:
+            return id_user
         return User(id_user, nick, plain_mail)
 
     def get_user_id(self, nick: str) -> int:
         return self._database_manager.get_user_by_nick(nick)
 
-    def check_user_password(self, id: int, plain_password: str) -> bool:
-        hashed_password = self._database_manager.get_user_password(id)
+    def check_user_password(self, user_id: int, plain_password: str) -> bool:
+        hashed_password = self._database_manager.get_user_password(user_id)
         return self._security_manager.check_hashed_password(plain_password,hashed_password)

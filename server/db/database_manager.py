@@ -47,7 +47,7 @@ class DatabaseManager(object):
         """
         Returns information about the quartile associated to the journal of an article.
 
-        :param id_article: The id of the article.
+        :param id_article: The idUser of the article.
         :type id_article: int
         :return: The quartile of the journal.
         :rtype: int
@@ -88,11 +88,15 @@ class DatabaseManager(object):
 
     def add_user(self, nick: str, mail: str, password: bytes) -> int:
         db, cursor = self.__get_cursor()
-        cursor.execute("""
-                            INSERT INTO user(nick, mail, password) 
-                            VALUES ("{}","{}","{}")
-                        """.format(nick, mail, password)
-                       )
+
+        try:
+            cursor.execute("""
+                                INSERT INTO user(nick, mail, password) 
+                                VALUES ("{}","{}","{}")
+                            """.format(nick, mail, password)
+                           )
+        except sqlite3.IntegrityError:
+            return -1
         response = cursor.lastrowid
         db.commit()
         DatabaseManager.close_connections(db, cursor)
@@ -105,7 +109,8 @@ class DatabaseManager(object):
                             FROM user                             
                             WHERE nick = '{}'
                     """.format(encrypted_mail))
-        response = cursor.fetchone()[0]
+        data = cursor.fetchone()
+        response = data[0] if data is not None else None
         DatabaseManager.close_connections(db, cursor)
         return response
 
