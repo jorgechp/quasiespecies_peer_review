@@ -5,6 +5,20 @@ from flask import (
 
 from server.management.train_manager import TrainManager
 
+DEFAULT_SCORE_LIMIT = 5
+
+
+def _convert_partition_name_to_partition_id(partition_name: str) -> int:
+    partition_name = partition_name.lower()
+    if partition_name == "high":
+        return 3
+    elif partition_name == "medium":
+        return 2
+    elif partition_name == "low":
+        return 1
+    else:
+        return 0
+
 
 def construct_train_blueprint(train_manager: TrainManager):
     bp = Blueprint('train', __name__, url_prefix='/train')
@@ -46,4 +60,19 @@ def construct_train_blueprint(train_manager: TrainManager):
         else:
             abort(400)
 
+    @bp.route('/score/<partition>', methods=['GET'])
+    @bp.route('/score/<partition>/<int:limit>', methods=['GET'])
+    def get_quartile_score(partition, limit=DEFAULT_SCORE_LIMIT):
+        if 'username' not in session:
+            abort(403)
+        partition_id = _convert_partition_name_to_partition_id(partition)
+
+        if partition_id == 0:
+            abort(400)
+
+        user_scores = train_manager.get_quartile_score(session['username'], partition_id, limit)
+        return user_scores.to_json()
+
     return bp
+
+

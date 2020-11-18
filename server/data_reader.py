@@ -52,7 +52,7 @@ def read_journal_list(path: str, idArea : int, cursorObj : sqlite3.Cursor) -> di
             INSERT INTO journal(name,quartile,impact,idImpactType,idArea) 
             VALUES
                 ('{}',{},{},{},{})            
-            """.format(journal_name, current_quartile, journal_impact_type, journal_impact, idArea)
+            """.format(journal_name, current_quartile, journal_impact, journal_impact_type, idArea)
         )
         idJournal = cursorObj.lastrowid
         journal_name_id_dict[journal_name] = idJournal
@@ -91,9 +91,9 @@ cursorObj = connection.cursor()
 general_journal_name_id_dict = dict()
 
 #Insert Impac types
-cursorObj.execute("INSERT INTO impact_type(description) VALUES('LOW IMPACT')")
-cursorObj.execute("INSERT INTO impact_type(description) VALUES('MEDIUM IMPACT')")
-cursorObj.execute("INSERT INTO impact_type(description) VALUES('HIGH IMPACT')")
+cursorObj.execute("INSERT INTO impact_type(description) VALUES('LOW')")
+cursorObj.execute("INSERT INTO impact_type(description) VALUES('MEDIUM')")
+cursorObj.execute("INSERT INTO impact_type(description) VALUES('HIGH')")
 
 
 #Insert journals

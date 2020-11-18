@@ -100,18 +100,18 @@ class DatabaseManager(object):
         return response
 
     def add_user_answer(self, id_user: int, id_article: int, quartile: int, score: int) -> None or bool:
-        impact_type_description = DatabaseManager.convert_quartile_to_impact(quartile)
-
         db, cursor = self.__get_cursor()
 
         cursor.execute("""
-                            SELECT idImpactType FROM impact_type WHERE description LIKE '{}'
-                        """.format(impact_type_description)
+                            SELECT idImpactType 
+                            FROM journal JOIN article ON journal.idJournal = article.idJournal 
+                            WHERE article.idArticle = '{}'
+                        """.format(id_article)
                        )
 
         data = cursor.fetchone()
         if data is not None:
-            impact_id = data[0]
+            real_impact_id = data[0]
         else:
             return False
 
@@ -122,7 +122,7 @@ class DatabaseManager(object):
                                                             idImpactType,
                                                             score) 
                             VALUES ({},{},{},{},{})
-                        """.format(id_user, id_article, quartile, impact_id, score)
+                        """.format(id_user, id_article, quartile, real_impact_id, score)
                        )
         DatabaseManager.close_connections(db, cursor)
 
@@ -162,5 +162,19 @@ class DatabaseManager(object):
                             WHERE idUser = '{}'
                     """.format(id_user))
         response = cursor.fetchone()[0]
+        DatabaseManager.close_connections(db, cursor)
+        return response
+
+    def get_quartile_score(self, user_id: int, partition: int, limit: int):
+        db, cursor = self.__get_cursor()
+        cursor.execute("""
+                            SELECT score 
+                            FROM user_answer_article                             
+                            WHERE idImpactType = {} AND idUser = {}
+                            ORDER BY date DESC
+                            LIMIT {}
+                    """.format(partition, user_id, limit))
+        data = cursor.fetchall()
+        response = data if data is not None else None
         DatabaseManager.close_connections(db, cursor)
         return response

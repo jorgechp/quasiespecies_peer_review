@@ -27,8 +27,27 @@ class AnswerResult:
     user_journal_quality: Impact
     user_score: int
 
+@dataclass_json
+@dataclass
+class UserScores:
+    user_id: int
+    partition_type: Impact
+    positive_score: int
+    negative_score: int
+
 
 class TrainManager(object):
+
+    @staticmethod
+    def __convert_partition_id_to_impact(partition: int) -> str:
+        if partition == 1:
+            return "LOW"
+        elif partition == 2:
+            return "MEDIUM"
+        elif partition == 3:
+            return "HIGH"
+        else:
+            return 0
 
     @staticmethod
     def __convert_quartile_to_impact(quartile: int) -> Impact:
@@ -71,6 +90,19 @@ class TrainManager(object):
                        returned_article_information[2],
                        returned_article_information[3].replace(' ', ';'),
                        returned_article_information[4].replace(' ', ';'))
+
+    def get_quartile_score(self, user_id: int, partition: int, limit: int) -> UserScores:
+        returned_scores = self._database_manager.get_quartile_score(user_id, partition, limit)
+
+        positives = sum([row['score'] for row in returned_scores])
+        negatives = len(returned_scores) - positives
+
+        return UserScores(user_id,
+                          TrainManager.__convert_partition_id_to_impact(partition),
+                          positives,
+                          negatives)
+
+
 
 
 

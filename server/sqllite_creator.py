@@ -101,7 +101,7 @@ try:
         """
             CREATE TABLE impact_type(
                         idImpactType INTEGER PRIMARY KEY,
-                        description TEXT NOT NULL                                      
+                        description TEXT UNIQUE NOT NULL                                      
                 )
         """
     )
