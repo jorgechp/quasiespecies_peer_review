@@ -17,7 +17,7 @@ def launch_api(instance_path=None,test_config=None) -> Flask:
     app = Flask(__name__, instance_relative_config=True, instance_path=instance_path)
     app.config.from_mapping(
         SECRET_KEY='dev',
-        DATABASE=os.path.join(app.instance_path + "/db/", 'peer_review.db')
+        DATABASE=os.path.join(app.instance_path, 'peer_review.db')
     )
 
     if test_config is None:
