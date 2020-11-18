@@ -17,6 +17,13 @@ def create_connection(name: str) -> sqlite3.Connection:
         connection.close()
         exit(1)
 
+def translate_quartile_into_impact(quartile: int) -> int:
+    if quartile <= 2:
+        return 3
+    elif quartile == 3:
+        return 2
+    else:
+        return 1
 
 def read_journal_list(path: str, idArea : int, cursorObj : sqlite3.Cursor) -> dict:
     list_of_journals = []
@@ -38,13 +45,14 @@ def read_journal_list(path: str, idArea : int, cursorObj : sqlite3.Cursor) -> di
 
         journal_name = article[0].upper()
         journal_impact = article[1]
+        journal_impact_type = translate_quartile_into_impact(current_quartile)
 
         cursorObj.execute(
             """
-            INSERT INTO journal(name,quartile,impact,idArea) 
+            INSERT INTO journal(name,quartile,impact,idImpactType,idArea) 
             VALUES
-                ('{}',{},{},{})            
-            """.format(journal_name, current_quartile, journal_impact, idArea)
+                ('{}',{},{},{},{})            
+            """.format(journal_name, current_quartile, journal_impact_type, journal_impact, idArea)
         )
         idJournal = cursorObj.lastrowid
         journal_name_id_dict[journal_name] = idJournal
@@ -81,6 +89,12 @@ connection = create_connection('instance/peer_review.db')
 cursorObj = connection.cursor()
 
 general_journal_name_id_dict = dict()
+
+#Insert Impac types
+cursorObj.execute("INSERT INTO impact_type(description) VALUES('LOW IMPACT')")
+cursorObj.execute("INSERT INTO impact_type(description) VALUES('MEDIUM IMPACT')")
+cursorObj.execute("INSERT INTO impact_type(description) VALUES('HIGH IMPACT')")
+
 
 #Insert journals
 for area in journal_areas:

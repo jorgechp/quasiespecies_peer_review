@@ -41,10 +41,12 @@ try:
                         idJournal INTEGER PRIMARY KEY,
                         name TEXT NOT NULL,
                         quartile INTEGER NOT NULL,
-                        impact INTEGER NOT NULL,
+                        impact INTEGER NOT NULL,                      
+                        idImpactType INTEGER NOT NULL,
                         idArea INTEGER NOT NULL,
                         
-                        FOREIGN KEY(idArea) REFERENCES area(idArea)
+                        FOREIGN KEY(idArea) REFERENCES area(idArea),
+                        FOREIGN KEY(idImpactType) REFERENCES impact_type(idImpactType)   
                 )
         """
     )
@@ -82,72 +84,27 @@ try:
                         idUser INTEGER NOT NULL,
                         idArticle INTEGER NOT NULL,
                         date DATETIME DEFAULT CURRENT_TIMESTAMP,
-                        quartile INTEGER NOT NULL,                        
+                        user_answer_quartile INTEGER NOT NULL, 
+                        idImpactType INTEGER NOT NULL,            
                         score INTEGER NOT NULL,                       
                         
                         
                         FOREIGN KEY(idUser) REFERENCES user(idUser),
-                        FOREIGN KEY(idArticle) REFERENCES article(idArticle)                                           
+                        FOREIGN KEY(idArticle) REFERENCES article(idArticle),
+                        FOREIGN KEY(idImpactType) REFERENCES user(idImpactType)                                       
                 )
         """
     )
+
 
     cursorObj.execute(
         """
-            CREATE TABLE submission_response(
-                        idSubmissionResponse TEXT PRIMARY KEY                                              
+            CREATE TABLE impact_type(
+                        idImpactType INTEGER PRIMARY KEY,
+                        description TEXT NOT NULL                                      
                 )
         """
     )
-
-    cursorObj.execute(
-        """
-            CREATE TABLE article_type(
-                        idArticleType TEXT PRIMARY KEY                                              
-                )
-        """
-    )
-
-    cursorObj.execute(
-        """
-            CREATE TABLE partition(
-                        idPartition INTEGER PRIMARY KEY                                              
-                )
-        """
-    )
-
-    cursorObj.execute(
-        """
-            CREATE TABLE user_partitions(
-                        idUser INTEGER NOT NULL,
-                        idArticleType TEXT NOT NULL,
-                        idPartition INTEGER NOT NULL,
-                        
-                        PRIMARY KEY(idUser, idArticleType),
-                        
-                        FOREIGN KEY(idUser) REFERENCES user(idUser),
-                        FOREIGN KEY(idArticleType) REFERENCES article_type(idArticleType),       
-                        FOREIGN KEY(idPartition) REFERENCES partition(idPartition)                                          
-                )
-        """
-    )
-
-    cursorObj.execute(
-        """
-            CREATE TABLE submission_profile(
-                        idUser INTEGER NOT NULL,                        
-                        idPartition INTEGER NOT NULL,
-                        idSubmissionResponse TEXT NOT NULL,
-
-                        PRIMARY KEY(idUser, idPartition, idSubmissionResponse),
-
-                        FOREIGN KEY(idUser) REFERENCES user(idUser),
-                        FOREIGN KEY(idPartition) REFERENCES partition(idPartition),       
-                        FOREIGN KEY(idSubmissionResponse) REFERENCES submission_response(idSubmissionResponse)                                          
-                )
-        """
-    )
-
 
     connection.commit()
     connection.close()
