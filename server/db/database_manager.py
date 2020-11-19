@@ -115,14 +115,16 @@ class DatabaseManager(object):
         else:
             return False
 
+        user_answer_impact = DatabaseManager.convert_quartile_to_impact(quartile)
+
         cursor.execute("""
                             INSERT INTO user_answer_article(idUser,
                                                             idArticle,
-                                                            user_answer_quartile,
-                                                            idImpactType,
+                                                            userAnswerImpact,
+                                                            realImpact,
                                                             score) 
                             VALUES ({},{},{},{},{})
-                        """.format(id_user, id_article, quartile, real_impact_id, score)
+                        """.format(id_user, id_article, user_answer_impact, real_impact_id, score)
                        )
         DatabaseManager.close_connections(db, cursor)
 

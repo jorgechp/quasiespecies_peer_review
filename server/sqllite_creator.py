@@ -84,14 +84,16 @@ try:
                         idUser INTEGER NOT NULL,
                         idArticle INTEGER NOT NULL,
                         date DATETIME DEFAULT CURRENT_TIMESTAMP,
-                        user_answer_quartile INTEGER NOT NULL, 
-                        idImpactType INTEGER NOT NULL,            
+                        userAnswerImpact INTEGER NOT NULL, 
+                        realImpact INTEGER NOT NULL,            
                         score INTEGER NOT NULL,                       
                         
                         
                         FOREIGN KEY(idUser) REFERENCES user(idUser),
                         FOREIGN KEY(idArticle) REFERENCES article(idArticle),
-                        FOREIGN KEY(idImpactType) REFERENCES user(idImpactType)                                       
+                        FOREIGN KEY(userAnswerImpact) REFERENCES impact_type(userAnswerImpact),
+                        FOREIGN KEY(realImpact) REFERENCES impact_type(idImpactType)
+                                                               
                 )
         """
     )
