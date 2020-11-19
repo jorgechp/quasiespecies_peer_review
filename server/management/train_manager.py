@@ -102,6 +102,17 @@ class TrainManager(object):
                           positives,
                           negatives)
 
+    def get_user_score_table(self, user_id: str, limit: int):
+        impact_list = list(map(int, Impact))
+
+        for target_impact in impact_list:
+            for user_impact in impact_list:
+                res = self._database_manager.get_user_score_table(user_id, limit, target_impact, user_impact )
+
+
+
+
+
 
 
 

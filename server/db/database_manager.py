@@ -180,3 +180,18 @@ class DatabaseManager(object):
         response = data if data is not None else None
         DatabaseManager.close_connections(db, cursor)
         return response
+
+    def get_user_score_table(self, user_id: str, limit: int, target_impact: int, user_impact: int ):
+        db, cursor = self.__get_cursor()
+
+        cursor.execute("""
+                            SELECT userAnswerImpact, realImpact 
+                            FROM user_answer_article                             
+                            WHERE  idUser = {} AND userAnswerImpact = {} AND realImpact = {}
+                            ORDER BY date DESC
+                            LIMIT {}
+                     """.format(user_id, limit, target_impact, user_impact))
+        data = cursor.fetchall()
+        response = data if data is not None else None
+        DatabaseManager.close_connections(db, cursor)
+        return response
