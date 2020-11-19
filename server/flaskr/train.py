@@ -74,11 +74,13 @@ def construct_train_blueprint(train_manager: TrainManager):
         return user_scores.to_json()
 
     @bp.route('/score/table', methods=['GET'])
-    def get_table():
+    @bp.route('/score/table/<int:limit>', methods=['GET'])
+    def get_table(limit=DEFAULT_SCORE_LIMIT):
         if 'username' not in session:
             abort(403)
 
-        train_manager.get_user_score_table(session['username'])
+        table_scores = train_manager.get_user_score_table(session['username'], limit)
+        return table_scores
 
     return bp
 

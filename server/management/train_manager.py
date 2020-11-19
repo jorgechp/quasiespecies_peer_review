@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 from dataclasses_json import dataclass_json
 from enum import Enum
+from typing import List
 
 from server.db.database_manager import DatabaseManager
 
@@ -34,6 +35,18 @@ class UserScores:
     partition_type: Impact
     positive_score: int
     negative_score: int
+
+@dataclass_json
+@dataclass
+class ScorePerImpact:
+    answer_impact: Impact
+    occurrences: int
+
+@dataclass_json
+@dataclass
+class ScoreTable:
+    target_impact: Impact
+    scores: List[ScorePerImpact]
 
 
 class TrainManager(object):
@@ -102,12 +115,25 @@ class TrainManager(object):
                           positives,
                           negatives)
 
-    def get_user_score_table(self, user_id: str, limit: int):
-        impact_list = list(map(int, Impact))
+    def get_user_score_table(self, user_id: str, limit: int) -> dict:
+        impact_list = list(map(str, Impact))
+
+        score_per_impact_dict = dict()
 
         for target_impact in impact_list:
+            current_score_table = dict()
             for user_impact in impact_list:
-                res = self._database_manager.get_user_score_table(user_id, limit, target_impact, user_impact )
+                target_impact_preprocessed = target_impact.split('.')[1]
+                user_impact_preprocessed = user_impact.split('.')[1]
+
+                number_of_occurrences = self._database_manager.get_user_score_table(user_id,
+                                                                  limit,
+                                                                  target_impact_preprocessed,
+                                                                  user_impact_preprocessed )
+                current_score_table[user_impact] = number_of_occurrences
+                score_per_impact_dict[target_impact] = current_score_table
+        return score_per_impact_dict
+
 
 
 

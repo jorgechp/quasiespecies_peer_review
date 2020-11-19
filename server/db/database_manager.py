@@ -20,11 +20,11 @@ class DatabaseManager(object):
     @staticmethod
     def convert_quartile_to_impact(quartile: int) -> str:
         if quartile <= 2:
-            return "HIGH IMPACT"
+            return "HIGH"
         elif quartile == 3:
-            return "MEDIUM IMPACT"
+            return "MEDIUM"
         else:
-            return "LOW IMPACT"
+            return "LOW"
 
     def get_number_of_articles(self) -> int:
         """
@@ -105,17 +105,18 @@ class DatabaseManager(object):
         cursor.execute("""
                             SELECT idImpactType 
                             FROM journal JOIN article ON journal.idJournal = article.idJournal 
-                            WHERE article.idArticle = '{}'
+                            WHERE article.idArticle = {}
                         """.format(id_article)
                        )
 
         data = cursor.fetchone()
         if data is not None:
-            real_impact_id = data[0]
+            id_real_impact = data[0]
         else:
             return False
 
         user_answer_impact = DatabaseManager.convert_quartile_to_impact(quartile)
+        id_anwer_impact = self.get_id_impact(user_answer_impact)
 
         cursor.execute("""
                             INSERT INTO user_answer_article(idUser,
@@ -124,7 +125,7 @@ class DatabaseManager(object):
                                                             realImpact,
                                                             score) 
                             VALUES ({},{},{},{},{})
-                        """.format(id_user, id_article, user_answer_impact, real_impact_id, score)
+                        """.format(id_user, id_article, id_anwer_impact, id_real_impact, score)
                        )
         DatabaseManager.close_connections(db, cursor)
 
@@ -181,17 +182,33 @@ class DatabaseManager(object):
         DatabaseManager.close_connections(db, cursor)
         return response
 
-    def get_user_score_table(self, user_id: str, limit: int, target_impact: int, user_impact: int ):
+    def get_id_impact(self, impact_name:str) -> int:
+        db, cursor = self.__get_cursor()
+        cursor.execute("""
+                            SELECT idImpactType 
+                            FROM impact_type                             
+                            WHERE description LIKE '{}'
+                    """.format(impact_name))
+        data = cursor.fetchone()
+        response = data[0] if data is not None else None
+        DatabaseManager.close_connections(db, cursor)
+        return response
+
+    def get_user_score_table(self, user_id: str, limit: int, target_impact: str, user_impact: str ) -> int:
         db, cursor = self.__get_cursor()
 
+        id_real_impact = self.get_id_impact(target_impact)
+        id_user_impact = self.get_id_impact(user_impact)
+
+
         cursor.execute("""
-                            SELECT userAnswerImpact, realImpact 
+                            SELECT COUNT(userAnswerImpact) 
                             FROM user_answer_article                             
                             WHERE  idUser = {} AND userAnswerImpact = {} AND realImpact = {}
                             ORDER BY date DESC
                             LIMIT {}
-                     """.format(user_id, limit, target_impact, user_impact))
-        data = cursor.fetchall()
-        response = data if data is not None else None
+                     """.format(user_id, id_user_impact, id_real_impact, limit))
+        data = cursor.fetchone()
+        response = data[0] if data is not None else None
         DatabaseManager.close_connections(db, cursor)
         return response
