@@ -128,3 +128,11 @@ dmypy.json
 # Pyre type checker
 .pyre/
 /server/security/key
+.idea/.gitignore
+.idea/misc.xml
+.idea/modules.xml
+.idea/quasiespecies_peer_review.iml
+.idea/vcs.xml
+.idea/inspectionProfiles/profiles_settings.xml
+.idea/inspectionProfiles/Project_Default.xml
+.idea/libraries/R_User_Library.xml
