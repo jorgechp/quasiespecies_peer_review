@@ -36,19 +36,6 @@ class UserScores:
     positive_score: int
     negative_score: int
 
-@dataclass_json
-@dataclass
-class ScorePerImpact:
-    answer_impact: Impact
-    occurrences: int
-
-@dataclass_json
-@dataclass
-class ScoreTable:
-    target_impact: Impact
-    scores: List[ScorePerImpact]
-
-
 class TrainManager(object):
 
     @staticmethod
