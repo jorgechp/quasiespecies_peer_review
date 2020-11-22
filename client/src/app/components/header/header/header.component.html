@@ -1,13 +1,21 @@
 <mat-toolbar>
-    <button mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon">
-      <mat-icon>menu</mat-icon>
-    </button>
-    <span>My App</span>
-    <span class="example-spacer"></span>
-    <button mat-icon-button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon">
-      <mat-icon>favorite</mat-icon>
-    </button>
-    <button mat-icon-button class="example-icon" aria-label="Example icon-button with share icon">
-      <mat-icon>share</mat-icon>
-    </button>
-  </mat-toolbar>
+  <mat-toolbar-row>
+    <div class="flex-content">
+      <div class="flex-content__center-links"> 
+        <div class="icon-with-text">
+          <mat-icon>psychology</mat-icon> 
+          <span>Train</span>
+        </div>     
+        <div class="icon-with-text">
+          <mat-icon>show_chart</mat-icon> 
+          <span>Stats</span>
+        </div>   
+      </div>   
+      <div class="flex-content__right-links"> 
+        <mat-icon>language</mat-icon>   
+        <mat-icon>help_outline</mat-icon>    
+        <mat-icon>exit_to_app</mat-icon>  
+      </div> 
+    </div>
+  </mat-toolbar-row>
+</mat-toolbar>
