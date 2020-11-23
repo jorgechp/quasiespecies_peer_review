@@ -34,4 +34,12 @@ export class SignupComponent implements OnInit {
   get login_form() { return this.loginForm.controls; }
   get signup_form() { return this.registerForm.controls; }
 
+  loginSubmit(): void{
+    
+  }
+
+  registerSubmit(): void{
+
+  }
+
 }

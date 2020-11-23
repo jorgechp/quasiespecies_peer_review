@@ -1,6 +1,6 @@
 <section>
     <h2>Already have an account? then log in ...</h2>
-    <form [formGroup]="loginForm">
+    <form [formGroup]="loginForm" (ngSubmit)="loginSubmit()">
         <mat-form-field class="register-field" appearance="legacy" >
             <mat-label>Nick</mat-label>
             <input matInput placeholder="Placeholder" id="login_nick" formControlName="login_nick" autofocus>
@@ -19,13 +19,15 @@
             <mat-hint>Insert your password</mat-hint>
         </mat-form-field>
 
-        <button [disabled]="loginForm.errors == null" mat-flat-button color="accent">Log in</button>
+        <button [disabled]="!loginForm.valid" type="submit" mat-flat-button color="accent">Log in</button>
     </form>
 </section>
 
+
+
 <section>    
-    <h2>... or sign up</h2>
-    <form [formGroup]="registerForm">
+    <h2>... or create a new account</h2>
+    <form [formGroup]="registerForm" (ngSubmit)="registerSubmit()">
         <mat-form-field class="register-field" appearance="legacy">
             <mat-label>Nick</mat-label>
             <input matInput placeholder="Placeholder" id="signup_nick" formControlName="signup_nick">
@@ -64,7 +66,7 @@
             <mat-hint>Insert your password again.</mat-hint>
         </mat-form-field>  
         
-        <button [disabled]="registerForm.errors == null" mat-flat-button color="accent">Register</button>    
+        <button [disabled]="!registerForm.valid" type="submit" color="accent">Register</button>    
     </form>
 </section>
 
