@@ -1,5 +1,6 @@
 import os
 
+from flask_cors import CORS
 
 from flask import Flask
 from flask import g
@@ -15,6 +16,10 @@ from ..management.user_manager import UserManager
 def launch_api(instance_path=None,test_config=None) -> Flask:
     # create and configure the app
     app = Flask(__name__, instance_relative_config=True, instance_path=instance_path)
+
+    #Enable CORS on all domains
+    CORS(app)
+
     app.config.from_mapping(
         SECRET_KEY='dev',
         DATABASE=os.path.join(app.instance_path, 'peer_review.db')

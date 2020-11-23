@@ -41,7 +41,7 @@ def construct_user_blueprint(user_manager: UserManager):
 
     @bp.route('/', methods=['POST'])
     def add_user_answer():
-        json_request = request.get_json()
+        json_request = request.get_json(force=True)
 
         if 'mail' not in json_request or 'nick' not in json_request or 'password' not in json_request:
             abort(400, 'User data not provided.')
