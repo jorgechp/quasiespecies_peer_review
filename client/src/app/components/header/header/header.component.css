@@ -1,17 +1,20 @@
 .flex-content {
     width: 100%;
-    display:flex;
-    justify-content:center;
+    display:flex;    
   }
 
   .flex-content__center-links{    
     flex:1;
     display: flex;
-    justify-content: center;    
+    justify-content: left;       
   }
 
   .flex-content__right-links mat-icon{
     margin-right: 5px;
+  }
+
+  .flex-content__right-links--logout{
+    margin-left: 20px;
   }
 
   .icon-with-text{    

@@ -43,7 +43,7 @@ import {NgModule} from '@angular/core';
 // import {MatTreeModule} from '@angular/material/tree';
 // import {OverlayModule} from '@angular/cdk/overlay';
 
-
+import {MatButtonModule} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
 import {MatToolbarModule} from '@angular/material/toolbar';
 
@@ -72,7 +72,7 @@ import {MatToolbarModule} from '@angular/material/toolbar';
     // MatDividerModule,
     // MatExpansionModule,
     // MatGridListModule,
-    MatIconModule,
+    // MatIconModule,
     // MatInputModule,
     // MatListModule,
     // MatMenuModule,
@@ -90,7 +90,7 @@ import {MatToolbarModule} from '@angular/material/toolbar';
     // MatSortModule,
     // MatTableModule,
     // MatTabsModule,
-    MatToolbarModule,
+    // MatToolbarModule,
     // MatTooltipModule,
     // MatTreeModule,
     // OverlayModule,
