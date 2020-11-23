@@ -1,0 +1,5 @@
+.basic-container__content{
+    display: block;
+    min-height: calc(100vh - 125px);
+    padding-left: 25%;
+}
