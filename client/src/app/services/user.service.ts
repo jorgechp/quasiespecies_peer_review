@@ -1,21 +1,21 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { NewUserInterface } from '@src/app/models/new-user-interface.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
-  private registerUserUrl = 'http://0.0.0.0:7000/user/';
-  private loginUserUrl = 'http://0.0.0.0:7000/user/login';
-  private logoutUserUrl = 'http://0.0.0.0:7000/user/login';
+  private registerUserUrl = 'http://localhost:7000/user/';
+  private loginUserUrl = 'http://localhost:7000/user/login';
+  private logoutUserUrl = 'http://localhost:7000/user/login';
 
 
   constructor(private httpClient: HttpClient) { }
 
-  registerUser(userNick: string, userMail: string, userPassword: string): Observable<object>{
-
+  registerUser(userNick: string, userMail: string, userPassword: string): Observable<NewUserInterface>{
     const newUser = {nick: userNick, mail: userMail, password: userPassword};
-    return this.httpClient.post(this.registerUserUrl, JSON.stringify(newUser));
+    return this.httpClient.post<NewUserInterface>(this.registerUserUrl, JSON.stringify(newUser))
   }
 }

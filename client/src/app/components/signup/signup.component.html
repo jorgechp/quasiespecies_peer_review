@@ -44,29 +44,31 @@
             <mat-hint>Insert your mail here</mat-hint>
         </mat-form-field>
 
-        <mat-form-field class="register-field" appearance="legacy">
-            <mat-label>Enter your password</mat-label>
-            <input matInput [type]="hide ? 'password' : 'text'" id="signup_password" formControlName="signup_password">
-            <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
-            <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>    
-            </button>
-            <mat-icon matSuffix *ngIf="!signup_form.signup_password.errors">done</mat-icon>
-            <mat-icon matSuffix *ngIf="signup_form.signup_password.errors">close</mat-icon>
-            <mat-hint>Insert a really strong password here</mat-hint>
-        </mat-form-field>
+        <ng-container formGroupName="passwords">
+            <mat-form-field class="register-field" appearance="legacy">
+                <mat-label>Enter your password</mat-label>
+                <input matInput [type]="hide ? 'password' : 'text'" id="password1" formControlName="password1">
+                <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>    
+                </button>
+                <mat-icon matSuffix *ngIf="!signup_form.passwords.errors">done</mat-icon>
+                <mat-icon matSuffix *ngIf="signup_form.passwords.errors">close</mat-icon>
+                <mat-hint>Insert a really strong password here</mat-hint>
+            </mat-form-field>
 
-        <mat-form-field class="register-field" appearance="legacy">
-            <mat-label>Retype your password</mat-label>
-            <input matInput [type]="hide ? 'password' : 'text'" id="signup_password2" formControlName="signup_password2">
-            <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
-            <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>    
-            </button>
-            <mat-icon matSuffix *ngIf="!signup_form.signup_password2.errors">done</mat-icon>
-            <mat-icon matSuffix *ngIf="signup_form.signup_password2.errors">close</mat-icon>
-            <mat-hint>Insert your password again.</mat-hint>
-        </mat-form-field>  
+            <mat-form-field class="register-field" appearance="legacy">
+                <mat-label>Retype your password</mat-label>
+                <input matInput [type]="hide ? 'password' : 'text'" id="password2" formControlName="password2">
+                <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>    
+                </button>
+                <mat-icon matSuffix *ngIf="!signup_form.passwords.errors">done</mat-icon>
+                <mat-icon matSuffix *ngIf="signup_form.passwords.errors">close</mat-icon>
+                <mat-hint>Insert your password again.</mat-hint>
+            </mat-form-field>  
+        </ng-container>
         
-        <button [disabled]="!registerForm.valid" type="submit" color="accent">Register</button>    
+        <button [disabled]="!registerForm.valid" type="submit" mat-flat-buttoncolor="accent">Register</button>    
     </form>
 </section>
 

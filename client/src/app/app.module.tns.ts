@@ -13,6 +13,7 @@ import { HelpComponent } from '@src/app/components/help/help.component';
 import { AboutComponent } from '@src/app/components/about/about.component';
 import { SignupComponent } from '@src/app/components/signup/signup.component';
 import { WelcomeComponent } from '@src/app/components/welcome/welcome.component';
+import { InfoMessageComponent } from '@src/app/components/info-message/info-message.component';
 
 
 // Uncomment and add to NgModule imports if you need to use two-way binding and/or HTTP wrapper
@@ -31,6 +32,7 @@ import { WelcomeComponent } from '@src/app/components/welcome/welcome.component'
     AboutComponent,
     SignupComponent,
     WelcomeComponent,
+    InfoMessageComponent,
   ],
   imports: [
     NativeScriptModule,

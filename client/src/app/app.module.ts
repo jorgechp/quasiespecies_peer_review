@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http'; 
+import { HttpClientModule, HTTP_INTERCEPTORS  } from '@angular/common/http';
 
 import { AppRoutingModule } from '@src/app/app-routing.module';
 import { AppComponent } from '@src/app/app.component';
@@ -20,6 +20,7 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
 
 import { FooterComponent } from '@src/app/components/footer/footer.component';
 import { TrainComponent } from '@src/app/components/train/train.component';
@@ -28,6 +29,7 @@ import { HelpComponent } from '@src/app/components/help/help.component';
 import { AboutComponent } from '@src/app/components/about/about.component';
 import { SignupComponent } from '@src/app/components/signup/signup.component';
 import { WelcomeComponent } from '@src/app/components/welcome/welcome.component';
+import { InterceptorHttp } from '@src/app/interceptors/http-interceptor';
 
 @NgModule({
   declarations: [
@@ -57,9 +59,10 @@ import { WelcomeComponent } from '@src/app/components/welcome/welcome.component'
     MatIconModule,
     MatToolbarModule,
     MatFormFieldModule,
-    MatInputModule
+    MatInputModule,
+    MatSnackBarModule
   ],
-  providers: [],
+  providers: [ {provide: HTTP_INTERCEPTORS , useClass: InterceptorHttp, multi: true}],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

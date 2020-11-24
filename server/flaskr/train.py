@@ -23,7 +23,6 @@ def _convert_partition_name_to_partition_id(partition_name: str) -> int:
 def construct_train_blueprint(train_manager: TrainManager):
     bp = Blueprint('train', __name__, url_prefix='/train')
 
-
     @bp.route('/article', methods=['GET'])
     def get_random_article():
         if 'username' not in session:
@@ -49,7 +48,7 @@ def construct_train_blueprint(train_manager: TrainManager):
             abort(403)
 
         if 'last_article' not in session:
-            abort(400,'An article has not been retrieved before.')
+            abort(400, 'An article has not been retrieved before.')
 
         json_request = request.get_json()
         if 'quartile' in json_request:

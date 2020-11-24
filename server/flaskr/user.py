@@ -17,7 +17,7 @@ def construct_user_blueprint(user_manager: UserManager):
 
     def perfom_login():
         if 'username' in session:
-            abort(400, 'There is another user session.')
+            abort(400, {'message': 'There is another user session.'})
 
         json_request = request.get_json()
         plain_nick = json_request['nick']
@@ -52,6 +52,8 @@ def construct_user_blueprint(user_manager: UserManager):
 
         new_user = user_manager.add_user(nick, plain_mail, plain_password)
         if new_user == -1:
-            abort(400,'Duplicated user')
+            response = jsonify({'message': 'Duplicated user'})
+            response.status_code = 400
+            return response
         return jsonify(new_user)
     return bp
