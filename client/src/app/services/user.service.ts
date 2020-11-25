@@ -14,6 +14,10 @@ export class UserService {
 
   constructor(private httpClient: HttpClient) { }
 
+  checkLogin(): Observable<boolean>{
+    return this.httpClient.get<boolean>(this.loginUserUrl, { withCredentials: true });
+  }
+
   registerUser(userNick: string, userMail: string, userPassword: string): Observable<NewUserInterface>{
     const newUser = {nick: userNick, mail: userMail, password: userPassword};
     return this.httpClient.post<NewUserInterface>(this.registerUserUrl, JSON.stringify(newUser));
@@ -22,5 +26,9 @@ export class UserService {
   loginUser(userNick: string, userPassword: string): Observable<boolean>{
     const currentUser = {nick: userNick, password: userPassword};
     return this.httpClient.post<boolean>(this.loginUserUrl, JSON.stringify(currentUser), { withCredentials: true });
+  }
+
+  logout(): Observable<boolean>{
+    return this.httpClient.delete<boolean>(this.logoutUserUrl);
   }
 }

@@ -6,19 +6,34 @@ from flask_cors import cross_origin, CORS
 from server.management.user_manager import UserManager
 
 
+
+
 def construct_user_blueprint(user_manager: UserManager):
     bp = Blueprint('user', __name__, url_prefix='/user')
 
     CORS(bp, resources={r"/user/*": {"origins": "http://localhost"}},headers=['Content-Type', 'Authorization'],
      expose_headers='Authorization')
 
-    @bp.route('/login', methods=['POST', 'DELETE'])
+
+    @bp.route('/login', methods=['GET', 'POST', 'DELETE', 'OPTIONS'])
     @cross_origin(origin='localhost', headers=['Content- Type', 'Authorization'])
     def user_session():
-        if request.method == 'POST':
+        if request.method == 'GET':
+            return check_login()
+        elif request.method == 'POST':
             return perfom_login()
         elif request.method == 'DELETE':
             return perfom_logout()
+        elif request.method == 'OPTIONS':
+            response = jsonify()
+            response.headers['Access-Control-Allow-Credentials'] = "true"
+            return response, 200
+
+    def check_login():
+        is_current_login = 'username' in session
+        response = jsonify(is_current_login)
+        response.headers['Access-Control-Allow-Credentials'] = "true"
+        return response
 
     def perfom_login():
         if 'username' in session:
@@ -50,7 +65,9 @@ def construct_user_blueprint(user_manager: UserManager):
 
     def perfom_logout():
         session.clear()
-        return jsonify(True)
+        response = jsonify()
+        response.headers['Access-Control-Allow-Credentials'] = "true"
+        return response
 
     @bp.route('/', methods=['POST'])
     def add_user_answer():

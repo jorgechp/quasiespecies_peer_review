@@ -21,7 +21,9 @@
       <div class="flex-content__right-links"> 
         <a class="flex-content--link" [routerLink]="['/language']" routerLinkActive="flex-content__right-link--active" aria-label="Language"><mat-icon>language</mat-icon>  </a>    
         <a class="flex-content--link" [routerLink]="['/help']" routerLinkActive="flex-content__right-link--active" aria-label="Help"><mat-icon>help_outline</mat-icon>    </a>   
-        <a class="flex-content--link flex-content-link--logout"[routerLink]="['/logout']" routerLinkActive="flex-content__right-link--active" aria-label="Logout" ><mat-icon>exit_to_app</mat-icon>  </a>   
+        <button mat-icon-button 
+            aria-label="Logout" 
+            (click)="this.doLogout()" ><mat-icon class="mat-icon--logout">exit_to_app</mat-icon>  </button>   
       </div> 
     </div>
   </mat-toolbar-row>

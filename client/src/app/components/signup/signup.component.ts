@@ -22,6 +22,8 @@ export class SignupComponent implements OnInit, OnDestroy {
 
   createUserSuscription: Subscription | undefined;
   loginSuscription: Subscription | undefined;
+  checkLoginSuscription: Subscription | undefined;
+  isLogged = true;
 
   private validatePasswords(group: FormGroup): null | object {
     const password = group.get('password1');
@@ -64,13 +66,25 @@ export class SignupComponent implements OnInit, OnDestroy {
    });
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.subscribeLogin();
+  }
+  subscribeLogin(): void {
+    this.checkLoginSuscription = this.userService.checkLogin().subscribe(
+      (response: boolean) => {
+        this.isLogged = response;
+      }
+    );
+  }
   ngOnDestroy(): void {
     if (this.createUserSuscription !== undefined){
       this.createUserSuscription.unsubscribe();
     }
     if (this.loginSuscription !== undefined){
       this.loginSuscription.unsubscribe();
+    }
+    if (this.checkLoginSuscription !== undefined){
+      this.checkLoginSuscription.unsubscribe();
     }
   }
 
@@ -126,5 +140,4 @@ export class SignupComponent implements OnInit, OnDestroy {
     }
 
   }
-
 }
