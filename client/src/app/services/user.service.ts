@@ -7,7 +7,7 @@ import { NewUserInterface } from '@src/app/models/new-user-interface.model';
   providedIn: 'root'
 })
 export class UserService {
-  private registerUserUrl = 'http://localhost:7000/user/';
+  private registerUserUrl = 'http://localhost:7000/user';
   private loginUserUrl = 'http://localhost:7000/user/login';
   private logoutUserUrl = 'http://localhost:7000/user/login';
 
@@ -21,6 +21,6 @@ export class UserService {
 
   loginUser(userNick: string, userPassword: string): Observable<boolean>{
     const currentUser = {nick: userNick, password: userPassword};
-    return this.httpClient.post<boolean>(this.loginUserUrl, JSON.stringify(currentUser));
+    return this.httpClient.post<boolean>(this.loginUserUrl, JSON.stringify(currentUser), { withCredentials: true });
   }
 }

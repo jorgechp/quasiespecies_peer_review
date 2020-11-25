@@ -1,17 +1,19 @@
-import flask
 from flask import (
     Blueprint, request, session, jsonify, abort
 )
-from flask_login import login_user, logout_user, current_user
+from flask_cors import cross_origin, CORS
 
-from model.User import User
 from server.management.user_manager import UserManager
 
 
 def construct_user_blueprint(user_manager: UserManager):
     bp = Blueprint('user', __name__, url_prefix='/user')
 
+    CORS(bp, resources={r"/user/*": {"origins": "http://localhost"}},headers=['Content-Type', 'Authorization'],
+     expose_headers='Authorization')
+
     @bp.route('/login', methods=['POST', 'DELETE'])
+    @cross_origin(origin='localhost', headers=['Content- Type', 'Authorization'])
     def user_session():
         if request.method == 'POST':
             return perfom_login()
@@ -19,9 +21,10 @@ def construct_user_blueprint(user_manager: UserManager):
             return perfom_logout()
 
     def perfom_login():
-        a = current_user
         if 'username' in session:
-            abort(400, {'message': 'There is another user session.'})
+            response = jsonify({'message': 'There is another user session.'})
+            response.headers['Access-Control-Allow-Credentials'] = "true"
+            return response, 400
 
         json_request = request.get_json(force=True)
         plain_nick = json_request['nick']
@@ -35,20 +38,17 @@ def construct_user_blueprint(user_manager: UserManager):
 
         if is_correct_login:
             session['username'] = user_id
-            logged_user = User(user_id)
-            login_user(logged_user)
         else:
-            abort(401)
+            response = jsonify({'message': 'Login incorrect'})
+            response.headers['Access-Control-Allow-Credentials'] = "true"
+            return response, 401
 
 
         response = jsonify(is_correct_login)
-        response.headers.add('Access-Control-Allow-Headers',
-                             "Origin, X-Requested-With, Content-Type, Accept, x-auth")
-        response.set_cookie('token', 'aaaa')
+        response.headers['Access-Control-Allow-Credentials']="true"
         return response
 
     def perfom_logout():
-        logout_user()
         session.clear()
         return jsonify(True)
 
