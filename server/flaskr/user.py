@@ -1,7 +1,10 @@
+import flask
 from flask import (
     Blueprint, request, session, jsonify, abort
 )
+from flask_login import login_user, logout_user, current_user
 
+from model.User import User
 from server.management.user_manager import UserManager
 
 
@@ -16,10 +19,11 @@ def construct_user_blueprint(user_manager: UserManager):
             return perfom_logout()
 
     def perfom_login():
+        a = current_user
         if 'username' in session:
             abort(400, {'message': 'There is another user session.'})
 
-        json_request = request.get_json()
+        json_request = request.get_json(force=True)
         plain_nick = json_request['nick']
         plain_password = json_request['password']
         user_id = user_manager.get_user_id(plain_nick)
@@ -31,11 +35,20 @@ def construct_user_blueprint(user_manager: UserManager):
 
         if is_correct_login:
             session['username'] = user_id
+            logged_user = User(user_id)
+            login_user(logged_user)
         else:
             abort(401)
-        return jsonify(is_correct_login)
+
+
+        response = jsonify(is_correct_login)
+        response.headers.add('Access-Control-Allow-Headers',
+                             "Origin, X-Requested-With, Content-Type, Accept, x-auth")
+        response.set_cookie('token', 'aaaa')
+        return response
 
     def perfom_logout():
+        logout_user()
         session.clear()
         return jsonify(True)
 

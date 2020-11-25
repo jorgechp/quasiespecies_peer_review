@@ -21,6 +21,7 @@ export class SignupComponent implements OnInit, OnDestroy {
   hide = true;
 
   createUserSuscription: Subscription | undefined;
+  loginSuscription: Subscription | undefined;
 
   private validatePasswords(group: FormGroup): null | object {
     const password = group.get('password1');
@@ -68,6 +69,9 @@ export class SignupComponent implements OnInit, OnDestroy {
     if (this.createUserSuscription !== undefined){
       this.createUserSuscription.unsubscribe();
     }
+    if (this.loginSuscription !== undefined){
+      this.loginSuscription.unsubscribe();
+    }
   }
 
   get login_form() { return this.loginForm.controls; }
@@ -76,19 +80,36 @@ export class SignupComponent implements OnInit, OnDestroy {
 
   loginSubmit(): void{
     if (this.loginForm.valid){
-      console.log('test');
+      const nick = this.loginForm.get('login_nick');
+      const password = this.loginForm.get('login_password');
+
+      if (nick && password){
+        this.loginSuscription = this.userService.loginUser(nick.value, password.value).subscribe(
+          (response: boolean) => {
+            if (response){
+              this.snackMessageService.notifyNewSnackMessage('Welcome, ' + nick.value + '!');
+            }
+          },
+          (error) => {
+            if (error.status === 400){
+              this.snackMessageService.notifyNewSnackMessage('You can\'t login because there already exists an active login. Please, logout.');
+            }
+            else if (error.status === 401){
+              this.snackMessageService.notifyNewSnackMessage('Your login details are incorrect. Please, check your nick or your password.');
+            }
+           }
+        );
+      }
     }
   }
 
   registerSubmit(): void{
     if (this.registerForm.valid){
-
-      const username = this.registerForm.get('signup_nick');
       const nick = this.registerForm.get('signup_nick');
       const mail = this.registerForm.get('signup_mail');
-      const password = this.registerForm.get('signup_password');
+      const password = this.passwordForm.get('password1');
 
-      if (username && nick && mail && password){
+      if (nick && mail && password){
         this.createUserSuscription = this.userService.registerUser(nick.value, mail.value, password.value).subscribe(
           (response: NewUserInterface) => {
             if (response.id !== undefined){
@@ -96,7 +117,7 @@ export class SignupComponent implements OnInit, OnDestroy {
             }
           },
           (error) => {
-            if(error.status === 400){
+            if (error.status === 400){
               this.snackMessageService.notifyNewSnackMessage('Ups!, this nickname is in use. Please, use a different one. Maybe you\'re trying to log in?');
             }
            }

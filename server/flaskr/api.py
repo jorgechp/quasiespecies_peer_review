@@ -2,9 +2,12 @@ import os
 
 from flask_cors import CORS
 
-from flask import Flask
-from flask import g
 
+from flask import Flask, session
+from flask import g
+from flask_login import LoginManager
+
+from model.User import User
 from . import db
 from .train import construct_train_blueprint
 from .user import construct_user_blueprint
@@ -12,19 +15,38 @@ from ..db.database_manager import DatabaseManager
 from ..management.train_manager import TrainManager
 from ..management.user_manager import UserManager
 
+login_manager = LoginManager()
+
+@login_manager.user_loader
+def load_user(user_id):
+    return User.get(user_id)
 
 def launch_api(instance_path=None,test_config=None) -> Flask:
     # create and configure the app
     app = Flask(__name__, instance_relative_config=True, instance_path=instance_path)
 
     #Enable CORS on all domains
-    CORS(app)
+
+
+
 
     app.config.from_mapping(
-        SECRET_KEY='dev',
+        SECRET_KEY=b'_5#y2L"F4Q8z\n\xec]/',
+        SESSION_TYPE='filesystem',
+        SESSION_COOKIE_DOMAIN='127.0.0.1',
+        SESSION_COOKIE_HTTPONLY=False,
         DATABASE=os.path.join(app.instance_path, 'peer_review.db')
     )
 
+    app.config['SESSION_TYPE'] = 'filesystem'
+    app.config['SECRET_KEY'] = 'secret'
+    app.config['USE_PERMANENT_SESSION'] = True
+
+    login_manager.session_protection = "strong"
+    login_manager.init_app(app)
+    app.secret_key = app.config['SECRET_KEY']
+
+    # Session(app)
     if test_config is None:
         # load the instance config, if it exists, when not testing
         app.config.from_pyfile('config.py', silent=True)
@@ -53,6 +75,6 @@ def launch_api(instance_path=None,test_config=None) -> Flask:
     app.register_blueprint(construct_train_blueprint(train_manager))
     app.register_blueprint(construct_user_blueprint(user_manager))
 
-
+    CORS(app, expose_headers='Authorization', support_credentials=True)
 
     return app
