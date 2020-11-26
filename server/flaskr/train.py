@@ -2,7 +2,9 @@
 from flask import (
     Blueprint, request, session, jsonify, abort
 )
+from flask_cors import CORS
 
+from flaskr.utils import process_response
 from server.management.train_manager import TrainManager
 
 DEFAULT_SCORE_LIMIT = 5
@@ -23,24 +25,32 @@ def _convert_partition_name_to_partition_id(partition_name: str) -> int:
 def construct_train_blueprint(train_manager: TrainManager):
     bp = Blueprint('train', __name__, url_prefix='/train')
 
+    CORS(bp, resources={r"/user/*": {"origins": "http://localhost"}},headers=['Content-Type', 'Authorization'],
+     expose_headers='Authorization')
+
     @bp.route('/article', methods=['GET'])
     def get_random_article():
         if 'username' not in session:
-            abort(403)
+            response = process_response(False)
+            return response, 403
 
         random_article = train_manager.get_random_article()
         session['last_article'] = random_article.id
-        return jsonify(random_article)
+        response = process_response(random_article)
+        return response, 200
 
     @bp.route('/article/last', methods=['GET'])
     def get_article():
         if 'username' not in session:
-            abort(403)
+            response = process_response(False)
+            return response, 403
         if 'last_article' in session:
             last_article = train_manager.get_article(session['last_article'])
-            return jsonify(last_article)
+            response = process_response(last_article)
+            return response, 200
         else:
-            abort(406)
+            response = process_response(False)
+            return response, 406
 
     @bp.route('/article', methods=['PUT'])
     def add_user_answer():

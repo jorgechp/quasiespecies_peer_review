@@ -7,9 +7,10 @@ import { NewUserInterface } from '@src/app/models/new-user-interface.model';
   providedIn: 'root'
 })
 export class UserService {
-  private registerUserUrl = 'http://localhost:7000/user';
+  private registerUserUrl = 'http://localhost:7000/user/';
   private loginUserUrl = 'http://localhost:7000/user/login';
   private logoutUserUrl = 'http://localhost:7000/user/login';
+
 
 
   constructor(private httpClient: HttpClient) { }

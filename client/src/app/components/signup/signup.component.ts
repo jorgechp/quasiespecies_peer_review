@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, AbstractControl } from '@angular/forms';
-import { Validators, ValidatorFn } from '@angular/forms';
+import { Validators } from '@angular/forms';
 import { NewUserInterface } from '@src/app/models/new-user-interface.model';
 import { SnackMessageService } from '@src/app/services/snack-message.service';
 import { UserService } from '@src/app/services/user.service';
@@ -22,7 +22,6 @@ export class SignupComponent implements OnInit, OnDestroy {
 
   createUserSuscription: Subscription | undefined;
   loginSuscription: Subscription | undefined;
-  checkLoginSuscription: Subscription | undefined;
   isLogged = true;
 
   private validatePasswords(group: FormGroup): null | object {
@@ -31,7 +30,7 @@ export class SignupComponent implements OnInit, OnDestroy {
 
 
     if (password && password2){
-      if(password.value.length < 5 || password2.value.length < 5){
+      if (password.value.length < 5 || password2.value.length < 5){
         return { minimumLength: true };
       }
       if ( password.value === password2.value){
@@ -66,16 +65,8 @@ export class SignupComponent implements OnInit, OnDestroy {
    });
   }
 
-  ngOnInit(): void {
-    this.subscribeLogin();
-  }
-  subscribeLogin(): void {
-    this.checkLoginSuscription = this.userService.checkLogin().subscribe(
-      (response: boolean) => {
-        this.isLogged = response;
-      }
-    );
-  }
+  ngOnInit(): void {}
+
   ngOnDestroy(): void {
     if (this.createUserSuscription !== undefined){
       this.createUserSuscription.unsubscribe();
@@ -83,14 +74,11 @@ export class SignupComponent implements OnInit, OnDestroy {
     if (this.loginSuscription !== undefined){
       this.loginSuscription.unsubscribe();
     }
-    if (this.checkLoginSuscription !== undefined){
-      this.checkLoginSuscription.unsubscribe();
-    }
   }
 
-  get login_form() { return this.loginForm.controls; }
-  get signup_form() { return this.registerForm.controls; }
-  get password_form() { return this.passwordForm; }
+  get login_form(): { [key: string]: AbstractControl; } { return this.loginForm.controls; }
+  get signup_form(): { [key: string]: AbstractControl; } { return this.registerForm.controls; }
+  get password_form(): FormGroup { return this.passwordForm; }
 
   loginSubmit(): void{
     if (this.loginForm.valid){

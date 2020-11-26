@@ -2,5 +2,8 @@
     <section>
         <h1>Quasi-Species Peer Review</h1>
     </section>
-    <app-signup></app-signup>
+    <app-signup *ngIf="!this.isLogged"></app-signup>
+    <section *ngIf="this.isLogged">
+        <h2>Welcome</h2>
+    </section>
 </main>
