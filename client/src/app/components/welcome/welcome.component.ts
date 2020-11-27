@@ -15,7 +15,16 @@ export class WelcomeComponent implements OnInit, OnDestroy {
   constructor(private userService: UserService) { }
 
   ngOnInit(): void {
-    this.subscribeLogin();
+    this.subscribeCheckLogin();
+    this.subscribeLogging();
+  }
+
+  subscribeLogging(): void {
+    this.loginSuscription = this.userService.getIsLoggedInObservable().subscribe(
+      (isLogged: boolean) => {
+        this.isLogged = isLogged;
+      }
+    );
   }
 
   ngOnDestroy(): void {
@@ -24,7 +33,7 @@ export class WelcomeComponent implements OnInit, OnDestroy {
     }
   }
 
-  subscribeLogin(): void{
+  subscribeCheckLogin(): void{
     this.loginSuscription = this.userService.checkLogin().subscribe(
       (isLogged: boolean) => {
         this.isLogged = isLogged;

@@ -12,7 +12,8 @@ import { Subscription } from 'rxjs';
 })
 export class TrainComponent implements OnInit, OnDestroy {
 
-  currentArticle: Article | undefined;
+  public currentArticle: Article | undefined;
+  
   getLastArticleSuscription: Subscription | undefined;
   getArticleSuscription: Subscription | undefined;
 
@@ -39,10 +40,10 @@ export class TrainComponent implements OnInit, OnDestroy {
       },
       error => {
         switch (error.status){
-          case '403': // Not authorized.
+          case 403: // Not authorized.
             this.router.navigateByUrl('/');
             break;
-          case '406': // Last article not found.
+          case 406: // Last article not found.
             this.getArticle();
             break;
           default:

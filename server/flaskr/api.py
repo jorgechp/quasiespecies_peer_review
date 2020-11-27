@@ -55,6 +55,6 @@ def launch_api(instance_path=None,test_config=None) -> Flask:
     app.register_blueprint(construct_user_blueprint(user_manager))
 
     #Enable CORS on all domains
-    CORS(app, resources={r"/*": {"origins": "http://localhost:port"}})
+    CORS(app, resources={r"/*": {"origins": "http://localhost/port"}})
 
     return app

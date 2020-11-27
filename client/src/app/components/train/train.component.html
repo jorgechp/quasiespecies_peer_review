@@ -1,13 +1,15 @@
-<section>
+<section *ngIf="this.currentArticle !== undefined">
     <h1>Train</h1>
 
     <h2>
-        Title of the article.
+        {{this.currentArticle.title}}
     </h2>
     <h3>Abstract</h3>
-    
+        {{this.currentArticle.abstract}}
     <h3>Author's Keywords</h3>
+        {{this.currentArticle.authorsKeywords}}
     <h3>KeywordPlus</h3>
+        {{this.currentArticle.keywordsPlus}}
 
     <div>
         <button mat-flat-button>Low impact Journal</button>

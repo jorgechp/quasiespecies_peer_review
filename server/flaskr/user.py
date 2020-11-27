@@ -12,19 +12,17 @@ from server.management.user_manager import UserManager
 def construct_user_blueprint(user_manager: UserManager):
     bp = Blueprint('user', __name__, url_prefix='/user')
 
-    CORS(bp, resources={r"/user/*": {"origins": "http://localhost"}},headers=['Content-Type', 'Authorization'],
+    CORS(bp, resources={r"/user*": {"origins": "http://localhost/*"}},headers=['Content-Type', 'Authorization'],
      expose_headers='Authorization')
 
 
-    @bp.route('/login', methods=['GET', 'POST', 'DELETE', 'OPTIONS'])
-    @cross_origin(origin='localhost', headers=['Content- Type', 'Authorization'])
+    @bp.route('/login', methods=['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'])
+    @cross_origin(origin='http://localhost/*', headers=['Content- Type', 'Authorization'])
     def user_session():
         if request.method == 'GET':
             return check_login()
         elif request.method == 'POST':
             return perfom_login()
-        elif request.method == 'DELETE':
-            return perfom_logout()
         elif request.method == 'OPTIONS':
             response = process_response()
             return response, 200
@@ -59,9 +57,11 @@ def construct_user_blueprint(user_manager: UserManager):
         response = process_response(is_correct_login)
         return response
 
+    @bp.route('/logout', methods=['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'])
+    @cross_origin(origin='http://localhost/*', headers=['Content- Type', 'Authorization'])
     def perfom_logout():
         session.clear()
-        response = process_response()
+        response = process_response(True, authorization__required=True)
         return response
 
     @bp.route('/', methods=['POST'])
@@ -80,5 +80,5 @@ def construct_user_blueprint(user_manager: UserManager):
         if new_user == -1:
             response = process_response({'message': 'Duplicated user'})
             return response, 400
-        return jsonify(new_user)
+        return process_response(new_user, authorization__required=False, cors_header="*"), 200
     return bp

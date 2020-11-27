@@ -1,7 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { NewUserInterface } from '@src/app/models/new-user-interface.model';
+import { tap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -9,14 +10,20 @@ import { NewUserInterface } from '@src/app/models/new-user-interface.model';
 export class UserService {
   private registerUserUrl = 'http://localhost:7000/user/';
   private loginUserUrl = 'http://localhost:7000/user/login';
-  private logoutUserUrl = 'http://localhost:7000/user/login';
+  private logoutUserUrl = 'http://localhost:7000/user/logout';
 
-
+  private isLoggedIn$ = new BehaviorSubject<boolean>(false);
 
   constructor(private httpClient: HttpClient) { }
 
+  getIsLoggedInObservable(): Observable<boolean>{
+    return this.isLoggedIn$.asObservable();
+  }
+
   checkLogin(): Observable<boolean>{
-    return this.httpClient.get<boolean>(this.loginUserUrl, { withCredentials: true });
+    return this.httpClient.get<boolean>(this.loginUserUrl, { withCredentials: true }).pipe(
+      tap((response: boolean) => {this.isLoggedIn$.next(response); })
+    );
   }
 
   registerUser(userNick: string, userMail: string, userPassword: string): Observable<NewUserInterface>{
@@ -26,10 +33,14 @@ export class UserService {
 
   loginUser(userNick: string, userPassword: string): Observable<boolean>{
     const currentUser = {nick: userNick, password: userPassword};
-    return this.httpClient.post<boolean>(this.loginUserUrl, JSON.stringify(currentUser), { withCredentials: true });
+    return this.httpClient.post<boolean>(this.loginUserUrl, JSON.stringify(currentUser), { withCredentials: true }).pipe(
+      tap((response: boolean) => {this.isLoggedIn$.next(response); } )
+    );
   }
 
   logout(): Observable<boolean>{
-    return this.httpClient.delete<boolean>(this.logoutUserUrl);
+    return this.httpClient.post<boolean>(this.logoutUserUrl, JSON.stringify(''), { withCredentials: true }).pipe(
+      tap((response: boolean) => {this.isLoggedIn$.next(!response); } )
+    );
   }
 }

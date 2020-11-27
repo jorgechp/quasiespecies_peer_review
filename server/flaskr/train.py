@@ -25,8 +25,10 @@ def _convert_partition_name_to_partition_id(partition_name: str) -> int:
 def construct_train_blueprint(train_manager: TrainManager):
     bp = Blueprint('train', __name__, url_prefix='/train')
 
-    CORS(bp, resources={r"/user/*": {"origins": "http://localhost"}},headers=['Content-Type', 'Authorization'],
+
+    CORS(bp, resources={r"/train*": {"origins": "http://localhost/*"}},headers=['Content-Type', 'Authorization'],
      expose_headers='Authorization')
+
 
     @bp.route('/article', methods=['GET'])
     def get_random_article():
@@ -49,7 +51,7 @@ def construct_train_blueprint(train_manager: TrainManager):
             response = process_response(last_article)
             return response, 200
         else:
-            response = process_response(False)
+            response = process_response('Not last article available')
             return response, 406
 
     @bp.route('/article', methods=['PUT'])
