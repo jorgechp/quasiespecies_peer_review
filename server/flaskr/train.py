@@ -55,10 +55,12 @@ def construct_train_blueprint(train_manager: TrainManager):
     @bp.route('/article', methods=['PUT'])
     def add_user_answer():
         if 'username' not in session:
-            abort(403)
+            response = process_response('User not logged in')
+            return response, 403
 
         if 'last_article' not in session:
-            abort(400, 'An article has not been retrieved before.')
+            response = process_response('An article has not been retrieved before.')
+            return response, 400
 
         json_request = request.get_json()
         if 'quartile' in json_request:
@@ -67,7 +69,8 @@ def construct_train_blueprint(train_manager: TrainManager):
             del session['last_article']
             return score.to_json()
         else:
-            abort(400)
+            response = process_response('param "quartile" is not in the request')
+            return response, 400
 
     @bp.route('/score/<partition>', methods=['GET'])
     @bp.route('/score/<partition>/<int:limit>', methods=['GET'])

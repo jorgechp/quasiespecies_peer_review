@@ -5,7 +5,7 @@ import { StatsComponent } from '@src/app/components/stats/stats.component';
 import { HelpComponent } from '@src/app/components/help/help.component';
 import { AboutComponent } from '@src/app/components/about/about.component';
 import { WelcomeComponent } from '@src/app/components/welcome/welcome.component';
-import { SignupComponent } from '@src/app/components/signup/signup.component';
+
 
 const routes: Routes = [
   {path: '', component: WelcomeComponent},
