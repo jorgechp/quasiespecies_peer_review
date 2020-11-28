@@ -1,8 +1,7 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { AnswerResult } from '@src/app/models/Answer-result-model';
+import { AnswerResult } from '@src/app/models/answer-result-model';
 import { Article } from '@src/app/models/article-interface.model';
-import { TypeOfJournal } from '@src/app/models/type-of-journal.enum';
 import { SnackMessageService } from '@src/app/services/snack-message.service';
 import { TrainService } from '@src/app/services/train.service';
 import { Subscription } from 'rxjs';
@@ -14,7 +13,11 @@ import { Subscription } from 'rxjs';
 })
 export class TrainComponent implements OnInit, OnDestroy {
 
+  public static SNACK_SERVICE_TRAIN_NOTIFICATION_TIME = 5000;
+
   public currentArticle: Article | undefined;
+  public isButtonsDisabled = false;
+
   getLastArticleSuscription: Subscription | undefined;
   getArticleSuscription: Subscription | undefined;
   userAnswerSuscription: Subscription | undefined;
@@ -64,20 +67,37 @@ export class TrainComponent implements OnInit, OnDestroy {
     this.getArticleSuscription = this.trainService.getArticle().subscribe(
       (article: Article) => {
           this.currentArticle = article;
+      },
+      error => {
+        switch (error.status){
+          case 403: // Not authorized.
+            this.router.navigateByUrl('/');
+            break;
+          default:
+            this.snackMessageService.notifyNewSnackMessage('We can\'t retrieve an article for you in this moment. Please come back later.');
+            break;
       }
+    }
     );
   }
 
   doArticleAnswer(response: string): void{
+    this.isButtonsDisabled = true;
     if (response !== undefined){
       this.userAnswerSuscription = this.trainService.answer(response).subscribe(
         (answer: AnswerResult) => {
           if (answer.user_score === 1){
             this.snackMessageService.notifyNewSnackMessage('Great! You\'ve taken the right decission.'
-                                                            + 'This article belongs to a ' + response + '-impact journal. Score: 1');
+                                                            + 'This article belongs to a ' + response + '-impact journal. Score: 1'
+                                                            , TrainComponent.SNACK_SERVICE_TRAIN_NOTIFICATION_TIME);
           }else{
-            this.snackMessageService.notifyNewSnackMessage('Sorry! This article belongs to a ' + answer.real_journal_quality + '-impact journal. Score: 0');
+            this.snackMessageService.notifyNewSnackMessage('Sorry! This article belongs to a ' + answer.real_journal_quality
+                                                            + '-impact journal. Score: 0'
+                                                            , TrainComponent.SNACK_SERVICE_TRAIN_NOTIFICATION_TIME);
           }
+          this.snackMessageService.subscribeDissmising().subscribe(
+            () => { this.getArticle(); this.isButtonsDisabled = false;}
+          );
         }
       );
     }
