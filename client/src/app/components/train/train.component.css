@@ -1,0 +1,20 @@
+.train__abstract{
+    text-align: justify;
+}
+
+.train__buttons{
+    display: flex;
+    justify-content: space-between;
+}
+
+.train__buttons--low{
+    background-color: #8895DC;
+}
+
+.train__buttons--medium{
+    background-color: #3F52B5;
+}
+
+.train__buttons--high{
+    background-color: #132584;
+}

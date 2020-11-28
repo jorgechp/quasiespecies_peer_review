@@ -23,7 +23,6 @@ class Article:
 @dataclass_json
 @dataclass
 class AnswerResult:
-    user_id_journal: int
     real_journal_quality: Impact
     user_journal_quality: Impact
     user_score: int
@@ -58,6 +57,15 @@ class TrainManager(object):
         else:
             return Impact.LOW
 
+    @staticmethod
+    def __parse_impact(impact):
+        if impact == 'LOW':
+            return Impact.LOW
+        elif impact == 'MEDIUM':
+            return Impact.MEDIUM
+        else:
+            return Impact.HIGH
+
     def __init__(self, database_manager: DatabaseManager):
         self._database_manager = database_manager
         self._num_articles = database_manager.get_number_of_articles()
@@ -73,15 +81,15 @@ class TrainManager(object):
     def get_quartile_of_journal(self, article_to_check : Article) -> int:
         return self._database_manager.get_quartile_from_article(article_to_check.id)
 
-    def answer_from_user(self, id_user: int, id_article: int, quartile: int) -> AnswerResult:
+    def answer_from_user(self, id_user: int, id_article: int, impact: str) -> AnswerResult:
         real_quartile = self._database_manager.get_quartile_from_article(id_article)
-        real_journal_quality = TrainManager.__convert_quartile_to_impact(real_quartile)
-        user_journal_quality = TrainManager.__convert_quartile_to_impact(quartile)
-        score = 1 if real_journal_quality == user_journal_quality else 0
+        real_journal_impact = TrainManager.__convert_quartile_to_impact(real_quartile)
+        user_journal_impact = TrainManager.__parse_impact(impact)
+        score = 1 if real_journal_impact == user_journal_impact else 0
 
-        self._database_manager.add_user_answer(id_user, id_article, quartile, score)
+        self._database_manager.add_user_answer(id_user, id_article, impact, score)
 
-        return AnswerResult(quartile, real_journal_quality, user_journal_quality, score)
+        return AnswerResult(real_journal_impact, user_journal_impact, score)
 
     def get_article(self, id_article: int) -> Article:
         returned_article_information = self._database_manager.get_article(id_article)
@@ -120,6 +128,7 @@ class TrainManager(object):
                 current_score_table[user_impact] = number_of_occurrences
                 score_per_impact_dict[target_impact] = current_score_table
         return score_per_impact_dict
+
 
 
 

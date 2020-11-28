@@ -2,6 +2,6 @@ export interface Article{
     id: number;
     title: string;
     abstract: string;
-    authorsKeywords: string;
-    keywordsPlus: string;
+    authors_keywords: string;
+    keywords_plus: string;
 }

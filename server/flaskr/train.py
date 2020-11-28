@@ -2,7 +2,7 @@
 from flask import (
     Blueprint, request, session, jsonify, abort
 )
-from flask_cors import CORS
+from flask_cors import CORS, cross_origin
 
 from flaskr.utils import process_response
 from server.management.train_manager import TrainManager
@@ -54,7 +54,8 @@ def construct_train_blueprint(train_manager: TrainManager):
             response = process_response('Not last article available')
             return response, 406
 
-    @bp.route('/article', methods=['PUT'])
+    @bp.route('/article', methods=['POST'])
+    @cross_origin(origin='http://localhost/*', headers=['Content- Type', 'Authorization'])
     def add_user_answer():
         if 'username' not in session:
             response = process_response('User not logged in')
@@ -64,14 +65,14 @@ def construct_train_blueprint(train_manager: TrainManager):
             response = process_response('An article has not been retrieved before.')
             return response, 400
 
-        json_request = request.get_json()
-        if 'quartile' in json_request:
-            quartile = json_request['quartile']
-            score = train_manager.answer_from_user(session['username'], session['last_article'], quartile)
+        json_request = request.get_json(force=True)
+        if 'impact' in json_request:
+            impact = json_request['impact']
+            score = train_manager.answer_from_user(session['username'], session['last_article'], impact)
             del session['last_article']
             return score.to_json()
         else:
-            response = process_response('param "quartile" is not in the request')
+            response = process_response('param "quartile" is not in the request', authorization__required=True)
             return response, 400
 
     @bp.route('/score/<partition>', methods=['GET'])

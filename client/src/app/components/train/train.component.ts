@@ -1,6 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { AnswerResult } from '@src/app/models/Answer-result-model';
 import { Article } from '@src/app/models/article-interface.model';
+import { TypeOfJournal } from '@src/app/models/type-of-journal.enum';
 import { SnackMessageService } from '@src/app/services/snack-message.service';
 import { TrainService } from '@src/app/services/train.service';
 import { Subscription } from 'rxjs';
@@ -13,9 +15,9 @@ import { Subscription } from 'rxjs';
 export class TrainComponent implements OnInit, OnDestroy {
 
   public currentArticle: Article | undefined;
-  
   getLastArticleSuscription: Subscription | undefined;
   getArticleSuscription: Subscription | undefined;
+  userAnswerSuscription: Subscription | undefined;
 
   constructor(private trainService: TrainService,
               private router: Router,
@@ -24,12 +26,16 @@ export class TrainComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.getLastArticle();
   }
+
   ngOnDestroy(): void {
     if (this.getLastArticleSuscription !== undefined){
       this.getLastArticleSuscription.unsubscribe();
     }
     if (this.getArticleSuscription !== undefined){
       this.getArticleSuscription.unsubscribe();
+    }
+    if (this.userAnswerSuscription !== undefined){
+      this.userAnswerSuscription.unsubscribe();
     }
   }
 
@@ -62,7 +68,20 @@ export class TrainComponent implements OnInit, OnDestroy {
     );
   }
 
+  doArticleAnswer(response: string): void{
+    if (response !== undefined){
+      this.userAnswerSuscription = this.trainService.answer(response).subscribe(
+        (answer: AnswerResult) => {
+          if (answer.user_score === 1){
+            this.snackMessageService.notifyNewSnackMessage('Great! You\'ve taken the right decission.'
+                                                            + 'This article belongs to a ' + response + '-impact journal. Score: 1');
+          }else{
+            this.snackMessageService.notifyNewSnackMessage('Sorry! This article belongs to a ' + answer.real_journal_quality + '-impact journal. Score: 0');
+          }
+        }
+      );
+    }
 
-
+  }
 
 }

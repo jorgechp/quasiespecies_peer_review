@@ -30,6 +30,7 @@ import { AboutComponent } from '@src/app/components/about/about.component';
 import { SignupComponent } from '@src/app/components/signup/signup.component';
 import { WelcomeComponent } from '@src/app/components/welcome/welcome.component';
 import { InterceptorHttp } from '@src/app/interceptors/http-interceptor';
+import { KeywordsPipe } from './pipes/keywords.pipe';
 
 @NgModule({
   declarations: [
@@ -42,7 +43,8 @@ import { InterceptorHttp } from '@src/app/interceptors/http-interceptor';
     HelpComponent,
     AboutComponent,
     SignupComponent,
-    WelcomeComponent
+    WelcomeComponent,
+    KeywordsPipe
   ],
   exports: [
     HeaderComponent

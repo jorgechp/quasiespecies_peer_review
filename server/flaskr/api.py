@@ -51,10 +51,12 @@ def launch_api(instance_path=None,test_config=None) -> Flask:
     def before_request_func():
         g.database_path = app.config['DATABASE']
 
-    app.register_blueprint(construct_train_blueprint(train_manager))
-    app.register_blueprint(construct_user_blueprint(user_manager))
+
 
     #Enable CORS on all domains
     CORS(app, resources={r"/*": {"origins": "http://localhost/port"}})
+
+    app.register_blueprint(construct_train_blueprint(train_manager))
+    app.register_blueprint(construct_user_blueprint(user_manager))
 
     return app

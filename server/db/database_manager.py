@@ -99,7 +99,7 @@ class DatabaseManager(object):
         DatabaseManager.close_connections(db, cursor)
         return response
 
-    def add_user_answer(self, id_user: int, id_article: int, quartile: int, score: int) -> None or bool:
+    def add_user_answer(self, id_user: int, id_article: int, impact: str, score: int) -> None or bool:
         db, cursor = self.__get_cursor()
 
         cursor.execute("""
@@ -115,8 +115,7 @@ class DatabaseManager(object):
         else:
             return False
 
-        user_answer_impact = DatabaseManager.convert_quartile_to_impact(quartile)
-        id_anwer_impact = self.get_id_impact(user_answer_impact)
+        id_anwer_impact = self.get_id_impact(impact)
 
         cursor.execute("""
                             INSERT INTO user_answer_article(idUser,

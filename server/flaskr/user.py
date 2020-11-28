@@ -57,7 +57,7 @@ def construct_user_blueprint(user_manager: UserManager):
         response = process_response(is_correct_login)
         return response
 
-    @bp.route('/logout', methods=['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'])
+    @bp.route('/logout', methods=['POST', 'OPTIONS'])
     @cross_origin(origin='http://localhost/*', headers=['Content- Type', 'Authorization'])
     def perfom_logout():
         session.clear()
