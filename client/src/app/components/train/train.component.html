@@ -1,24 +1,23 @@
-<section *ngIf="this.currentArticle !== undefined">
-    <h1>Train</h1>
+<section *ngIf="this.currentArticle !== undefined" class="section__train">    
     <p>
         We have selected a random article for you. Down below, you will find information regarding the title, abstract and keywords. Read carefully the paper's 
         information and decide if you would send this paper to a low, medium or high impact journal.
     </p>
 
-    <h2>Paper</h2>
-
-    <h3>
-        {{this.currentArticle.title}}
-    </h3>
-    <h3>Abstract</h3>
-    <p class="train__abstract">
-        {{this.currentArticle.abstract}}
-    </p>
-    <h3>Author's Keywords</h3>
-    <p>{{this.currentArticle.authors_keywords | keywordsPipe}}</p>
-        
-    <h3>KeywordPlus</h3>
-    <p>{{this.currentArticle.keywords_plus  | keywordsPipe}}</p>       
+    <section class="section__paper">
+        <h1>
+            Title: {{this.currentArticle.title}}
+        </h1>
+        <h2>Abstract</h2>
+        <p class="train__abstract">
+            {{this.currentArticle.abstract}}
+        </p>
+        <h2>Author's Keywords</h2>
+        <p>{{this.currentArticle.authors_keywords | keywordsPipe}}</p>
+            
+        <h2>KeywordPlus</h2>
+        <p>{{this.currentArticle.keywords_plus  | keywordsPipe}}</p>    
+    </section>   
 
     <h2>Your decision</h2>
     <p>

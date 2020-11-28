@@ -1,5 +1,29 @@
+.section__train{
+    padding-top: 25px;
+}
+
+.section__paper{
+    background-color: #F6F7F8;
+    color: #36363A;
+    padding-left: 2%;
+    padding-right: 2%;
+    padding-top: 10px;
+    padding-bottom: 10px; 
+    border-radius: 15px;  
+    margin-top: 20px; 
+    margin-bottom: 20px;
+}
+
+.section__paper h3{
+    color: #5E6068;
+    font-size: 20px;
+}
+
 .train__abstract{
     text-align: justify;
+    text-indent: 25px;
+    margin-bottom: 25px;
+    font-size: 16px;
 }
 
 .train__buttons{
@@ -8,13 +32,13 @@
 }
 
 .train__buttons--low{
-    background-color: #8895DC;
+    background-color: #55544E;
 }
 
 .train__buttons--medium{
-    background-color: #3F52B5;
+    background-color: #55544E;
 }
 
 .train__buttons--high{
-    background-color: #132584;
+    background-color: #55544E;
 }
