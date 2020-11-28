@@ -70,7 +70,8 @@ def construct_train_blueprint(train_manager: TrainManager):
             impact = json_request['impact']
             score = train_manager.answer_from_user(session['username'], session['last_article'], impact)
             del session['last_article']
-            return score.to_json()
+            response = process_response(score.to_json(), authorization__required=True)
+            return response, 200
         else:
             response = process_response('param "quartile" is not in the request', authorization__required=True)
             return response, 400
