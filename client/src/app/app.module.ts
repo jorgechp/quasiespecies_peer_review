@@ -21,6 +21,7 @@ import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
+import {MatTableModule} from '@angular/material/table';
 
 import { FooterComponent } from '@src/app/components/footer/footer.component';
 import { TrainComponent } from '@src/app/components/train/train.component';
@@ -30,7 +31,7 @@ import { AboutComponent } from '@src/app/components/about/about.component';
 import { SignupComponent } from '@src/app/components/signup/signup.component';
 import { WelcomeComponent } from '@src/app/components/welcome/welcome.component';
 import { InterceptorHttp } from '@src/app/interceptors/http-interceptor';
-import { KeywordsPipe } from './pipes/keywords.pipe';
+import { KeywordsPipe } from '@src/app/pipes/keywords.pipe';
 
 @NgModule({
   declarations: [
@@ -62,7 +63,8 @@ import { KeywordsPipe } from './pipes/keywords.pipe';
     MatToolbarModule,
     MatFormFieldModule,
     MatInputModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatTableModule
   ],
   providers: [ {provide: HTTP_INTERCEPTORS , useClass: InterceptorHttp, multi: true}],
   bootstrap: [AppComponent],

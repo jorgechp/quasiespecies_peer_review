@@ -1,1 +1,43 @@
-<p>stats works!</p>
+<section>
+    <p>
+        In  this section you can see your stats.
+    </p>
+
+    <section class="stats__confusion-matrix">
+        <table *ngIf="this.confusionMatrixData !== undefined"  class="confusion-matrix">
+            <tr>
+                
+                <th class="confusion-matrix--empty-cell"></th>
+                <th class="confusion-matrix--empty-cell"></th>
+                <th class="confusion-matrix--first_row-cell confusion-matrix--first-headers" colspan="3">Your responses</th>
+            </tr>
+            <tr>                 
+                <th class="confusion-matrix--empty-cell"></th>
+                <th class="confusion-matrix--empty-cell"></th>                            
+                <th class="confusion-matrix--headers">LOW</th>
+                <th class="confusion-matrix--headers">MEDIUM</th>
+                <th class="confusion-matrix--headers">HIGH</th>
+            </tr>
+            <tr> 
+                <th class="confusion-matrix--first_column confusion-matrix--first-headers" rowspan="3">Real impact</th>                
+                <th class="confusion-matrix--headers confusion-matrix--row_header">LOW</th>
+                <td class="confusion-matrix--value-cell">1</td>
+                <td class="confusion-matrix--value-cell--high">2</td>
+                <td class="confusion-matrix--value-cell--low">2</td>
+            </tr>
+            <tr>
+                <th class="confusion-matrix--headers confusion-matrix--row_header">MEDIUM</th>
+                <td class="confusion-matrix--value-cell">1</td>
+                <td class="confusion-matrix--value-cell--low">2</td>
+                <td class="confusion-matrix--value-cell">2</td>
+            </tr>
+            <tr>
+                <th class="confusion-matrix--headers confusion-matrix--row_header">HIGH</th>
+                <td class="confusion-matrix--value-cell">1</td>
+                <td class="confusion-matrix--value-cell">2</td>
+                <td class="confusion-matrix--value-cell">2</td>
+            </tr>
+        </table>
+    </section>
+
+</section>

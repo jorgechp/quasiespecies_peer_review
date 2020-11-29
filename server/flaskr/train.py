@@ -95,8 +95,8 @@ def construct_train_blueprint(train_manager: TrainManager):
         if 'username' not in session:
             abort(403)
 
-        table_scores = train_manager.get_user_score_table(session['username'], limit)
-        return table_scores
+        score_table = train_manager.get_user_score_table(session['username'], limit)
+        return process_response(score_table), 200
 
     return bp
 
