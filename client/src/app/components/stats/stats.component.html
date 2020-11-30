@@ -13,8 +13,19 @@
         </app-confusion-matrix>    
         
         <app-confusion-matrix [confusionMatrixData] = 'this.confusionMatrixDataFull'
-        [highFactor] = 'this.totalHigh' [mediumFactor] = 'this.totalMedium' [lowFactor] = 'this.totalLow' footer="Relative answers" [maxLimit]='0.6'>
-        </app-confusion-matrix>   
+        [highFactor] = 'this.totalHigh' [mediumFactor] = 'this.totalMedium' [lowFactor] = 'this.totalLow' footer="Relative answers" [maxLimit]='this.limit'>
+        </app-confusion-matrix>  
+    </section>
+    <section class="stats__legend">        
+         * Dark cells <span class="stats__legend--square">■</span> contains values equal or greater than {{this.limit}}.
+    </section>
+    <section class="stats__partitions" *ngIf="this.partition !== undefined">
+        At this point, we can infere your partition and your partition.
+        
+        <p>
+            {{this.generatePartitionString();}}
+        </p>
+
     </section>
 
 </section>

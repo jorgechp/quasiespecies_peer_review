@@ -1,3 +1,13 @@
 .stats__confusion-matrix{
     display: flex;    
 }
+
+.stats__legend{    
+    font-style: oblique;
+    font-size: 13px;
+}
+
+.stats__legend--square{
+    color: #5E6068;
+    font-size: 20px;   
+}
