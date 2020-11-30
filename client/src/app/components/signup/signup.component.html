@@ -1,6 +1,6 @@
     <section>
         <h2>Already have an account? then log in ...</h2>
-        <form [formGroup]="loginForm" (ngSubmit)="loginSubmit()">
+        <form #loginForm [formGroup]="loginFormGroup" (ngSubmit)="loginSubmit()" (keyup.enter)="enterEvent('login')">
             <mat-form-field class="register-field" appearance="legacy" >
                 <mat-label>Nick</mat-label>
                 <input matInput placeholder="Placeholder" id="login_nick" formControlName="login_nick" autofocus>
@@ -10,16 +10,20 @@
             </mat-form-field>
             <mat-form-field class="register-field" appearance="legacy">
                 <mat-label>Enter your password</mat-label>
-                <input matInput [type]="hide ? 'password' : 'text'" formControlName="login_password">
-                <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
-                <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>    
+                <input matInput [type]="hideLogin ? 'password' : 'text'" formControlName="login_password">
+                <button mat-icon-button matSuffix 
+                    (click)="hideLogin = !hideLogin" 
+                    [attr.aria-label]="'Hide password'" 
+                    [attr.aria-pressed]="hideLogin"
+                    tabindex="-1">
+                        <mat-icon>{{hideLogin ? 'visibility_off' : 'visibility'}}</mat-icon>    
                 </button>
                 <mat-icon matSuffix *ngIf="!login_form.login_password.errors">done</mat-icon>
                 <mat-icon matSuffix *ngIf="login_form.login_password.errors">close</mat-icon>
                 <mat-hint>Insert your password</mat-hint>
             </mat-form-field>
 
-            <button [disabled]="!loginForm.valid" type="submit" mat-flat-button color="primary">Log in</button>
+            <button [disabled]="!loginFormGroup.valid" type="submit" mat-flat-button color="primary">Log in</button>
         </form>
     </section>
 
@@ -27,7 +31,7 @@
 
     <section>    
         <h2>... or create a new account</h2>
-        <form [formGroup]="registerForm" (ngSubmit)="registerSubmit()">
+        <form #signupForm [formGroup]="registerFormGroup" (ngSubmit)="registerSubmit()" (keyup.enter)="enterEvent('signup')">
             <mat-form-field class="register-field" appearance="legacy">
                 <mat-label>Nick</mat-label>
                 <input matInput placeholder="Placeholder" id="signup_nick" formControlName="signup_nick">
@@ -47,9 +51,13 @@
             <ng-container formGroupName="passwords">
                 <mat-form-field class="register-field" appearance="legacy">
                     <mat-label>Enter your password</mat-label>
-                    <input matInput [type]="hide ? 'password' : 'text'" id="password1" minlength="5" formControlName="password1">
-                    <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
-                    <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>    
+                    <input matInput [type]="hideSignUp ? 'password' : 'text'" id="password1" minlength="5" formControlName="password1">
+                    <button mat-icon-button matSuffix type="button" 
+                        (click)="hideSignUp = !hideSignUp" 
+                        [attr.aria-label]="'Hide password'" 
+                        [attr.aria-pressed]="hideSignUp"
+                        tabindex="-1">
+                            <mat-icon>{{hideSignUp ? 'visibility_off' : 'visibility'}}</mat-icon>    
                     </button>
                     <mat-icon matSuffix *ngIf="!password_form.hasError('notSame') && password_form.controls.password1.valid">done</mat-icon>
                     <mat-icon matSuffix *ngIf="password_form.hasError('notSame') || !password_form.controls.password1.valid">close</mat-icon>
@@ -58,9 +66,13 @@
 
                 <mat-form-field class="register-field" appearance="legacy">
                     <mat-label>Retype your password</mat-label>
-                    <input matInput [type]="hide ? 'password' : 'text'" id="password2" minlength="5"  formControlName="password2">
-                    <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
-                    <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>    
+                    <input matInput [type]="hideSignUp ? 'password' : 'text'" id="password2" minlength="5"  formControlName="password2">
+                    <button mat-icon-button matSuffix type="button" 
+                        (click)="hideSignUp = !hideSignUp" 
+                        [attr.aria-label]="'Hide password'" 
+                        [attr.aria-pressed]="hideSignUp"
+                        tabindex="-1">
+                            <mat-icon>{{hideSignUp ? 'visibility_off' : 'visibility'}}</mat-icon>    
                     </button>
                     <mat-icon matSuffix *ngIf="!password_form.hasError('notSame') && password_form.controls.password2.valid">done</mat-icon>
                     <mat-icon matSuffix *ngIf="password_form.hasError('notSame') || !password_form.controls.password2.valid">close</mat-icon>
@@ -68,7 +80,7 @@
                 </mat-form-field>  
             </ng-container>       
             
-            <button [disabled]="!registerForm.valid" type="submit" mat-flat-button color="primary">Register</button>
+            <button [disabled]="!registerFormGroup.valid" type="submit" mat-flat-button color="primary">Register</button>
         </form>
     </section>
 

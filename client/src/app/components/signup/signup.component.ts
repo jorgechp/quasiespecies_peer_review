@@ -1,5 +1,5 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { FormGroup, FormControl, FormBuilder, AbstractControl } from '@angular/forms';
+import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
+import { FormGroup, FormControl, FormBuilder, AbstractControl, Form } from '@angular/forms';
 import { Validators } from '@angular/forms';
 import { NewUserInterface } from '@src/app/models/new-user-interface.model';
 import { SnackMessageService } from '@src/app/services/snack-message.service';
@@ -14,11 +14,12 @@ import { Subscription } from 'rxjs';
 })
 export class SignupComponent implements OnInit, OnDestroy {
 
-  loginForm: FormGroup;
-  registerForm: FormGroup;
-  passwordForm: FormGroup;
+  loginFormGroup: FormGroup;
+  registerFormGroup: FormGroup;
+  passwordFormGroup: FormGroup;
 
-  hide = true;
+  hideLogin = true;
+  hideSignUp = true;
 
   createUserSuscription: Subscription | undefined;
   loginSuscription: Subscription | undefined;
@@ -47,21 +48,21 @@ export class SignupComponent implements OnInit, OnDestroy {
               private snackMessageService: SnackMessageService,
               private userService: UserService) {
 
-    this.loginForm = formBuilder.group({
+    this.loginFormGroup = formBuilder.group({
       login_nick: new FormControl('', [Validators.required]),
       login_password: new FormControl('', [Validators.required])
     });
 
-    this.passwordForm = this.formBuilder.group({
+    this.passwordFormGroup = this.formBuilder.group({
       password1: ['', Validators.required],
       password2: ['', Validators.required]
     }, {validator: this.validatePasswords}
     );
 
-    this.registerForm = formBuilder.group({
+    this.registerFormGroup = formBuilder.group({
       signup_nick: new FormControl('', [Validators.required]),
       signup_mail: new FormControl('', [Validators.required, Validators.email]),
-      passwords: this.passwordForm
+      passwords: this.passwordFormGroup
    });
   }
 
@@ -76,14 +77,24 @@ export class SignupComponent implements OnInit, OnDestroy {
     }
   }
 
-  get login_form(): { [key: string]: AbstractControl; } { return this.loginForm.controls; }
-  get signup_form(): { [key: string]: AbstractControl; } { return this.registerForm.controls; }
-  get password_form(): FormGroup { return this.passwordForm; }
+  get login_form(): { [key: string]: AbstractControl; } { return this.loginFormGroup.controls; }
+  get signup_form(): { [key: string]: AbstractControl; } { return this.registerFormGroup.controls; }
+  get password_form(): FormGroup { return this.passwordFormGroup; }
+
+  enterEvent(formName: string): void{
+    if (formName === 'login' && this.loginFormGroup.valid){
+      this.loginSubmit();
+    }
+
+    if (formName === 'signup' && this.registerFormGroup.valid){
+      this.registerSubmit();
+    }
+  }
 
   loginSubmit(): void{
-    if (this.loginForm.valid){
-      const nick = this.loginForm.get('login_nick');
-      const password = this.loginForm.get('login_password');
+    if (this.loginFormGroup.valid){
+      const nick = this.loginFormGroup.get('login_nick');
+      const password = this.loginFormGroup.get('login_password');
 
       if (nick && password){
         this.loginSuscription = this.userService.loginUser(nick.value, password.value).subscribe(
@@ -106,10 +117,10 @@ export class SignupComponent implements OnInit, OnDestroy {
   }
 
   registerSubmit(): void{
-    if (this.registerForm.valid){
-      const nick = this.registerForm.get('signup_nick');
-      const mail = this.registerForm.get('signup_mail');
-      const password = this.passwordForm.get('password1');
+    if (this.registerFormGroup.valid){
+      const nick = this.registerFormGroup.get('signup_nick');
+      const mail = this.registerFormGroup.get('signup_mail');
+      const password = this.passwordFormGroup.get('password1');
 
       if (nick && mail && password){
         this.createUserSuscription = this.userService.registerUser(nick.value, mail.value, password.value).subscribe(
