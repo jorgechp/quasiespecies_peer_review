@@ -11,7 +11,7 @@
             <mat-form-field class="register-field" appearance="legacy">
                 <mat-label>Enter your password</mat-label>
                 <input matInput [type]="hideLogin ? 'password' : 'text'" formControlName="login_password">
-                <button mat-icon-button matSuffix 
+                <button mat-icon-button matSuffix type="button"
                     (click)="hideLogin = !hideLogin" 
                     [attr.aria-label]="'Hide password'" 
                     [attr.aria-pressed]="hideLogin"
