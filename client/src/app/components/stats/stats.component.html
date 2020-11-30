@@ -5,8 +5,7 @@
 
     <section class="stats__confusion-matrix">
         <table *ngIf="this.confusionMatrixData !== undefined"  class="confusion-matrix">
-            <tr>
-                
+            <tr>                
                 <th class="confusion-matrix--empty-cell"></th>
                 <th class="confusion-matrix--empty-cell"></th>
                 <th class="confusion-matrix--first_row-cell confusion-matrix--first-headers" colspan="3">Your responses</th>
@@ -21,21 +20,21 @@
             <tr> 
                 <th class="confusion-matrix--first_column confusion-matrix--first-headers" rowspan="3">Real impact</th>                
                 <th class="confusion-matrix--headers confusion-matrix--row_header">LOW</th>
-                <td class="confusion-matrix--value-cell">1</td>
-                <td class="confusion-matrix--value-cell--high">2</td>
-                <td class="confusion-matrix--value-cell--low">2</td>
+                <td class="confusion-matrix--value-cell">{{this.confusionMatrixData.LOW.LOW}}</td>
+                <td class="confusion-matrix--value-cell--high">{{this.confusionMatrixData.LOW.MEDIUM}}</td>
+                <td class="confusion-matrix--value-cell--low">{{this.confusionMatrixData.LOW.HIGH}}</td>
             </tr>
             <tr>
                 <th class="confusion-matrix--headers confusion-matrix--row_header">MEDIUM</th>
-                <td class="confusion-matrix--value-cell">1</td>
-                <td class="confusion-matrix--value-cell--low">2</td>
-                <td class="confusion-matrix--value-cell">2</td>
+                <td class="confusion-matrix--value-cell">{{this.confusionMatrixData.MEDIUM.LOW}}</td>
+                <td class="confusion-matrix--value-cell--low">{{this.confusionMatrixData.MEDIUM.MEDIUM}}</td>
+                <td class="confusion-matrix--value-cell">{{this.confusionMatrixData.MEDIUM.HIGH}}</td>
             </tr>
             <tr>
                 <th class="confusion-matrix--headers confusion-matrix--row_header">HIGH</th>
-                <td class="confusion-matrix--value-cell">1</td>
-                <td class="confusion-matrix--value-cell">2</td>
-                <td class="confusion-matrix--value-cell">2</td>
+                <td class="confusion-matrix--value-cell">{{this.confusionMatrixData.HIGH.LOW}}</td>
+                <td class="confusion-matrix--value-cell">{{this.confusionMatrixData.HIGH.MEDIUM}}</td>
+                <td class="confusion-matrix--value-cell">{{this.confusionMatrixData.HIGH.HIGH}}</td>
             </tr>
         </table>
     </section>

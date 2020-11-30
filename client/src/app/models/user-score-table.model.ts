@@ -4,7 +4,7 @@ export interface UserScoreTable{
     HIGH: UserScoreRow;
 }
 
-export interface UserScoreRow{
+interface UserScoreRow{
     LOW: number;
     MEDIUM: number;
     HIGH: number;
