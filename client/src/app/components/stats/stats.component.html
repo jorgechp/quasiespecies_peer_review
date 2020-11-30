@@ -3,40 +3,18 @@
         In  this section you can see your stats.
     </p>
 
+    <section>
+        You have answered {{this.numberOfAnswers}} times. Down below you can see your confusion matrix:
+    </section>
+
     <section class="stats__confusion-matrix">
-        <table *ngIf="this.confusionMatrixData !== undefined"  class="confusion-matrix">
-            <tr>                
-                <th class="confusion-matrix--empty-cell"></th>
-                <th class="confusion-matrix--empty-cell"></th>
-                <th class="confusion-matrix--first_row-cell confusion-matrix--first-headers" colspan="3">Your responses</th>
-            </tr>
-            <tr>                 
-                <th class="confusion-matrix--empty-cell"></th>
-                <th class="confusion-matrix--empty-cell"></th>                            
-                <th class="confusion-matrix--headers">LOW</th>
-                <th class="confusion-matrix--headers">MEDIUM</th>
-                <th class="confusion-matrix--headers">HIGH</th>
-            </tr>
-            <tr> 
-                <th class="confusion-matrix--first_column confusion-matrix--first-headers" rowspan="3">Real impact</th>                
-                <th class="confusion-matrix--headers confusion-matrix--row_header">LOW</th>
-                <td class="confusion-matrix--value-cell">{{this.confusionMatrixData.LOW.LOW}}</td>
-                <td class="confusion-matrix--value-cell--high">{{this.confusionMatrixData.LOW.MEDIUM}}</td>
-                <td class="confusion-matrix--value-cell--low">{{this.confusionMatrixData.LOW.HIGH}}</td>
-            </tr>
-            <tr>
-                <th class="confusion-matrix--headers confusion-matrix--row_header">MEDIUM</th>
-                <td class="confusion-matrix--value-cell">{{this.confusionMatrixData.MEDIUM.LOW}}</td>
-                <td class="confusion-matrix--value-cell--low">{{this.confusionMatrixData.MEDIUM.MEDIUM}}</td>
-                <td class="confusion-matrix--value-cell">{{this.confusionMatrixData.MEDIUM.HIGH}}</td>
-            </tr>
-            <tr>
-                <th class="confusion-matrix--headers confusion-matrix--row_header">HIGH</th>
-                <td class="confusion-matrix--value-cell">{{this.confusionMatrixData.HIGH.LOW}}</td>
-                <td class="confusion-matrix--value-cell">{{this.confusionMatrixData.HIGH.MEDIUM}}</td>
-                <td class="confusion-matrix--value-cell">{{this.confusionMatrixData.HIGH.HIGH}}</td>
-            </tr>
-        </table>
+        <app-confusion-matrix [confusionMatrixData] = 'this.confusionMatrixDataFull'
+                                [highFactor] = '1' [mediumFactor] = '1' [lowFactor] = '1' footer="Absolute answers" [maxLimit]='0'>
+        </app-confusion-matrix>    
+        
+        <app-confusion-matrix [confusionMatrixData] = 'this.confusionMatrixDataFull'
+        [highFactor] = 'this.totalHigh' [mediumFactor] = 'this.totalMedium' [lowFactor] = 'this.totalLow' footer="Relative answers" [maxLimit]='0.6'>
+        </app-confusion-matrix>   
     </section>
 
 </section>

@@ -14,6 +14,7 @@ import { AboutComponent } from '@src/app/components/about/about.component';
 import { SignupComponent } from '@src/app/components/signup/signup.component';
 import { WelcomeComponent } from '@src/app/components/welcome/welcome.component';
 import { InfoMessageComponent } from '@src/app/components/info-message/info-message.component';
+import { ConfussionMatrixComponent } from '@src/app/components/stats/confusion-matrix/node_modules/@src/app/app/stats/confussion-matrix/confussion-matrix.component';
 
 
 // Uncomment and add to NgModule imports if you need to use two-way binding and/or HTTP wrapper
@@ -33,6 +34,7 @@ import { InfoMessageComponent } from '@src/app/components/info-message/info-mess
     SignupComponent,
     WelcomeComponent,
     InfoMessageComponent,
+    ConfussionMatrixComponent,
   ],
   imports: [
     NativeScriptModule,

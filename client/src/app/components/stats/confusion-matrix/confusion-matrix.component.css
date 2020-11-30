@@ -1,0 +1,55 @@
+.confusion-matrix{    
+    border-radius: 15px;  
+    text-align: center;
+    border-collapse: collapse;
+    padding: 15px;   
+    margin-left: 15px;
+    margin-right: 15px;
+}
+
+.confusion-matrix--footer{
+    text-align: center;
+    padding-left: 100px;
+}
+
+.confusion-matrix--empty-cell{
+    background-color: inherit;
+}
+
+.confusion-matrix--value-cell{
+    background-color: #F6F7F8;
+}
+
+.confusion-matrix--value-cell--high{
+    background-color: #5E6068;
+    color: #F6F7F8;
+}
+
+.confusion-matrix--headers{
+    background-color: #81848C;
+    color: #F6F7F8;    
+    width: 75px;
+    height: 50px;
+}
+
+.confusion-matrix--first_row-cell{
+    font-weight: normal;     
+}
+
+.confusion-matrix--first_column{
+    writing-mode: vertical-lr;
+    text-orientation: sideways;
+    font-weight: normal;    
+    transform: rotate(180deg);
+    width: 20px;
+}
+
+.confusion-matrix--first-headers{
+    background-color: #B1B3BA;
+    color: #36363A; 
+}
+
+.confusion-matrix--row_header{
+    text-align: left;
+    padding-left: 5px;   
+}

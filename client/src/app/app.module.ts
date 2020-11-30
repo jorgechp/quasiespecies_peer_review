@@ -32,6 +32,7 @@ import { SignupComponent } from '@src/app/components/signup/signup.component';
 import { WelcomeComponent } from '@src/app/components/welcome/welcome.component';
 import { InterceptorHttp } from '@src/app/interceptors/http-interceptor';
 import { KeywordsPipe } from '@src/app/pipes/keywords.pipe';
+import { ConfusionMatrixComponent } from '@src/app/components/stats/confusion-matrix/confusion-matrix.component';
 
 @NgModule({
   declarations: [
@@ -45,7 +46,8 @@ import { KeywordsPipe } from '@src/app/pipes/keywords.pipe';
     AboutComponent,
     SignupComponent,
     WelcomeComponent,
-    KeywordsPipe
+    KeywordsPipe,
+    ConfusionMatrixComponent
   ],
   exports: [
     HeaderComponent

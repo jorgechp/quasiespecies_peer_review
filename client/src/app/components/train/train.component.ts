@@ -96,7 +96,7 @@ export class TrainComponent implements OnInit, OnDestroy {
                                                             , TrainComponent.SNACK_SERVICE_TRAIN_NOTIFICATION_TIME);
           }
           this.snackMessageService.subscribeDissmising().subscribe(
-            () => { this.getArticle(); this.isButtonsDisabled = false;}
+            () => { this.getArticle(); this.isButtonsDisabled = false; }
           );
         }
       );

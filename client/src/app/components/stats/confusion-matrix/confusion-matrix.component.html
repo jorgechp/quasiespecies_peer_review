@@ -1,0 +1,78 @@
+<table *ngIf="this.confusionMatrixData !== undefined"  class="confusion-matrix">
+    <tr>                
+        <th class="confusion-matrix--empty-cell"></th>
+        <th class="confusion-matrix--empty-cell"></th>
+        <th class="confusion-matrix--first_row-cell confusion-matrix--first-headers" colspan="3">Your responses</th>
+    </tr>
+    <tr>                 
+        <th class="confusion-matrix--empty-cell"></th>
+        <th class="confusion-matrix--empty-cell"></th>                            
+        <th class="confusion-matrix--headers">LOW</th>
+        <th class="confusion-matrix--headers">MEDIUM</th>
+        <th class="confusion-matrix--headers">HIGH</th>
+    </tr>
+    <tr> 
+        <th class="confusion-matrix--first_column confusion-matrix--first-headers" rowspan="3">Real impact</th>                
+        <th class="confusion-matrix--headers confusion-matrix--row_header">LOW</th>
+        <td [ngClass]="{'confusion-matrix--value-cell': true,
+                        'confusion-matrix--value-cell--high': this.maxLimit != 0 
+                        && this.maxLimit < (this.confusionMatrixData.LOW.LOW / this.lowFactor)}" >
+                                    {{this.confusionMatrixData.LOW.LOW / this.lowFactor | number : '1.0-2'}}
+        </td>
+        <td [ngClass]="{'confusion-matrix--value-cell': true,
+                        'confusion-matrix--value-cell--high': this.maxLimit != 0 
+                        && this.maxLimit < (this.confusionMatrixData.LOW.MEDIUM / this.lowFactor)}" >
+                                    {{this.confusionMatrixData.LOW.MEDIUM / this.lowFactor | number : '1.0-2'}}
+        </td>                
+
+        <td [ngClass]="{'confusion-matrix--value-cell': true,
+                        'confusion-matrix--value-cell--high': this.maxLimit != 0 
+                        && this.maxLimit < (this.confusionMatrixData.LOW.HIGH / this.lowFactor)}" >
+                                    {{this.confusionMatrixData.LOW.HIGH / this.lowFactor | number : '1.0-2'}}
+        </td>         
+
+    </tr>
+    <tr>
+        <th class="confusion-matrix--headers confusion-matrix--row_header">MEDIUM</th>
+        <td [ngClass]="{'confusion-matrix--value-cell': true,
+                        'confusion-matrix--value-cell--high': this.maxLimit != 0 
+                        && this.maxLimit < (this.confusionMatrixData.MEDIUM.LOW / this.mediumFactor)}" >
+                                    {{this.confusionMatrixData.MEDIUM.LOW / this.mediumFactor | number : '1.0-2'}}
+        </td>  
+
+        <td [ngClass]="{'confusion-matrix--value-cell': true,
+                        'confusion-matrix--value-cell--high': this.maxLimit != 0 
+                        && this.maxLimit < (this.confusionMatrixData.MEDIUM.MEDIUM / this.mediumFactor)}" >
+                                    {{this.confusionMatrixData.MEDIUM.MEDIUM / this.mediumFactor | number : '1.0-2'}}
+        </td> 
+
+        <td [ngClass]="{'confusion-matrix--value-cell': true,
+                        'confusion-matrix--value-cell--high': this.maxLimit != 0 
+                        && this.maxLimit < (this.confusionMatrixData.MEDIUM.HIGH / this.mediumFactor)}" >
+                                    {{this.confusionMatrixData.MEDIUM.HIGH / this.mediumFactor | number : '1.0-2'}}
+        </td>         
+    </tr>
+    <tr>
+        <th class="confusion-matrix--headers confusion-matrix--row_header">HIGH</th>
+        <td [ngClass]="{'confusion-matrix--value-cell': true,
+                        'confusion-matrix--value-cell--high': this.maxLimit != 0 
+                        && this.maxLimit < (this.confusionMatrixData.HIGH.LOW / this.highFactor)}" >
+                                    {{this.confusionMatrixData.HIGH.LOW / this.highFactor | number : '1.0-2'}}
+        </td>  
+
+        <td [ngClass]="{'confusion-matrix--value-cell': true,
+                        'confusion-matrix--value-cell--high': this.maxLimit != 0 
+                        && this.maxLimit < (this.confusionMatrixData.HIGH.MEDIUM / this.highFactor)}" >
+                                    {{this.confusionMatrixData.HIGH.MEDIUM / this.highFactor | number : '1.0-2'}}
+        </td> 
+
+        <td [ngClass]="{'confusion-matrix--value-cell': true,
+                        'confusion-matrix--value-cell--high': this.maxLimit != 0 
+                        && this.maxLimit < (this.confusionMatrixData.HIGH.HIGH / this.highFactor)}" >
+                                    {{this.confusionMatrixData.HIGH.HIGH / this.highFactor | number : '1.0-2'}}
+        </td>     
+    </tr>
+    <tr>
+        <td class="confusion-matrix--footer" colspan="6">{{this.footer}}</td>
+    </tr>
+</table>
