@@ -32,6 +32,8 @@
   .app-header{
     background-color: #373438;
     color: #867D89;
+    height: 40px;
+    min-height: 40px;
   }
 
   .flex-content-link--logout{
@@ -45,10 +47,19 @@
 
   .icon-with-text span{    
     position: relative;
-    top: -5px;
+    top: 3px;
     margin-left: 5px;
+  }
+
+  .mat-icon{
+    vertical-align: middle;
   }
 
   .mat-icon--logout{
     height: 39px;
+  }
+
+  .mat-icon-button{
+    top:6px;
+    color: #FFFFFE;
   }
