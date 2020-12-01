@@ -1,0 +1,17 @@
+.footer{
+    height: 100%;
+    background-color: #F6F7F8;
+    color: #5E6068;
+    display: flex;
+    justify-content: space-around;
+    font-size: 12px;
+}
+
+.footer a{
+    text-decoration: none;
+    color: inherit;
+}
+
+.footer__icon{
+    font-size: 12px;
+}

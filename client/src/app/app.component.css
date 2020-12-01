@@ -1,6 +1,6 @@
 .basic-container__content{
     display: block;
-    min-height: calc(100vh - 140px);
+    min-height: calc(100vh - 124px);
     padding-left: 25%;
     padding-right: 25%;
 }
