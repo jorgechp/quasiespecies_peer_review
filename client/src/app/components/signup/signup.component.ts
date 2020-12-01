@@ -62,6 +62,7 @@ export class SignupComponent implements OnInit, OnDestroy {
     this.registerFormGroup = formBuilder.group({
       signup_nick: new FormControl('', [Validators.required]),
       signup_mail: new FormControl('', [Validators.required, Validators.email]),
+      conditionsAgree: new FormControl('', [Validators.requiredTrue]),
       passwords: this.passwordFormGroup
    });
   }

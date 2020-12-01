@@ -80,11 +80,19 @@
                 </mat-form-field>  
             </ng-container>       
             
-            <button [disabled]="!registerFormGroup.valid" type="submit" mat-flat-button color="primary">Register</button>
+            
+            <mat-checkbox formControlName="conditionsAgree">
+                I'm agree with the <a [routerLink]="['/privacy']" routerLinkActive="router-link-active" title="Privacy Policy">Privacy Policy</a>
+                 and I accept to provide you with my nickname and my e-mail address
+            </mat-checkbox>
+            <section>
+                <button [disabled]="!registerFormGroup.valid" type="submit" mat-flat-button color="primary">Register</button>
+            </section>
         </form>
     </section>
 
     <section class="privacy">
         <h3>Privacy and security</h3>
-        Your password and your mail are encrypted before being stored in our database.
+        Your password and your mail are encrypted before being stored in our database. Please, take a look to our 
+        <a [routerLink]="['/privacy']" routerLinkActive="router-link-active" title="Privacy Policy">Privacy Policy</a>.
     </section>

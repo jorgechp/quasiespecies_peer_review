@@ -22,6 +22,7 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {MatTableModule} from '@angular/material/table';
+import {MatCheckboxModule} from '@angular/material/checkbox';
 
 import { FooterComponent } from '@src/app/components/footer/footer.component';
 import { TrainComponent } from '@src/app/components/train/train.component';
@@ -68,7 +69,8 @@ import { PrivacyComponent } from '@src/app/components/privacy/privacy.component'
     MatFormFieldModule,
     MatInputModule,
     MatSnackBarModule,
-    MatTableModule
+    MatTableModule,
+    MatCheckboxModule
   ],
   providers: [ {provide: HTTP_INTERCEPTORS , useClass: InterceptorHttp, multi: true}],
   bootstrap: [AppComponent],
