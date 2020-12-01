@@ -33,6 +33,7 @@ import { WelcomeComponent } from '@src/app/components/welcome/welcome.component'
 import { InterceptorHttp } from '@src/app/interceptors/http-interceptor';
 import { KeywordsPipe } from '@src/app/pipes/keywords.pipe';
 import { ConfusionMatrixComponent } from '@src/app/components/stats/confusion-matrix/confusion-matrix.component';
+import { PrivacyComponent } from '@src/app/components/privacy/privacy.component';
 
 @NgModule({
   declarations: [
@@ -47,7 +48,8 @@ import { ConfusionMatrixComponent } from '@src/app/components/stats/confusion-ma
     SignupComponent,
     WelcomeComponent,
     KeywordsPipe,
-    ConfusionMatrixComponent
+    ConfusionMatrixComponent,
+    PrivacyComponent
   ],
   exports: [
     HeaderComponent
