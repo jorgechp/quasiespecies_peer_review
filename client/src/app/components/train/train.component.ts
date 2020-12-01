@@ -4,6 +4,7 @@ import { AnswerResult } from '@src/app/models/answer-result-model';
 import { Article } from '@src/app/models/article-interface.model';
 import { SnackMessageService } from '@src/app/services/snack-message.service';
 import { TrainService } from '@src/app/services/train.service';
+import { UserService } from '@src/app/services/user.service';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -18,17 +19,21 @@ export class TrainComponent implements OnInit, OnDestroy {
   public currentArticle: Article | undefined;
   public isButtonsDisabled = false;
 
+  isLogged = false;
+
   getLastArticleSuscription: Subscription | undefined;
   getArticleSuscription: Subscription | undefined;
   userAnswerSuscription: Subscription | undefined;
+  loginSuscription: Subscription | undefined;
 
   constructor(private trainService: TrainService,
               private router: Router,
+              private userService: UserService,
               private snackMessageService: SnackMessageService) { }
 
   ngOnInit(): void {
+    this.subscribeCheckLogin();
     this.snackMessageService.notifyDismiss();
-    this.getLastArticle();
   }
 
   ngOnDestroy(): void {
@@ -41,6 +46,20 @@ export class TrainComponent implements OnInit, OnDestroy {
     if (this.userAnswerSuscription !== undefined){
       this.userAnswerSuscription.unsubscribe();
     }
+    if (this.loginSuscription !== undefined){
+      this.loginSuscription.unsubscribe();
+    }
+  }
+
+  subscribeCheckLogin(): void{
+    this.loginSuscription = this.userService.checkLogin().subscribe(
+      (isLogged: boolean) => {
+        if (isLogged){
+          this.getLastArticle();
+        }
+        this.isLogged = isLogged;
+      }
+    );
   }
 
   getLastArticle(): void{

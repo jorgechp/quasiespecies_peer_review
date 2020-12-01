@@ -1,37 +1,42 @@
-<section *ngIf="this.currentArticle !== undefined" class="section__train">    
-    <p>
-        We have selected a random article for you. Down below, you will find information regarding the title, abstract and keywords. Read carefully the paper's 
-        information and decide if you would send this paper to a low, medium or high impact journal.
-    </p>
-
-    <section class="section__paper">
-        <h1>
-            Title: {{this.currentArticle.title}}
-        </h1>
-        <h2>Abstract</h2>
-        <p class="train__abstract">
-            {{this.currentArticle.abstract}}
+<section *ngIf="this.isLogged">
+    <section *ngIf="this.currentArticle !== undefined" class="section__train">    
+        <p>
+            We have selected a random article for you. Down below, you will find information regarding the title, abstract and keywords. Read carefully the paper's 
+            information and decide if you would send this paper to a low, medium or high impact journal.
         </p>
-        <h2>Author's Keywords</h2>
-        <p>{{this.currentArticle.authors_keywords | keywordsPipe}}</p>
-            
-        <h2>KeywordPlus</h2>
-        <p>{{this.currentArticle.keywords_plus  | keywordsPipe}}</p>    
-    </section>   
 
-    <h2>Your decision</h2>
-    <p>
-        Which type of journal do you think is the most suitable for the paper?
-    </p>
-    <div class="train__buttons">
-        <button class="train__buttons--low" mat-flat-button color="primary" 
-                [disabled]='this.isButtonsDisabled' 
-                (click)="this.doArticleAnswer('LOW')">Low impact Journal</button>
-        <button class="train__buttons--medium" mat-flat-button color="primary" 
-                [disabled]='this.isButtonsDisabled' 
-                (click)="this.doArticleAnswer('MEDIUM')">Medium impact Journal</button>
-        <button class="train__buttons--high" mat-flat-button color="primary" 
-                [disabled]='this.isButtonsDisabled'
-                (click)="this.doArticleAnswer('HIGH')">High impact Journal</button>
-    </div>
+        <section class="section__paper">
+            <h1>
+                Title: {{this.currentArticle.title}}
+            </h1>
+            <h2>Abstract</h2>
+            <p class="train__abstract">
+                {{this.currentArticle.abstract}}
+            </p>
+            <h2>Author's Keywords</h2>
+            <p>{{this.currentArticle.authors_keywords | keywordsPipe}}</p>
+                
+            <h2>KeywordPlus</h2>
+            <p>{{this.currentArticle.keywords_plus  | keywordsPipe}}</p>    
+        </section>   
+
+        <h2>Your decision</h2>
+        <p>
+            Which type of journal do you think is the most suitable for the paper?
+        </p>
+        <div class="train__buttons">
+            <button class="train__buttons--low" mat-flat-button color="primary" 
+                    [disabled]='this.isButtonsDisabled' 
+                    (click)="this.doArticleAnswer('LOW')">Low impact Journal</button>
+            <button class="train__buttons--medium" mat-flat-button color="primary" 
+                    [disabled]='this.isButtonsDisabled' 
+                    (click)="this.doArticleAnswer('MEDIUM')">Medium impact Journal</button>
+            <button class="train__buttons--high" mat-flat-button color="primary" 
+                    [disabled]='this.isButtonsDisabled'
+                    (click)="this.doArticleAnswer('HIGH')">High impact Journal</button>
+        </div>
+    </section>
+</section>
+<section>
+    
 </section>
