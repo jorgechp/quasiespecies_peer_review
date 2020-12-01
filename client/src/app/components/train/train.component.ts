@@ -27,6 +27,7 @@ export class TrainComponent implements OnInit, OnDestroy {
               private snackMessageService: SnackMessageService) { }
 
   ngOnInit(): void {
+    this.snackMessageService.notifyDismiss();
     this.getLastArticle();
   }
 

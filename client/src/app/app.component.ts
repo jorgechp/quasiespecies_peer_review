@@ -13,24 +13,34 @@ export class AppComponent implements OnInit, OnDestroy{
   title = 'quasispecies-peer-review';
   snackServiceSuscription: Subscription | undefined;
   snackDissmisingSuscription: Subscription | undefined;
+  snackDismissRequestSuscription: Subscription | undefined;
+  snackBarRef: MatSnackBarRef<TextOnlySnackBar> | undefined;
 
   constructor(private snackBar: MatSnackBar,
               private snackService: SnackMessageService){}
   ngOnInit(): void {
+
     this.snackServiceSuscription = this.snackService.subscribeSnackMessage().subscribe(
         (message: SnackBarConfiguration) => {
-          let snackBarRef: MatSnackBarRef<TextOnlySnackBar>;
           if (message.time < 0 ){
-            snackBarRef = this.snackBar.open(message.message, 'Close');
+            this.snackBarRef = this.snackBar.open(message.message, 'Close');
           }else{
-            snackBarRef = this.snackBar.open(message.message, 'Close', {duration: message.time});
+            this.snackBarRef = this.snackBar.open(message.message, 'Close', {duration: message.time});
           }
-          snackBarRef.afterDismissed().subscribe(
+          this.snackBarRef.afterDismissed().subscribe(
             () => {
               this.snackService.notifyDissmising();
             }
           );
       }
+    );
+
+    this.snackDismissRequestSuscription = this.snackService.subscribeDismissRequest().subscribe(
+          () => {
+            if (this.snackBarRef !== undefined){
+              this.snackBarRef.dismiss();
+            }
+          }
     );
   }
 
@@ -40,6 +50,9 @@ export class AppComponent implements OnInit, OnDestroy{
     }
     if (this.snackDissmisingSuscription !== undefined){
       this.snackDissmisingSuscription.unsubscribe();
+    }
+    if (this.snackDismissRequestSuscription !== undefined){
+      this.snackDismissRequestSuscription.unsubscribe();
     }
   }
 
