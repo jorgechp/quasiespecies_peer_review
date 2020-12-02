@@ -5,6 +5,7 @@ import { UserScoreRow, UserScoreTable } from '@src/app/models/user-score-table.m
 import { SubmissionProfileInterface } from '@src/app/models/submission-profile-interface';
 import { TypeOfJournal } from '@src/app/models/type-of-journal.enum';
 import { PartitionInterface } from '@src/app/models/partition-interface';
+import { UserService } from '@src/app/services/user.service';
 
 @Component({
   selector: 'app-stats',
@@ -17,6 +18,7 @@ export class StatsComponent implements OnInit, OnDestroy {
   public confusionMatrixDataFull: UserScoreTable | undefined;
   public partition: PartitionInterface | undefined;
   public submissionProfile: SubmissionProfileInterface | undefined;
+  loginSuscription: Subscription | undefined;
 
   numberOfAnswers = 0;
 
@@ -26,11 +28,15 @@ export class StatsComponent implements OnInit, OnDestroy {
 
   limit = 0.6;
 
-  constructor(private trainService: TrainService) {
+  isLogged = false;
+
+  constructor(private trainService: TrainService,
+              private userService: UserService) {
     this.confusionMatrixDataFull = undefined;
   }
 
   ngOnInit(): void {
+    this.subscribeCheckLogin();
     this.subscribeTrainService();
   }
 
@@ -38,6 +44,17 @@ export class StatsComponent implements OnInit, OnDestroy {
     if (this.trainServiceSuscription !== undefined){
       this. trainServiceSuscription?.unsubscribe();
     }
+    if (this.loginSuscription !== undefined){
+      this.loginSuscription.unsubscribe();
+    }
+  }
+
+  subscribeCheckLogin(): void{
+    this.loginSuscription = this.userService.checkLogin().subscribe(
+      (isLogged: boolean) => {
+        this.isLogged = isLogged;
+      }
+    );
   }
 
   private computeBasicStats(): void{

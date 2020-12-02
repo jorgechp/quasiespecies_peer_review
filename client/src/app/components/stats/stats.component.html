@@ -1,4 +1,7 @@
-<section>
+<section *ngIf="!this.isLogged">
+    <app-signup></app-signup>
+</section>
+<section *ngIf="this.isLogged">
     <p>
         In  this section you can see your stats.
     </p>

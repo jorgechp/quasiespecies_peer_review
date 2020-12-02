@@ -1,3 +1,6 @@
+<section *ngIf="!this.isLogged">
+    <app-signup></app-signup>
+</section>
 <section *ngIf="this.isLogged">
     <section *ngIf="this.currentArticle !== undefined" class="section__train">    
         <p>
@@ -36,7 +39,4 @@
                     (click)="this.doArticleAnswer('HIGH')">High impact Journal</button>
         </div>
     </section>
-</section>
-<section>
-    
 </section>

@@ -13,11 +13,12 @@ export class UserService {
   private logoutUserUrl = 'http://localhost:7000/user/logout';
 
   private isLoggedIn$ = new BehaviorSubject<boolean>(false);
+  private isLoggedInObservable = this.isLoggedIn$.asObservable();
 
   constructor(private httpClient: HttpClient) { }
 
   getIsLoggedInObservable(): Observable<boolean>{
-    return this.isLoggedIn$.asObservable();
+    return this.isLoggedInObservable;
   }
 
   checkLogin(): Observable<boolean>{
