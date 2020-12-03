@@ -1,3 +1,5 @@
+import itertools
+
 import numpy as np
 
 from dataclasses import dataclass
@@ -12,17 +14,21 @@ class Impact(Enum):
     HIGH = 'HIGH'
 
 
-PARTITIONS = set()
-PARTITIONS.add(((Impact.LOW), (Impact.MEDIUM), (Impact.HIGH)))
-PARTITIONS.add(((Impact.LOW, Impact.MEDIUM), (Impact.HIGH)))
-PARTITIONS.add(((Impact.LOW, Impact.HIGH), (Impact.MEDIUM)))
-PARTITIONS.add(((Impact.MEDIUM, Impact.HIGH), (Impact.LOW)))
-PARTITIONS.add(((Impact.LOW, Impact.MEDIUM, Impact.HIGH)))
+PARTITIONS = [
+    [[Impact.LOW, Impact.MEDIUM], [Impact.HIGH]],
+    [[Impact.LOW, Impact.HIGH], [Impact.MEDIUM]],
+    [[Impact.MEDIUM, Impact.HIGH], [Impact.LOW]],
+    [[Impact.LOW, Impact.MEDIUM, Impact.HIGH]],
+    [[Impact.LOW], [Impact.MEDIUM], [Impact.HIGH]],
+]
+
 
 partition_to_index = dict()
-partition_to_index[Impact.LOW.value] = 0
-partition_to_index[Impact.MEDIUM.value] = 1
-partition_to_index[Impact.HIGH.value] = 2
+partition_to_index[Impact.LOW] = 0
+partition_to_index[Impact.MEDIUM] = 1
+partition_to_index[Impact.HIGH] = 2
+
+index_to_partition = {v: k for k, v in partition_to_index.items()}
 
 
 @dataclass_json
@@ -124,7 +130,53 @@ class TrainManager(object):
                           positives,
                           negatives)
 
-    def __get_user_partition(self, score_per_impact: dict):
+    def __compute_submission_profile(self, user_matrix_relative_values: np.matrix, partition_list: list) -> list:
+        submission_profile = []
+        for partition in partition_list:
+            for sub_partition in partition:
+                if len(sub_partition) == 1:
+                    index = partition_to_index[sub_partition]
+                    roi_matrix = user_matrix_relative_values[index]
+                else:
+                    #Fix this is not good
+                    minimum_index = min([partition_to_index[quality] for quality in sub_partition])
+                    maximum_index = max([partition_to_index[quality] for quality in sub_partition])
+                    roi_matrix = user_matrix_relative_values[minimum_index:maximum_index+1]
+
+                impact_probabilities = np.sum(roi_matrix, axis=0)
+                argmax_index = np.argsort(-1*impact_probabilities, axis=None) # axis=None produces a flat array and -1 produces a reverse ordergin
+                impact = index_to_partition[argmax_index]
+                submission_profile.append(impact)
+        return submission_profile
+
+    def __compute_partition_scores(self, matrix_relative_quality: np.array, matrix_relative: np.array, partition_list: list) -> dict:
+        probabilities_per_impact = dict()
+        probabilities_sum = np.sum(matrix_relative, axis=1)
+
+        for impact in Impact:
+            index = partition_to_index[impact]
+            probabilities_per_impact[impact] = probabilities_sum[index]
+
+        partition_scores = dict()
+        for index_partition, partition in enumerate(partition_list):
+            partition_score = 0
+            for sub_partition in partition:
+                if len(sub_partition) == 1:
+                    impact = sub_partition[0]
+                    index_impact = partition_to_index[impact]
+                    partition_score += matrix_relative_quality[index_impact][index_impact] \
+                                       * probabilities_per_impact[impact]
+                else:
+                    impacts_to_preserve = set([partition_to_index[impact] for impact in sub_partition])
+                    for quality in sub_partition:
+                        index_quality = partition_to_index[quality]
+                        impacts_to_preserve_fixed_quality = list(impacts_to_preserve - {index_quality})
+                        matrix_roi = matrix_relative_quality[:,impacts_to_preserve_fixed_quality]
+                        partition_score += np.prod(matrix_roi[index_quality]) * probabilities_per_impact[quality]
+            partition_scores[index_partition] = partition_score
+        return partition_scores
+
+    def __get_user_partition(self, score_per_impact: dict) -> dict:
         scores = []
         user_matrix_full_values = np.zeros((3, 3))
         user_matrix_full_values[0][0] = score_per_impact['LOW']['LOW']
@@ -140,27 +192,26 @@ class TrainManager(object):
         user_matrix_relative_values = user_matrix_full_values / np.sum(user_matrix_full_values)
         user_matrix_relative_column = user_matrix_full_values / user_matrix_full_values.sum(axis=1, keepdims=True)
 
+        partition_scores = self.__compute_partition_scores(
+            user_matrix_relative_column,
+            user_matrix_relative_values,
+            PARTITIONS)
 
-        for partition in PARTITIONS:
-            sub_partition_score = 0
-            for sub_partition in partition:
-                quality_max_score = 0
-                for quality in sub_partition:
-                    article_quality_index = partition_to_index[quality.value]
-                    s = 0
-                    for impact in sub_partition:
-                        impact_quality_index = partition_to_index[impact.value]
-                        s += user_matrix_relative_column[article_quality_index][impact_quality_index], quality_max_score
+        partition_sorted_dict = {k: v for k, v in sorted(partition_scores.items(),
+                                                         key=lambda item: item[1],
+                                                         reverse=True)}
+        del partition_scores
+        submission_profiles = self.__compute_submission_profile(user_matrix_relative_values, PARTITIONS)
 
-                sub_partition_score += quality_max_score
+        return partition_sorted_dict
 
-            scores.append(sub_partition_score)
-        return sum(scores)
+
 
     def get_user_score_table(self, user_id: str, limit: int) -> dict:
         impact_list = [e.value for e in Impact]
 
-        score_per_impact_dict = dict()
+        user_stats = dict()
+        score_table = dict()
 
         for target_impact in impact_list:
             current_score_table = dict()
@@ -170,11 +221,14 @@ class TrainManager(object):
                                                                   target_impact,
                                                                   user_impact )
                 current_score_table[user_impact] = number_of_occurrences
-                score_per_impact_dict[target_impact] = current_score_table
+                score_table[target_impact] = current_score_table
 
-        user_partition = self.__get_user_partition(score_per_impact_dict)
+        user_stats['score_table'] = score_table
+        user_stats['user_partition'] = self.__get_user_partition(score_table)
 
-        return score_per_impact_dict
+        return user_stats
+
+
 
 
 
