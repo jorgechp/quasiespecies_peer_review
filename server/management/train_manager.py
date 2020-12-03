@@ -1,3 +1,5 @@
+import numpy as np
+
 from dataclasses import dataclass
 from dataclasses_json import dataclass_json
 from enum import Enum
@@ -8,6 +10,20 @@ class Impact(Enum):
     LOW = 'LOW'
     MEDIUM = 'MEDIUM'
     HIGH = 'HIGH'
+
+
+PARTITIONS = set()
+PARTITIONS.add(((Impact.LOW), (Impact.MEDIUM), (Impact.HIGH)))
+PARTITIONS.add(((Impact.LOW, Impact.MEDIUM), (Impact.HIGH)))
+PARTITIONS.add(((Impact.LOW, Impact.HIGH), (Impact.MEDIUM)))
+PARTITIONS.add(((Impact.MEDIUM, Impact.HIGH), (Impact.LOW)))
+PARTITIONS.add(((Impact.LOW, Impact.MEDIUM, Impact.HIGH)))
+
+partition_to_index = dict()
+partition_to_index[Impact.LOW.value] = 0
+partition_to_index[Impact.MEDIUM.value] = 1
+partition_to_index[Impact.HIGH.value] = 2
+
 
 @dataclass_json
 @dataclass
@@ -108,6 +124,39 @@ class TrainManager(object):
                           positives,
                           negatives)
 
+    def __get_user_partition(self, score_per_impact: dict):
+        scores = []
+        user_matrix_full_values = np.zeros((3, 3))
+        user_matrix_full_values[0][0] = score_per_impact['LOW']['LOW']
+        user_matrix_full_values[0][1] = score_per_impact['LOW']['MEDIUM']
+        user_matrix_full_values[0][2] = score_per_impact['LOW']['HIGH']
+        user_matrix_full_values[1][0] = score_per_impact['MEDIUM']['LOW']
+        user_matrix_full_values[1][1] = score_per_impact['MEDIUM']['MEDIUM']
+        user_matrix_full_values[1][2] = score_per_impact['MEDIUM']['HIGH']
+        user_matrix_full_values[2][0] = score_per_impact['HIGH']['LOW']
+        user_matrix_full_values[2][1] = score_per_impact['HIGH']['MEDIUM']
+        user_matrix_full_values[2][2] = score_per_impact['HIGH']['HIGH']
+
+        user_matrix_relative_values = user_matrix_full_values / np.sum(user_matrix_full_values)
+        user_matrix_relative_column = user_matrix_full_values / user_matrix_full_values.sum(axis=1, keepdims=True)
+
+
+        for partition in PARTITIONS:
+            sub_partition_score = 0
+            for sub_partition in partition:
+                quality_max_score = 0
+                for quality in sub_partition:
+                    article_quality_index = partition_to_index[quality.value]
+                    s = 0
+                    for impact in sub_partition:
+                        impact_quality_index = partition_to_index[impact.value]
+                        s += user_matrix_relative_column[article_quality_index][impact_quality_index], quality_max_score
+
+                sub_partition_score += quality_max_score
+
+            scores.append(sub_partition_score)
+        return sum(scores)
+
     def get_user_score_table(self, user_id: str, limit: int) -> dict:
         impact_list = [e.value for e in Impact]
 
@@ -122,6 +171,9 @@ class TrainManager(object):
                                                                   user_impact )
                 current_score_table[user_impact] = number_of_occurrences
                 score_per_impact_dict[target_impact] = current_score_table
+
+        user_partition = self.__get_user_partition(score_per_impact_dict)
+
         return score_per_impact_dict
 
 

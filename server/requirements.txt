@@ -1,6 +1,6 @@
 Flask>=1.1.2
 flask_cors
-flask_session
+numpy
 bcrypt
 cryptography
 dataclasses-json>=0.5.2
