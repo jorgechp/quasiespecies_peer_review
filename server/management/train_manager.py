@@ -218,7 +218,7 @@ class TrainManager(object):
                                                          reverse=True)}
         scores['partitions'] = partition_scores
         submission_profiles = self.__compute_submission_profile(user_matrix_relative_values, partition_scores, PARTITIONS)
-        scores['submisisons'] = submission_profiles
+        scores['submissions'] = submission_profiles
         scores['partitions_keys'] = [partition_to_str(partition) for partition in PARTITIONS]
         return scores
 
