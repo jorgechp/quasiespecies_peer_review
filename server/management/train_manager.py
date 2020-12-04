@@ -31,6 +31,13 @@ impact_to_index[Impact.HIGH] = 2
 index_to_impact = {v: k for k, v in impact_to_index.items()}
 
 
+def partition_to_str(partition: list) -> str:
+    partition_str = []
+    for sub_partiton in partition:
+        partition_str.append([impact.value for impact in sub_partiton])
+    return partition_str
+
+
 @dataclass_json
 @dataclass
 class Article:
@@ -148,7 +155,7 @@ class TrainManager(object):
                 for impact_type in Impact:
                     impact_index = impact_to_index[impact_type]
                     profile_score = np.sum(roi_matrix[:, impact_index]) * partition_score
-                    profile_impact_dict[impact_index] = profile_score
+                    profile_impact_dict[impact_type.value] = profile_score
 
                 profile_impact_dict = {k: v for k, v in sorted(profile_impact_dict.items(),
                                          key=lambda item: item[1],
@@ -212,6 +219,7 @@ class TrainManager(object):
         scores['partitions'] = partition_scores
         submission_profiles = self.__compute_submission_profile(user_matrix_relative_values, partition_scores, PARTITIONS)
         scores['submisisons'] = submission_profiles
+        scores['partitions_keys'] = [partition_to_str(partition) for partition in PARTITIONS]
         return scores
 
 
