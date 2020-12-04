@@ -192,28 +192,15 @@ class TrainManager(object):
             partition_scores[index_partition] = partition_score
         return partition_scores
 
-    def __get_user_partition(self, score_per_impact: dict) -> dict:
+    def __get_user_partition(self, user_matrix_relative_column: np.array, user_matrix_relative_values: np.array) -> dict:
         scores = dict()
-        user_matrix_full_values = np.zeros((3, 3))
-        user_matrix_full_values[0][0] = score_per_impact['LOW']['LOW']
-        user_matrix_full_values[0][1] = score_per_impact['LOW']['MEDIUM']
-        user_matrix_full_values[0][2] = score_per_impact['LOW']['HIGH']
-        user_matrix_full_values[1][0] = score_per_impact['MEDIUM']['LOW']
-        user_matrix_full_values[1][1] = score_per_impact['MEDIUM']['MEDIUM']
-        user_matrix_full_values[1][2] = score_per_impact['MEDIUM']['HIGH']
-        user_matrix_full_values[2][0] = score_per_impact['HIGH']['LOW']
-        user_matrix_full_values[2][1] = score_per_impact['HIGH']['MEDIUM']
-        user_matrix_full_values[2][2] = score_per_impact['HIGH']['HIGH']
-
-        user_matrix_relative_values = user_matrix_full_values / np.sum(user_matrix_full_values)
-        user_matrix_relative_column = user_matrix_full_values / user_matrix_full_values.sum(axis=1, keepdims=True)
 
         partition_scores = self.__compute_partition_scores(
             user_matrix_relative_column,
             user_matrix_relative_values,
             PARTITIONS)
 
-        partition_scores = {k: v for k, v in sorted(partition_scores.items(),
+        partition_scores = {int(k): v for k, v in sorted(partition_scores.items(),
                                                          key=lambda item: item[1],
                                                          reverse=True)}
         scores['partitions'] = partition_scores
@@ -240,8 +227,22 @@ class TrainManager(object):
                 current_score_table[user_impact] = number_of_occurrences
                 score_table[target_impact] = current_score_table
 
+        user_matrix_full_values = np.zeros((3, 3))
+        user_matrix_full_values[0][0] = score_table['LOW']['LOW']
+        user_matrix_full_values[0][1] = score_table['LOW']['MEDIUM']
+        user_matrix_full_values[0][2] = score_table['LOW']['HIGH']
+        user_matrix_full_values[1][0] = score_table['MEDIUM']['LOW']
+        user_matrix_full_values[1][1] = score_table['MEDIUM']['MEDIUM']
+        user_matrix_full_values[1][2] = score_table['MEDIUM']['HIGH']
+        user_matrix_full_values[2][0] = score_table['HIGH']['LOW']
+        user_matrix_full_values[2][1] = score_table['HIGH']['MEDIUM']
+        user_matrix_full_values[2][2] = score_table['HIGH']['HIGH']
+
+        user_matrix_relative_values = user_matrix_full_values / np.sum(user_matrix_full_values)
+        user_matrix_relative_column = user_matrix_full_values / user_matrix_full_values.sum(axis=1, keepdims=True)
+
         user_stats['score_table'] = score_table
-        user_stats['user_partition'] = self.__get_user_partition(score_table)
+        user_stats['user_partitions'] = self.__get_user_partition(user_matrix_relative_column, user_matrix_relative_values)
 
         return user_stats
 

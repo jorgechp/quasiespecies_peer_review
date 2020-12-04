@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Article } from '@src/app/models/article-interface.model';
 import { AnswerResult } from '@src/app/models/answer-result-model';
-import { UserScoreTable } from '@src/app/models/user-score-table.model';
+import { UserScore } from '@src/app/models/user-score.model';
 
 @Injectable({
   providedIn: 'root'
@@ -24,8 +24,8 @@ export class TrainService {
     return this.httpClient.get<Article>(this.getLastArticleUrl, { withCredentials: true });
   }
 
-  getScoreTable(): Observable<UserScoreTable>{
-    return this.httpClient.get<UserScoreTable>(this.userScoreTableUrl, { withCredentials: true });
+  getScoreTable(): Observable<UserScore>{
+    return this.httpClient.get<UserScore>(this.userScoreTableUrl, { withCredentials: true });
   }
 
   answer(response: string): Observable<AnswerResult>{

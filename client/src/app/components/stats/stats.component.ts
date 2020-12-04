@@ -1,10 +1,9 @@
 import { TrainService } from '@src/app/services/train.service';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { UserScoreRow, UserScoreTable } from '@src/app/models/user-score-table.model';
+import { UserScore, UserScorePartition, UserScoreRow, UserScoreTable } from '@src/app/models/user-score.model';
 import { SubmissionProfileInterface } from '@src/app/models/submission-profile-interface';
 import { TypeOfJournal } from '@src/app/models/type-of-journal.enum';
-import { PartitionInterface } from '@src/app/models/partition-interface';
 import { UserService } from '@src/app/services/user.service';
 
 @Component({
@@ -15,8 +14,11 @@ import { UserService } from '@src/app/services/user.service';
 export class StatsComponent implements OnInit, OnDestroy {
 
   private trainServiceSuscription: Subscription | undefined;
+  private partitionsKey: [] | undefined;
+  private partitions: (number)[][] | undefined;
+
   public confusionMatrixDataFull: UserScoreTable | undefined;
-  public partition: PartitionInterface | undefined;
+  public partition: UserScorePartition | undefined;
   public submissionProfile: SubmissionProfileInterface | undefined;
   loginSuscription: Subscription | undefined;
 
@@ -29,6 +31,7 @@ export class StatsComponent implements OnInit, OnDestroy {
   limit = 0.6;
 
   isLogged = false;
+  submissionProfile: object;
 
   constructor(private trainService: TrainService,
               private userService: UserService) {
@@ -98,91 +101,55 @@ export class StatsComponent implements OnInit, OnDestroy {
     }
   }
 
-  generatePartitionString(): string{
-    const partitionAsArray = Array<Array<TypeOfJournal>>();
-
-    if (this.partition !== undefined){
-      if (this.partition.LOW){
-        partitionAsArray.push([TypeOfJournal.LOW]);
+  partitionToString(): string{
+    if (this.partitionsKey !== undefined && this.partition !== undefined){
+      const partitionString = Array<string>();
+      partitionString.push('K = ');
+      partitionString.push('{');
+      const partitionDetails: [] = this.partitionsKey[this.partition.id_partition];
+      partitionDetails.forEach((subPartition: []) => {
+        partitionString.push('{');
+        subPartition.forEach((impact: string) => {
+          switch (impact){
+            case 'LOW':
+              partitionString.push('LOW-Quality');
+              break;
+            case 'MEDIUM':
+              partitionString.push('MEDIUM-Quality');
+              break;
+            case 'HIGH':
+              partitionString.push('HIGH-Quality');
+              break;
+          }
+          partitionString.push(', ');
+        });
+        partitionString.pop();
+        partitionString.push('}');
+        partitionString.push(',');
       }
-
-      if (this.partition.MEDIUM){
-        partitionAsArray.push([TypeOfJournal.MEDIUM]);
-      }
-
-      if (this.partition.HIGH){
-        partitionAsArray.push([TypeOfJournal.HIGH]);
-      }
+      );
+      partitionString.pop();
+      partitionString.push('}');
+      return partitionString.join('');
     }
     return '';
   }
 
-  private infereProfileSubmission(profileData: UserScoreRow): Array<TypeOfJournal>{
-    const profile = Array<TypeOfJournal>();
-    if (profileData?.LOW >= this.limit){
-      profile.push(TypeOfJournal.LOW);
-    }
-    if (profileData?.MEDIUM >= this.limit){
-      profile.push(TypeOfJournal.MEDIUM);
-    }
-    if ( profileData?.HIGH >= this.limit){
-      profile.push(TypeOfJournal.HIGH);
-    }
-    return profile;
-  }
-
-  private inferePartition(): PartitionInterface | undefined{
-    if (this.confusionMatrixDataFull !== undefined){
-      const partition = {LOW: false, MEDIUM: false,
-                         HIGH: false, LOW_HIGH: false,
-                         LOW_MEDIUM: false,
-                         MEDIUM_HIGH: false} as PartitionInterface;
-
-      if (this.confusionMatrixDataFull.LOW.LOW >= this.limit){
-        partition.LOW = true;
-      }
-
-      if (this.confusionMatrixDataFull.LOW.MEDIUM >= this.limit && this.confusionMatrixDataFull.MEDIUM.LOW >= this.limit){
-        partition.LOW_MEDIUM = true;
-      }
-
-      if (this.confusionMatrixDataFull.LOW.HIGH >= this.limit && this.confusionMatrixDataFull.HIGH.LOW >= this.limit){
-        partition.LOW_HIGH = true;
-      }
-
-      if (this.confusionMatrixDataFull.MEDIUM.MEDIUM >= this.limit){
-        partition.MEDIUM = true;
-      }
-
-      if (this.confusionMatrixDataFull.MEDIUM.HIGH >= this.limit && this.confusionMatrixDataFull.HIGH.MEDIUM >= this.limit){
-        partition.MEDIUM_HIGH = true;
-      }
-
-      if (this.confusionMatrixDataFull.HIGH.HIGH >= this.limit){
-        partition.HIGH = true;
-      }
-      return partition;
-    }
-    return undefined;
-  }
-
-  private infereSubmissionProfile(): SubmissionProfileInterface | undefined{
-    if (this.confusionMatrixDataFull !== undefined){
-      const lowProfile = this.infereProfileSubmission(this.confusionMatrixDataFull.LOW);
-      const mediumProfile = this.infereProfileSubmission(this.confusionMatrixDataFull.MEDIUM);
-      const highProfile = this.infereProfileSubmission(this.confusionMatrixDataFull.HIGH);
-      return {LOW: lowProfile, MEDIUM: mediumProfile, HIGH: highProfile} as SubmissionProfileInterface;
-    }
-    return undefined;
-  }
-
   subscribeTrainService(): void {
     this.trainServiceSuscription = this.trainService.getScoreTable().subscribe(
-      (response: UserScoreTable) => {
-        this.confusionMatrixDataFull = response;
+      (response: UserScore) => {
+        this.confusionMatrixDataFull = response.score_table;
         this.computeBasicStats();
-        this.partition = this.inferePartition();
-        this.submissionProfile = this.infereSubmissionProfile();
+        this.partitionsKey = response.user_partitions.partitions_keys;
+        const partitions = response.user_partitions.partitions;
+        const keys = Object.keys(partitions);
+        const sortedKeys = keys.sort((key1, key2) => partitions[Number(key2)] - partitions[Number(key1)]);
+        const partitionsSorted = sortedKeys.map((key) => [Number(key), partitions[Number(key)]]);
+        this.partition = ({id_partition: partitionsSorted[0][0], score_partition: partitionsSorted[0][1]} as UserScorePartition);
+        this.partitionToString();
+
+        this.submissionProfile = response.user_partitions.submissions[this.partition.id_partition];
+        console.log(this.submissionProfile);
       }
     );
   }

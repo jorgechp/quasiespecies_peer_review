@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { UserScoreTable } from '@src/app/models/user-score-table.model';
+import { UserScoreTable } from '@src/app/models/user-score.model';
 
 @Component({
   selector: 'app-confusion-matrix',

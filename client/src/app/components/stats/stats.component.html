@@ -23,12 +23,16 @@
          * Dark cells <span class="stats__legend--square">■</span> contains values equal or greater than {{this.limit}}.
     </section>
     <section class="stats__partitions" *ngIf="this.partition !== undefined">
-        At this point, we can infere your partition and your partition.
-        
         <p>
-            {{this.generatePartitionString()}}
-        </p>
-
+        At this point, we can infere your partition and your partition. According to your results,
+         with a probability of <span class="text-bold">{{(this.partition.score_partition * 100) | number: '1.2-2'}}%</span> your partition is:   
+        </p>     
+        <p class="partition_string">
+            {{this.partitionToString()}}
+        </p>        
+    </section>
+    <section class="stats_submission_profiles">
+        In addition, we can determine your submission profile with a probabilty of
     </section>
 
 </section>
