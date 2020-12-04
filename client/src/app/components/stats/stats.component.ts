@@ -1,9 +1,8 @@
 import { TrainService } from '@src/app/services/train.service';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { UserScore, UserScorePartition, UserScoreRow, UserScoreTable } from '@src/app/models/user-score.model';
+import { UserScore, UserScorePartition, UserScoreTable } from '@src/app/models/user-score.model';
 import { SubmissionProfileInterface } from '@src/app/models/submission-profile-interface';
-import { TypeOfJournal } from '@src/app/models/type-of-journal.enum';
 import { UserService } from '@src/app/services/user.service';
 
 @Component({
@@ -101,39 +100,6 @@ export class StatsComponent implements OnInit, OnDestroy {
     }
   }
 
-  partitionToString(): string{
-    if (this.partitionsKey !== undefined && this.partition !== undefined){
-      const partitionString = Array<string>();
-      partitionString.push('K = ');
-      partitionString.push('{');
-      const partitionDetails: [] = this.partitionsKey[this.partition.id_partition];
-      partitionDetails.forEach((subPartition: []) => {
-        partitionString.push('{');
-        subPartition.forEach((impact: string) => {
-          switch (impact){
-            case 'LOW':
-              partitionString.push('LOW-Quality');
-              break;
-            case 'MEDIUM':
-              partitionString.push('MEDIUM-Quality');
-              break;
-            case 'HIGH':
-              partitionString.push('HIGH-Quality');
-              break;
-          }
-          partitionString.push(', ');
-        });
-        partitionString.pop();
-        partitionString.push('}');
-        partitionString.push(',');
-      }
-      );
-      partitionString.pop();
-      partitionString.push('}');
-      return partitionString.join('');
-    }
-    return '';
-  }
 
   subscribeTrainService(): void {
     this.trainServiceSuscription = this.trainService.getScoreTable().subscribe(
@@ -146,8 +112,6 @@ export class StatsComponent implements OnInit, OnDestroy {
         const sortedKeys = keys.sort((key1, key2) => partitions[Number(key2)] - partitions[Number(key1)]);
         const partitionsSorted = sortedKeys.map((key) => [Number(key), partitions[Number(key)]]);
         this.partition = ({id_partition: partitionsSorted[0][0], score_partition: partitionsSorted[0][1]} as UserScorePartition);
-        this.partitionToString();
-
         this.submissionProfile = response.user_partitions.submissions[this.partition.id_partition];
         console.log(this.submissionProfile);
       }
