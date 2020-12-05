@@ -53,7 +53,9 @@
         </p>   
     </section>
     <section class="stats_submission_profiles" *ngIf="this.submissionProfile !== undefined">
-        In addition, we can determine your submission profile.
+        <p>
+            In addition, we can determine your submission profile.
+        </p>
         <div class="output_string">(
             <span *ngFor="let submissionProfile of this.submissionProfile.partitions let last = last;">
                 <ng-container *ngIf="submissionProfile.impact == TypeOfJournal.LOW">LOW-Impact</ng-container>             
@@ -63,14 +65,17 @@
             </span>
             )
         </div>
-        <div>
+        <p>
             With a probability of
-            <span *ngFor="let submissionProfile of this.submissionProfile.partitions let last = last;">
-                <ng-container>{{(submissionProfile.score * 100) | number: '1.2-2'}}</ng-container>             
+            <span class="text-bold" *ngFor="let submissionProfile of this.submissionProfile.partitions let last = last;">
+                <ng-container>{{(submissionProfile.score * 100) | number: '1.2-2'}}%</ng-container>             
                 <ng-container *ngIf="!last"> and </ng-container>     
             </span>
             , respectively.
-        </div>
+        </p>
+    </section>
+    <section>
+        
     </section>
 
 </section>

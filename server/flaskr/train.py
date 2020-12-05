@@ -7,7 +7,8 @@ from flask_cors import CORS, cross_origin
 from server.flaskr.utils import process_response
 from server.management.train_manager import TrainManager
 
-DEFAULT_SCORE_LIMIT = 5
+DEFAULT_SCORE_LIMIT = 20
+EVOLUTION_STEPS = 10
 
 
 def _convert_partition_name_to_partition_id(partition_name: str) -> int:
@@ -90,13 +91,22 @@ def construct_train_blueprint(train_manager: TrainManager):
         return user_scores.to_json()
 
     @bp.route('/score/table', methods=['GET'])
-    @bp.route('/score/table/<int:limit>', methods=['GET'])
-    def get_table(limit=DEFAULT_SCORE_LIMIT):
+    @bp.route('/score/table/<int:rows_per_step>', methods=['GET'])
+    def get_table(rows_per_step=0):
         if 'username' not in session:
             abort(403)
 
-        score_table = train_manager.get_user_score_table(session['username'], limit)
-        return process_response(score_table), 200
+        score_tables = []
+        if rows_per_step == 0:
+            score_tables.append(train_manager.get_user_score_table(session['username'], first=-1))
+        else:
+            number_of_results = train_manager.count_user_score_table(session['username'])
+            number_of_steps = int(number_of_results / rows_per_step) + 1
+            for step in range(1, number_of_steps):
+                number_of_rows = rows_per_step * step
+                score_tables.append(train_manager.get_user_score_table(session['username'], first=number_of_rows))
+
+        return process_response(score_tables), 200
 
     return bp
 

@@ -193,20 +193,40 @@ class DatabaseManager(object):
         DatabaseManager.close_connections(db, cursor)
         return response
 
-    def get_user_score_table(self, user_id: str, limit: int, target_impact: str, user_impact: str ) -> int:
+    def count_user_score_table(self, user_id: str) -> int:
+        db, cursor = self.__get_cursor()
+
+        cursor.execute("""SELECT COUNT(idAnswer) FROM user_answer_article WHERE idUser = {};""".format(user_id))
+        data = cursor.fetchone()
+        response = data[0] if data is not None else None
+        DatabaseManager.close_connections(db, cursor)
+        return response
+
+    def get_user_score_table(self, user_id: str, first: int, target_impact: str, user_impact: str) -> int:
         db, cursor = self.__get_cursor()
 
         id_real_impact = self.get_id_impact(target_impact)
         id_user_impact = self.get_id_impact(user_impact)
 
+        if first != -1:
+            query = """
+                            SELECT COUNT(userAnswerImpact)
+                            FROM user_answer_article
+                            WHERE  idUser = {} AND userAnswerImpact = {} AND realImpact = {} AND
+                            idAnswer IN(
+                                                SELECT idAnswer 
+                                                  FROM user_answer_article
+                                                  ORDER BY date ASC
+                                                  LIMIT {});                    
+                     """.format(user_id, id_user_impact, id_real_impact, first)
+        else:
+            query = """
+                            SELECT COUNT(userAnswerImpact)
+                            FROM user_answer_article
+                            WHERE  idUser = {} AND userAnswerImpact = {} AND realImpact = {};                    
+                     """.format(user_id, id_user_impact, id_real_impact)
 
-        cursor.execute("""
-                            SELECT COUNT(userAnswerImpact) 
-                            FROM user_answer_article                             
-                            WHERE  idUser = {} AND userAnswerImpact = {} AND realImpact = {}
-                            ORDER BY date DESC
-                            LIMIT {}
-                     """.format(user_id, id_user_impact, id_real_impact, limit))
+        cursor.execute(query)
         data = cursor.fetchone()
         response = data[0] if data is not None else None
         DatabaseManager.close_connections(db, cursor)

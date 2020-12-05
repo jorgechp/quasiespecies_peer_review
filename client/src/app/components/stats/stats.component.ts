@@ -1,9 +1,9 @@
 import { SubmissionProfileSubPartition } from '@src/app/models/submission-profile-interface';
-import { UserScoreRow } from '@src/app/models/user-score.model';
+import { UserScore, UserScoreRow } from '@src/app/models/user-score.model';
 import { TrainService } from '@src/app/services/train.service';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { UserScore, UserScorePartition, UserScoreTable } from '@src/app/models/user-score.model';
+import { UserScorePartition, UserScoreTable } from '@src/app/models/user-score.model';
 import { SubmissionProfileInterface } from '@src/app/models/submission-profile-interface';
 import { UserService } from '@src/app/services/user.service';
 import { TypeOfJournal } from '@src/app/models/type-of-journal.enum';
@@ -17,6 +17,8 @@ export class StatsComponent implements OnInit, OnDestroy {
 
   public TypeOfJournal = TypeOfJournal;
   private trainServiceSuscription: Subscription | undefined;
+  private trainServiceEvolutionSuscription: Subscription | undefined;
+
   private partitionsKey: [] | undefined;
   private partitions: (number)[][] | undefined;
 
@@ -24,6 +26,7 @@ export class StatsComponent implements OnInit, OnDestroy {
   public partition: UserScorePartition | undefined;
   public submissionProfile: SubmissionProfileInterface | undefined;
   loginSuscription: Subscription | undefined;
+  
 
   numberOfAnswers = 0;
 
@@ -31,9 +34,10 @@ export class StatsComponent implements OnInit, OnDestroy {
   totalLow = 0;
   totalMedium = 0;
 
-  limit = 0.6;
+  limit = 0.5;
 
   isLogged = false;
+
   // submissionProfile: object;
 
   constructor(private trainService: TrainService,
@@ -44,11 +48,15 @@ export class StatsComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.subscribeCheckLogin();
     this.subscribeTrainService();
+    this.subscribeTrainServiceEvolution();
   }
 
   ngOnDestroy(): void{
     if (this.trainServiceSuscription !== undefined){
       this. trainServiceSuscription?.unsubscribe();
+    }
+    if (this.trainServiceEvolutionSuscription !== undefined){
+      this.trainServiceEvolutionSuscription.unsubscribe();
     }
     if (this.loginSuscription !== undefined){
       this.loginSuscription.unsubscribe();
@@ -131,20 +139,24 @@ export class StatsComponent implements OnInit, OnDestroy {
 
   subscribeTrainService(): void {
     this.trainServiceSuscription = this.trainService.getScoreTable().subscribe(
-      (response: UserScore) => {
-        this.confusionMatrixDataFull = response.score_table;
+      (response: Array<UserScore>) => {
+        const lastScoreTable = response[response.length - 1];
+        this.confusionMatrixDataFull = lastScoreTable.score_table;
         this.computeBasicStats();
-        this.partitionsKey = response.user_partitions.partitions_keys;
-        const partitionsSorted = this.processPartition(response);
+        this.partitionsKey = lastScoreTable.user_partitions.partitions_keys;
+        const partitionsSorted = this.processPartition(lastScoreTable);
         this.partition = ({id_partition: partitionsSorted[0][0], score_partition: partitionsSorted[0][1]} as UserScorePartition);
-        const submissionProfile = response.user_partitions.submissions[this.partition.id_partition];
+        const submissionProfile = lastScoreTable.user_partitions.submissions[this.partition.id_partition];
         this.submissionProfile = {partitions: this.processSubmissionProfile(submissionProfile)};
       }
     );
   }
 
-
-
-
-
+  subscribeTrainServiceEvolution(): void {
+    this.trainServiceEvolutionSuscription = this.trainService.getScoreTableEvolution().subscribe(
+      (response: Array<UserScore>) => {
+        console.log(response);
+      }
+    );
+  }
 }

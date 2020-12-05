@@ -211,7 +211,7 @@ class TrainManager(object):
 
 
 
-    def get_user_score_table(self, user_id: str, limit: int) -> dict:
+    def get_user_score_table(self, user_id: str, first = -1) -> dict:
         impact_list = [e.value for e in Impact]
 
         user_stats = dict()
@@ -221,7 +221,7 @@ class TrainManager(object):
             current_score_table = dict()
             for user_impact in impact_list:
                 number_of_occurrences = self._database_manager.get_user_score_table(user_id,
-                                                                  limit,
+                                                                  first,
                                                                   target_impact,
                                                                   user_impact )
                 current_score_table[user_impact] = number_of_occurrences
@@ -245,6 +245,9 @@ class TrainManager(object):
         user_stats['user_partitions'] = self.__get_user_partition(user_matrix_relative_column, user_matrix_relative_values)
 
         return user_stats
+
+    def count_user_score_table(self, user_id: str) -> int:
+        return self._database_manager.count_user_score_table(user_id)
 
 
 
