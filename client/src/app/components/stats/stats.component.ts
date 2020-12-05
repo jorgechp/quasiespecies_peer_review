@@ -1,9 +1,12 @@
+import { SubmissionProfileSubPartition } from '@src/app/models/submission-profile-interface';
+import { UserScoreRow } from '@src/app/models/user-score.model';
 import { TrainService } from '@src/app/services/train.service';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { UserScore, UserScorePartition, UserScoreTable } from '@src/app/models/user-score.model';
 import { SubmissionProfileInterface } from '@src/app/models/submission-profile-interface';
 import { UserService } from '@src/app/services/user.service';
+import { TypeOfJournal } from '@src/app/models/type-of-journal.enum';
 
 @Component({
   selector: 'app-stats',
@@ -12,6 +15,7 @@ import { UserService } from '@src/app/services/user.service';
 })
 export class StatsComponent implements OnInit, OnDestroy {
 
+  public TypeOfJournal = TypeOfJournal;
   private trainServiceSuscription: Subscription | undefined;
   private partitionsKey: [] | undefined;
   private partitions: (number)[][] | undefined;
@@ -30,7 +34,7 @@ export class StatsComponent implements OnInit, OnDestroy {
   limit = 0.6;
 
   isLogged = false;
-  submissionProfile: object;
+  // submissionProfile: object;
 
   constructor(private trainService: TrainService,
               private userService: UserService) {
@@ -72,7 +76,6 @@ export class StatsComponent implements OnInit, OnDestroy {
         for (const [subKey, subValue] of Object.entries(value)){
           const score = subValue as number;
           totalRow += score;
-          console.log(subKey, subValue);
           if (minimumValue > score){
             minimumValue = score;
             minimumCoordinate = [key, subKey];
@@ -100,6 +103,31 @@ export class StatsComponent implements OnInit, OnDestroy {
     }
   }
 
+  private processPartition(response: UserScore): number[][] {
+    const partitions = response.user_partitions.partitions;
+    const keys = Object.keys(partitions);
+    const sortedKeys = keys.sort((key1, key2) => partitions[Number(key2)] - partitions[Number(key1)]);
+    const partitionsSorted = sortedKeys.map((key) => [Number(key), partitions[Number(key)]]);
+    return partitionsSorted;
+  }
+
+  private processSubmissionProfile(submissionProfileResponse: Array<UserScoreRow>): Array<SubmissionProfileSubPartition>{
+    const submissionProfile: SubmissionProfileSubPartition[] = [];
+    submissionProfileResponse.forEach((score: UserScoreRow) => {
+      const scoreRowAsList = [
+        {impact: TypeOfJournal.HIGH, score: score.HIGH},
+        {impact: TypeOfJournal.MEDIUM, score: score.MEDIUM},
+        {impact: TypeOfJournal.LOW, score: score.LOW},
+      ];
+
+      const max = scoreRowAsList.reduce((prev, current) => {
+        return (prev.score > current.score) ? prev : current;
+      });
+
+      submissionProfile.push(max);
+    });
+    return submissionProfile;
+  }
 
   subscribeTrainService(): void {
     this.trainServiceSuscription = this.trainService.getScoreTable().subscribe(
@@ -107,16 +135,15 @@ export class StatsComponent implements OnInit, OnDestroy {
         this.confusionMatrixDataFull = response.score_table;
         this.computeBasicStats();
         this.partitionsKey = response.user_partitions.partitions_keys;
-        const partitions = response.user_partitions.partitions;
-        const keys = Object.keys(partitions);
-        const sortedKeys = keys.sort((key1, key2) => partitions[Number(key2)] - partitions[Number(key1)]);
-        const partitionsSorted = sortedKeys.map((key) => [Number(key), partitions[Number(key)]]);
+        const partitionsSorted = this.processPartition(response);
         this.partition = ({id_partition: partitionsSorted[0][0], score_partition: partitionsSorted[0][1]} as UserScorePartition);
-        this.submissionProfile = response.user_partitions.submissions[this.partition.id_partition];
-        console.log(this.submissionProfile);
+        const submissionProfile = response.user_partitions.submissions[this.partition.id_partition];
+        this.submissionProfile = {partitions: this.processSubmissionProfile(submissionProfile)};
       }
     );
   }
+
+
 
 
 

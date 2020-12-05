@@ -22,8 +22,6 @@ export class ConfusionMatrixComponent implements OnInit {
   constructor() { }
 
 
-  ngOnInit(): void {
-    console.log('hola');
-  }
+  ngOnInit(): void { }
 
 }
