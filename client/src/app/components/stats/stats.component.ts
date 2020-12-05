@@ -18,6 +18,7 @@ export class StatsComponent implements OnInit, OnDestroy {
   public TypeOfJournal = TypeOfJournal;
   private trainServiceSuscription: Subscription | undefined;
   private trainServiceEvolutionSuscription: Subscription | undefined;
+  private loginSuscription: Subscription | undefined;
 
   private partitionsKey: [] | undefined;
   private partitions: (number)[][] | undefined;
@@ -25,8 +26,9 @@ export class StatsComponent implements OnInit, OnDestroy {
   public confusionMatrixDataFull: UserScoreTable | undefined;
   public partition: UserScorePartition | undefined;
   public submissionProfile: SubmissionProfileInterface | undefined;
-  loginSuscription: Subscription | undefined;
-  
+  public evolutionItems: { index: number; id_partition: number; id_submission_profile: string; }[] | undefined;
+  public columnsToDisplay = ['index', 'id_partition', 'id_submission_profile'];
+
 
   numberOfAnswers = 0;
 
@@ -47,7 +49,6 @@ export class StatsComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.subscribeCheckLogin();
-    this.subscribeTrainService();
     this.subscribeTrainServiceEvolution();
   }
 
@@ -137,8 +138,53 @@ export class StatsComponent implements OnInit, OnDestroy {
     return submissionProfile;
   }
 
-  subscribeTrainService(): void {
-    this.trainServiceSuscription = this.trainService.getScoreTable().subscribe(
+  private processEvolution(userScoreTables: Array<UserScore>): void{
+    const itemsTable: { index: number; id_partition: number; id_submission_profile: string; }[] = [];
+    let step = 1;
+    let lastLowImpact = '';
+    let lastPartition = -1;
+    userScoreTables.forEach(
+      (scoreTable: UserScore) => {
+        const partitionsSorted = this.processPartition(scoreTable);
+        const bestPartition = ({id_partition: partitionsSorted[0][0], score_partition: partitionsSorted[0][1]} as UserScorePartition);
+        const submissionProfile = scoreTable.user_partitions.submissions[bestPartition.id_partition];
+        const bestSubmissionProfile = {partitions: this.processSubmissionProfile(submissionProfile)};
+        const submissionProfileString = [];
+        if (lastPartition !== bestPartition.id_partition && lastLowImpact !== bestSubmissionProfile.partitions.join()){
+          submissionProfileString.push('(');
+          bestSubmissionProfile.partitions.forEach(
+            (profile) => {
+              switch (profile.impact){
+                case TypeOfJournal.LOW:
+                  submissionProfileString.push('LOW-Impact');
+                  break;
+                case TypeOfJournal.LOW:
+                  submissionProfileString.push('MEDIUM-Impact');
+                  break;
+                case TypeOfJournal.LOW:
+                  submissionProfileString.push('HIGH-Impact');
+                  break;
+              }
+              submissionProfileString.push(', ');
+            }
+          );
+          submissionProfileString.pop();
+          submissionProfileString.push(')');
+          itemsTable.push({index: step, id_partition: bestPartition.id_partition, id_submission_profile: submissionProfileString.join('')});
+          lastLowImpact = bestSubmissionProfile.partitions.join();
+          lastPartition = bestPartition.id_partition;
+        }
+        step += 1;
+      }
+    );
+    this.evolutionItems = itemsTable;
+    console.log(this.evolutionItems);
+  }
+
+
+
+  subscribeTrainServiceEvolution(): void {
+    this.trainServiceEvolutionSuscription = this.trainService.getScoreTableEvolution().subscribe(
       (response: Array<UserScore>) => {
         const lastScoreTable = response[response.length - 1];
         this.confusionMatrixDataFull = lastScoreTable.score_table;
@@ -148,14 +194,8 @@ export class StatsComponent implements OnInit, OnDestroy {
         this.partition = ({id_partition: partitionsSorted[0][0], score_partition: partitionsSorted[0][1]} as UserScorePartition);
         const submissionProfile = lastScoreTable.user_partitions.submissions[this.partition.id_partition];
         this.submissionProfile = {partitions: this.processSubmissionProfile(submissionProfile)};
-      }
-    );
-  }
+        this.processEvolution(response.reverse());
 
-  subscribeTrainServiceEvolution(): void {
-    this.trainServiceEvolutionSuscription = this.trainService.getScoreTableEvolution().subscribe(
-      (response: Array<UserScore>) => {
-        console.log(response);
       }
     );
   }

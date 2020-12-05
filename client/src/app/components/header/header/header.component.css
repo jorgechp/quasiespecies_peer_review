@@ -30,10 +30,10 @@
   }
 
   .app-header{
+    box-sizing:content-box;
     background-color: #373438;
     color: #867D89;
-    height: 40px;
-    min-height: 40px;
+    height: 64px;
   }
 
   .flex-content-link--logout{

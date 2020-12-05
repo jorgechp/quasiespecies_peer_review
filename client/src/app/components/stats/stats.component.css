@@ -18,3 +18,22 @@
     font-size: 25px;
     font-family:"Fira Mono", "DejaVu Sans Mono", Menlo, Consolas, "Liberation Mono", Monaco, "Lucida Console", monospace;
 }
+
+.evolution_table{
+    border-radius: 15px;  
+    text-align: center;
+    border-collapse: collapse;
+    padding: 15px;   
+    margin: 0 auto;
+}
+
+.mat-header-cell{
+    background-color: #5E6068;
+    color: #F6F7F8;
+    padding: 20px;
+}
+
+.mat-row{
+    background-color: #F6F7F8;    
+    padding: 20%;
+}
