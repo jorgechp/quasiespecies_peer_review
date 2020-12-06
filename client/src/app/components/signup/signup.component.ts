@@ -21,7 +21,7 @@ export class SignupComponent implements OnInit, OnDestroy {
   recoveryFormSecondStageGroup: FormGroup;
 
   isRecoveringPassword = false;
-  isRecoveringPasswordFirstStep = false;
+  isRecoveringPasswordFirstStep = true;
 
   hideLogin = true;
   hideSignUp = true;
@@ -182,6 +182,11 @@ export class SignupComponent implements OnInit, OnDestroy {
               if (response){
                 this.isRecoveringPasswordFirstStep = false;
               }
+            },
+            (error) => {
+              if (error.status === 400){
+                this.snackMessageService.notifyNewSnackMessage('The nickname or the user is not valid.');
+              }
             }
         );
       }
@@ -189,17 +194,24 @@ export class SignupComponent implements OnInit, OnDestroy {
   }
 
   recoverySecondStageSubmit(): void{
-    const token = this.recoveryFormGroup.get('recovery_token');
+    const token = this.recoveryFormSecondStageGroup.get('recovery_token');
     const password = this.passwordFormGroup.get('password1');
 
     if (token && password){
-      this.recoveryUserSuscription = this.userService.userRecoveryPassword(token.value, password.value).subscribe(
+      this.recoveryUserSuscription = this.userService.userRecoveryChangePassword(token.value, password.value).subscribe(
         (response: boolean) => {
             if (response){
-              console.log(response);
+              this.snackMessageService.notifyNewSnackMessage('OK!, you can use your new password from now on.');
+              this.isRecoveringPasswordFirstStep = true;
+              this.isRecoveringPassword = false;
+            }
+          },
+          (error) => {
+            if (error.status === 400){
+              this.snackMessageService.notifyNewSnackMessage('This token has expired, or is not valid.');
             }
           }
-      );
+        )
     }
   }
 }

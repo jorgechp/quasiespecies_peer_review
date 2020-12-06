@@ -268,3 +268,24 @@ class DatabaseManager(object):
         db.commit()
         DatabaseManager.close_connections(db, cursor)
         return 0
+
+    def getUserByTokens(self, client_token, cookie_token):
+        db, cursor = self.__get_cursor()
+        cursor.execute(
+            """SELECT idUser FROM user_tokens WHERE client_token = '{}' AND cookie_token = '{}';""".format(client_token, cookie_token))
+        data = cursor.fetchone()
+        response = data[0] if data is not None else None
+        DatabaseManager.close_connections(db, cursor)
+        return response
+
+    def change_user_password(self, id_user: str, hashed_password: str):
+        db, cursor = self.__get_cursor()
+        try:
+            cursor.execute("""
+                                UPDATE user SET password = '{}' WHERE idUser = {}
+                            """.format(hashed_password, id_user)
+                           )
+        except sqlite3.IntegrityError as error:
+            return -1
+        DatabaseManager.close_connections(db, cursor)
+        return 0

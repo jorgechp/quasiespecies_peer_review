@@ -68,3 +68,14 @@ class UserManager(object):
                                      , default_config['server_smtp']
                                      , default_config['mail_account'])
         mail_client.send_recovery_mail(user_mail, client_token)
+
+    def check_user_token(self, token_mail, session_token):
+        return self._database_manager.getUserByTokens(token_mail, session_token)
+
+    def change_user_password(self, id_user: str, plain_password: str):
+        hashed_password = self._security_manager.hash_password(plain_password)
+        response = self._database_manager.change_user_password(id_user, hashed_password)
+        return response == 0
+
+    def remove_user_token(self, id_user_token: str) -> None:
+        self._database_manager.remove_user_tokens(id_user_token)

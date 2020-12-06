@@ -1,7 +1,9 @@
     <ng-container *ngIf="!this.isRecoveringPassword">  
         <section>
             <h2>Already have an account? then log in ...</h2>
-            <a (click)="this.isRecoveringPassword = true">Click here if you don't remember your account</a>
+            <p class="recovery_link">
+                <a (click)="this.isRecoveringPassword = true">🔗  Click here if you don't remember your account</a>
+            </p>
             <form #loginForm [formGroup]="loginFormGroup" (ngSubmit)="loginSubmit()" (keyup.enter)="enterEvent('login')">
                 <mat-form-field class="register-field" appearance="legacy" >
                     <mat-label>Nick</mat-label>
@@ -101,9 +103,11 @@
 </ng-container>
 <ng-container *ngIf="this.isRecoveringPassword">
     <h2>Recovery password</h2>
-    <a (click)="this.isRecoveringPassword = false">Click here to log in or sign up</a>
+    <p class="recovery_link">
+        <a (click)="this.isRecoveringPassword = false">🔗  Click here to log in or sign up</a>
+    </p>
     <form #recoveryForm [formGroup]="recoveryFormGroup" (ngSubmit)="recoverySubmit()" 
-            (keyup.enter)="enterEvent('recovery')" *ngIf="!this.isRecoveringPasswordFirstStep">
+            (keyup.enter)="enterEvent('recovery')" *ngIf="this.isRecoveringPasswordFirstStep">
         <mat-form-field class="register-field" appearance="legacy" >
             <mat-label>Nick</mat-label>
             <input matInput placeholder="Placeholder" id="recovery_nick" formControlName="recovery_nick" autofocus>
@@ -123,7 +127,7 @@
 
 
     <form #recoveryForm2 [formGroup]="recoveryFormSecondStageGroup" (ngSubmit)="recoverySecondStageSubmit()" 
-            (keyup.enter)="enterEvent('recovery')" *ngIf="this.isRecoveringPasswordFirstStep">
+            (keyup.enter)="enterEvent('recovery')" *ngIf="!this.isRecoveringPasswordFirstStep">
         <mat-form-field class="register-field" appearance="legacy" >
             <mat-label>Token</mat-label>
             <input matInput placeholder="Placeholder" id="recovery_token" formControlName="recovery_token" autofocus>

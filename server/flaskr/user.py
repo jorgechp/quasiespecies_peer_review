@@ -8,8 +8,6 @@ from server.management.user_manager import UserManager
 
 
 
-
-
 def construct_user_blueprint(user_manager: UserManager):
     bp = Blueprint('user', __name__, url_prefix='/user')
 
@@ -62,12 +60,12 @@ def construct_user_blueprint(user_manager: UserManager):
     @cross_origin(origin='http://localhost/*', headers=['Content- Type', 'Authorization'])
     def user_recovery():
         if request.method == 'POST':
-            return recovery_login(request)
+            return recovery_login()
         elif request.method == 'OPTIONS':
             response = process_response()
             return response, 200
 
-    def recovery_login(request):
+    def recovery_login():
         json_request = request.get_json(force=True)
         if 'nick' not in json_request or 'mail' not in json_request:
             response = process_response({'message': 'User data not provided'})
@@ -80,9 +78,45 @@ def construct_user_blueprint(user_manager: UserManager):
             return response, 400
         client_token, session_token = user_manager.get_recovery_token(user_id)
         session['session_token'] = session_token
-        # user_manager.send_recovery_mail(mail, client_token)
+        user_manager.send_recovery_mail(mail, client_token)
         response = process_response(True)
         return response, 200
+
+    @bp.route('/login/recovery/token', methods=['POST', 'OPTIONS'])
+    @cross_origin(origin='http://localhost/*', headers=['Content- Type', 'Authorization'])
+    def user_recovery_second_step():
+        if request.method == 'POST':
+            return recovery_change_password()
+        elif request.method == 'OPTIONS':
+            response = process_response()
+            return response, 200
+
+    def recovery_change_password():
+        json_request = request.get_json(force=True)
+
+        if 'token' not in json_request or 'password' not in json_request:
+            response = process_response({'message': 'Token or data not provided'})
+            return response, 400
+
+        token_mail = json_request['token']
+        if 'session_token' not in session:
+            response = process_response({'message': 'Session token not found'})
+            return response, 400
+
+        session_token = session['session_token']
+        plain_password = json_request['password']
+
+        id_user_token = user_manager.check_user_token(token_mail, session_token)
+        if id_user_token is not None:
+            response = user_manager.change_user_password(id_user_token, plain_password)
+            if response:
+                user_manager.remove_user_token(id_user_token)
+                del session['session_token']
+            response = process_response(True, authorization__required=True)
+            return response, 200
+        else:
+            response = process_response({'message': 'Wrong token data'})
+            return response, 400
 
     @bp.route('/logout', methods=['POST', 'OPTIONS'])
     @cross_origin(origin='http://localhost/*', headers=['Content- Type', 'Authorization'])
