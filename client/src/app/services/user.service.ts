@@ -11,6 +11,8 @@ export class UserService {
   private registerUserUrl = 'http://localhost:7000/user/';
   private loginUserUrl = 'http://localhost:7000/user/login';
   private logoutUserUrl = 'http://localhost:7000/user/logout';
+  private recoveryUserUrl = 'http://localhost:7000/user/login/recovery';
+  private recoveryUserSecondStageUrl = 'http://localhost:7000/user/login/recovery';
 
   private isLoggedIn$ = new BehaviorSubject<boolean>(false);
   private isLoggedInObservable = this.isLoggedIn$.asObservable();
@@ -37,6 +39,16 @@ export class UserService {
     return this.httpClient.post<boolean>(this.loginUserUrl, JSON.stringify(currentUser), { withCredentials: true }).pipe(
       tap((response: boolean) => {this.isLoggedIn$.next(response); } )
     );
+  }
+
+  userRecoveryPassword(userNick: string, userMail: string): Observable<boolean>{
+    const userData = {nick: userNick, mail: userMail};
+    return this.httpClient.post<boolean>(this.recoveryUserUrl, JSON.stringify(userData), { withCredentials: true });
+  }
+
+  userChangePassword(recoveryToken: string, newPassword: string): Observable<boolean>{
+    const userData = {token: recoveryToken, password: newPassword};
+    return this.httpClient.post<boolean>(this.recoveryUserSecondStageUrl, JSON.stringify(userData), { withCredentials: true });
   }
 
   logout(): Observable<boolean>{

@@ -1,6 +1,8 @@
+import configparser
 from dataclasses import dataclass
 
 from server.db.database_manager import DatabaseManager
+from server.management.mail_management import MailManagement
 from server.security.security_manager import SecurityManager
 
 
@@ -39,3 +41,30 @@ class UserManager(object):
     def check_user_password(self, user_id: int, plain_password: str) -> bool:
         hashed_password = self._database_manager.get_user_password(user_id)
         return self._security_manager.check_hashed_password(plain_password,hashed_password)
+
+    def get_user_mail(self, user_id: str, mail: str):
+        user_mail_encrypted = self._database_manager.get_user_mail(user_id)
+        if user_mail_encrypted == -1:
+            return user_mail_encrypted
+        decrypted_mail = self._security_manager.decrypt_mail(user_mail_encrypted)
+        if mail != decrypted_mail:
+            return -1
+        return decrypted_mail
+
+    def get_recovery_token(self, user_nick: str):
+        client_token, session_token = self._security_manager.get_recovery_token()
+        user_id = self._database_manager.get_user_by_nick(user_nick)
+        self._database_manager.remove_user_tokens(user_id)
+        self._database_manager.add_user_token(user_id, client_token, session_token)
+        return client_token, session_token
+
+    def send_recovery_mail(self, user_mail: str, client_token: str):
+        config = configparser.ConfigParser()
+        config.read('security/mail_config.ini')
+        default_config = config['DEFAULT']
+
+        mail_client = MailManagement(default_config['server_port']
+                                     , str(default_config['mail_password'])
+                                     , default_config['server_smtp']
+                                     , default_config['mail_account'])
+        mail_client.send_recovery_mail(user_mail, client_token)

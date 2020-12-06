@@ -108,6 +108,19 @@ try:
         """
     )
 
+    cursorObj.execute(
+        """
+            CREATE TABLE user_tokens(
+                        idUser INTEGER PRIMARY KEY,
+                        client_token TEXT UNIQUE NOT NULL,     
+                        cookie_token TEXT UNIQUE NOT NULL,
+                        timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
+                        
+                        FOREIGN KEY(idUser) REFERENCES user(idUser)                                  
+                )
+        """
+    )
+
     connection.commit()
     connection.close()
 except sqlite3.Error as er:

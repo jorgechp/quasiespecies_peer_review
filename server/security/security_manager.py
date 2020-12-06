@@ -1,4 +1,6 @@
 import os
+import string
+import random
 
 import bcrypt as bcrypt
 from cryptography.fernet import Fernet
@@ -84,7 +86,7 @@ class SecurityManager(object):
         :return: The plain mail.
         :rtype: str
         """
-        return Fernet(self.__key).decrypt(mail).decode()
+        return Fernet(self.__key).decrypt(mail.encode()).decode()
 
     def hash_password(self, password: str) -> str:
         """
@@ -112,5 +114,15 @@ class SecurityManager(object):
         """
 
         return bcrypt.checkpw(password.encode('utf-8'), hashed_password.encode('utf-8'))
+
+    def get_recovery_token(self) -> tuple:
+        """
+        Generates two random strings, to be used as recovery password token.
+
+        :return: A tuple with the two random tokens
+        """
+        client_token = ''.join(random.SystemRandom().choice(string.ascii_uppercase + string.digits) for _ in range(15))
+        session_token = ''.join(random.SystemRandom().choice(string.ascii_uppercase + string.digits) for _ in range(500))
+        return client_token, session_token
 
 

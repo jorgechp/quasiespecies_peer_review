@@ -17,12 +17,18 @@ export class SignupComponent implements OnInit, OnDestroy {
   loginFormGroup: FormGroup;
   registerFormGroup: FormGroup;
   passwordFormGroup: FormGroup;
+  recoveryFormGroup: FormGroup;
+  recoveryFormSecondStageGroup: FormGroup;
+
+  isRecoveringPassword = false;
+  isRecoveringPasswordFirstStep = false;
 
   hideLogin = true;
   hideSignUp = true;
 
   createUserSuscription: Subscription | undefined;
   loginSuscription: Subscription | undefined;
+  recoveryUserSuscription: Subscription | undefined;
   isLogged = true;
 
   private validatePasswords(group: FormGroup): null | object {
@@ -65,6 +71,17 @@ export class SignupComponent implements OnInit, OnDestroy {
       conditionsAgree: new FormControl('', [Validators.requiredTrue]),
       passwords: this.passwordFormGroup
    });
+
+    this.recoveryFormGroup = formBuilder.group({
+      recovery_nick: new FormControl('', [Validators.required]),
+      recovery_mail: new FormControl('', [Validators.required, Validators.email])
+    });
+
+    this.recoveryFormSecondStageGroup = formBuilder.group({
+      recovery_token: new FormControl('', [Validators.required]),
+      passwords: this.passwordFormGroup
+    });
+
   }
 
   ngOnInit(): void {}
@@ -76,10 +93,16 @@ export class SignupComponent implements OnInit, OnDestroy {
     if (this.loginSuscription !== undefined){
       this.loginSuscription.unsubscribe();
     }
+    if (this.recoveryUserSuscription !== undefined){
+      this.recoveryUserSuscription.unsubscribe();
+    }
   }
+
 
   get login_form(): { [key: string]: AbstractControl; } { return this.loginFormGroup.controls; }
   get signup_form(): { [key: string]: AbstractControl; } { return this.registerFormGroup.controls; }
+  get recovery_form(): { [key: string]: AbstractControl; } { return this.recoveryFormGroup.controls; }
+  get recovery_second_stage_form(): { [key: string]: AbstractControl; } { return this.recoveryFormSecondStageGroup.controls; }
   get password_form(): FormGroup { return this.passwordFormGroup; }
 
   enterEvent(formName: string): void{
@@ -89,6 +112,14 @@ export class SignupComponent implements OnInit, OnDestroy {
 
     if (formName === 'signup' && this.registerFormGroup.valid){
       this.registerSubmit();
+    }
+
+    if (formName === 'recovery' && this.recoveryFormGroup.valid){
+      if (this.isRecoveringPasswordFirstStep){
+        this.recoverySubmit();
+      }else{
+        this.recoverySecondStageSubmit();
+      }
     }
   }
 
@@ -138,6 +169,37 @@ export class SignupComponent implements OnInit, OnDestroy {
         );
       }
     }
+  }
 
+  recoverySubmit(): void{
+    if (this.recoveryFormGroup.valid){
+      const nick = this.recoveryFormGroup.get('recovery_nick');
+      const mail = this.recoveryFormGroup.get('recovery_mail');
+
+      if (nick && mail){
+        this.recoveryUserSuscription = this.userService.userRecoveryPassword(nick.value, mail.value).subscribe(
+          (response: boolean) => {
+              if (response){
+                this.isRecoveringPasswordFirstStep = false;
+              }
+            }
+        );
+      }
+    }
+  }
+
+  recoverySecondStageSubmit(): void{
+    const token = this.recoveryFormGroup.get('recovery_token');
+    const password = this.passwordFormGroup.get('password1');
+
+    if (token && password){
+      this.recoveryUserSuscription = this.userService.userRecoveryPassword(token.value, password.value).subscribe(
+        (response: boolean) => {
+            if (response){
+              console.log(response);
+            }
+          }
+      );
+    }
   }
 }

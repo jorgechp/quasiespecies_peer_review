@@ -144,13 +144,13 @@ class DatabaseManager(object):
         DatabaseManager.close_connections(db, cursor)
         return response
 
-    def get_user_by_nick(self, encrypted_mail: str):
+    def get_user_by_nick(self, user_id: str):
         db, cursor = self.__get_cursor()
         cursor.execute("""
                             SELECT idUser 
                             FROM user                             
                             WHERE nick = '{}'
-                    """.format(encrypted_mail))
+                    """.format(user_id))
         data = cursor.fetchone()
         response = data[0] if data is not None else None
         DatabaseManager.close_connections(db, cursor)
@@ -231,3 +231,40 @@ class DatabaseManager(object):
         response = data[0] if data is not None else None
         DatabaseManager.close_connections(db, cursor)
         return response
+
+    def get_user_mail(self, user_id: str):
+        db, cursor = self.__get_cursor()
+        cursor.execute("""SELECT mail FROM user WHERE nick = '{}';""".format(user_id))
+        data = cursor.fetchone()
+        response = data[0] if data is not None else None
+        DatabaseManager.close_connections(db, cursor)
+        return response
+
+    def remove_user_tokens(self, user_id: str):
+        db, cursor = self.__get_cursor()
+        try:
+            cursor.execute("""
+                                  DELETE FROM user_tokens WHERE idUser ='{}'
+                              """.format(user_id)
+                           )
+        except sqlite3.IntegrityError as error:
+            return -1
+        db.commit()
+        DatabaseManager.close_connections(db, cursor)
+        return 0
+
+    def add_user_token(self, user_id: str, client_token: str, cookie_token: str) -> int:
+        db, cursor = self.__get_cursor()
+        try:
+            cursor.execute("""
+                                INSERT INTO user_tokens(idUser,
+                                                                client_token,
+                                                                cookie_token)
+                                VALUES ('{}', '{}','{}')
+                            """.format(user_id, client_token, cookie_token)
+                           )
+        except sqlite3.IntegrityError as error:
+            return -1
+        db.commit()
+        DatabaseManager.close_connections(db, cursor)
+        return 0

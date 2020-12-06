@@ -1,98 +1,167 @@
-    <section>
-        <h2>Already have an account? then log in ...</h2>
-        <form #loginForm [formGroup]="loginFormGroup" (ngSubmit)="loginSubmit()" (keyup.enter)="enterEvent('login')">
-            <mat-form-field class="register-field" appearance="legacy" >
-                <mat-label>Nick</mat-label>
-                <input matInput placeholder="Placeholder" id="login_nick" formControlName="login_nick" autofocus>
-                <mat-icon matSuffix *ngIf="!login_form.login_nick.errors">done</mat-icon>
-                <mat-icon matSuffix *ngIf="login_form.login_nick.errors">close</mat-icon>
-                <mat-hint>Insert your nickname here</mat-hint>
-            </mat-form-field>
-            <mat-form-field class="register-field" appearance="legacy">
-                <mat-label>Enter your password</mat-label>
-                <input matInput [type]="hideLogin ? 'password' : 'text'" formControlName="login_password">
-                <button mat-icon-button matSuffix type="button"
-                    (click)="hideLogin = !hideLogin" 
-                    [attr.aria-label]="'Hide password'" 
-                    [attr.aria-pressed]="hideLogin"
-                    tabindex="-1">
-                        <mat-icon>{{hideLogin ? 'visibility_off' : 'visibility'}}</mat-icon>    
-                </button>
-                <mat-icon matSuffix *ngIf="!login_form.login_password.errors">done</mat-icon>
-                <mat-icon matSuffix *ngIf="login_form.login_password.errors">close</mat-icon>
-                <mat-hint>Insert your password</mat-hint>
-            </mat-form-field>
-
-            <button [disabled]="!loginFormGroup.valid" type="submit" mat-flat-button color="primary">Log in</button>
-        </form>
-    </section>
-
-
-
-    <section>    
-        <h2>... or create a new account</h2>
-        <form #signupForm [formGroup]="registerFormGroup" (ngSubmit)="registerSubmit()" (keyup.enter)="enterEvent('signup')">
-            <mat-form-field class="register-field" appearance="legacy">
-                <mat-label>Nick</mat-label>
-                <input matInput placeholder="Placeholder" id="signup_nick" formControlName="signup_nick">
-                <mat-icon matSuffix *ngIf="!signup_form.signup_nick.errors">done</mat-icon>
-                <mat-icon matSuffix *ngIf="signup_form.signup_nick.errors">close</mat-icon>
-                <mat-hint>Insert your nickname here</mat-hint>
-            </mat-form-field>
-
-            <mat-form-field class="register-field" appearance="legacy">
-                <mat-label>Mail</mat-label>
-                <input matInput placeholder="Placeholder" id="signup_mail" formControlName="signup_mail">
-                <mat-icon matSuffix *ngIf="!signup_form.signup_mail.errors">done</mat-icon>
-                <mat-icon matSuffix *ngIf="signup_form.signup_mail.errors">close</mat-icon>
-                <mat-hint>Insert your mail here</mat-hint>
-            </mat-form-field>
-            
-            <ng-container formGroupName="passwords">
+    <ng-container *ngIf="!this.isRecoveringPassword">  
+        <section>
+            <h2>Already have an account? then log in ...</h2>
+            <a (click)="this.isRecoveringPassword = true">Click here if you don't remember your account</a>
+            <form #loginForm [formGroup]="loginFormGroup" (ngSubmit)="loginSubmit()" (keyup.enter)="enterEvent('login')">
+                <mat-form-field class="register-field" appearance="legacy" >
+                    <mat-label>Nick</mat-label>
+                    <input matInput placeholder="Placeholder" id="login_nick" formControlName="login_nick" autofocus>
+                    <mat-icon matSuffix *ngIf="!login_form.login_nick.errors">done</mat-icon>
+                    <mat-icon matSuffix *ngIf="login_form.login_nick.errors">close</mat-icon>
+                    <mat-hint>Insert your nickname here</mat-hint>
+                </mat-form-field>
                 <mat-form-field class="register-field" appearance="legacy">
                     <mat-label>Enter your password</mat-label>
-                    <input matInput [type]="hideSignUp ? 'password' : 'text'" id="password1" minlength="5" formControlName="password1">
-                    <button mat-icon-button matSuffix type="button" 
-                        (click)="hideSignUp = !hideSignUp" 
+                    <input matInput [type]="hideLogin ? 'password' : 'text'" formControlName="login_password">
+                    <button mat-icon-button matSuffix type="button"
+                        (click)="hideLogin = !hideLogin" 
                         [attr.aria-label]="'Hide password'" 
-                        [attr.aria-pressed]="hideSignUp"
+                        [attr.aria-pressed]="hideLogin"
                         tabindex="-1">
-                            <mat-icon>{{hideSignUp ? 'visibility_off' : 'visibility'}}</mat-icon>    
+                            <mat-icon>{{hideLogin ? 'visibility_off' : 'visibility'}}</mat-icon>    
                     </button>
-                    <mat-icon matSuffix *ngIf="!password_form.hasError('notSame') && password_form.controls.password1.valid">done</mat-icon>
-                    <mat-icon matSuffix *ngIf="password_form.hasError('notSame') || !password_form.controls.password1.valid">close</mat-icon>
-                    <mat-hint>Insert a really strong password here</mat-hint>
+                    <mat-icon matSuffix *ngIf="!login_form.login_password.errors">done</mat-icon>
+                    <mat-icon matSuffix *ngIf="login_form.login_password.errors">close</mat-icon>
+                    <mat-hint>Insert your password</mat-hint>
+                </mat-form-field>
+
+                <button [disabled]="!loginFormGroup.valid" type="submit" mat-flat-button color="primary">Log in</button>
+            </form>
+        </section>
+
+
+
+        <section>    
+            <h2>... or create a new account</h2>
+            <form #signupForm [formGroup]="registerFormGroup" (ngSubmit)="registerSubmit()" (keyup.enter)="enterEvent('signup')">
+                <mat-form-field class="register-field" appearance="legacy">
+                    <mat-label>Nick</mat-label>
+                    <input matInput placeholder="Placeholder" id="signup_nick" formControlName="signup_nick">
+                    <mat-icon matSuffix *ngIf="!signup_form.signup_nick.errors">done</mat-icon>
+                    <mat-icon matSuffix *ngIf="signup_form.signup_nick.errors">close</mat-icon>
+                    <mat-hint>Insert your nickname here</mat-hint>
                 </mat-form-field>
 
                 <mat-form-field class="register-field" appearance="legacy">
-                    <mat-label>Retype your password</mat-label>
-                    <input matInput [type]="hideSignUp ? 'password' : 'text'" id="password2" minlength="5"  formControlName="password2">
-                    <button mat-icon-button matSuffix type="button" 
-                        (click)="hideSignUp = !hideSignUp" 
-                        [attr.aria-label]="'Hide password'" 
-                        [attr.aria-pressed]="hideSignUp"
-                        tabindex="-1">
-                            <mat-icon>{{hideSignUp ? 'visibility_off' : 'visibility'}}</mat-icon>    
-                    </button>
-                    <mat-icon matSuffix *ngIf="!password_form.hasError('notSame') && password_form.controls.password2.valid">done</mat-icon>
-                    <mat-icon matSuffix *ngIf="password_form.hasError('notSame') || !password_form.controls.password2.valid">close</mat-icon>
-                    <mat-hint>Insert your password again.</mat-hint>
-                </mat-form-field>  
-            </ng-container>       
-            
-            
-            <mat-checkbox formControlName="conditionsAgree">
-                I'm agree with the <a [routerLink]="['/privacy']" routerLinkActive="router-link-active" title="Privacy Policy">Privacy Policy</a>
-                 and I accept to provide you with my nickname and my e-mail address
-            </mat-checkbox>
-            <section>
-                <button [disabled]="!registerFormGroup.valid" type="submit" mat-flat-button color="primary">Register</button>
-            </section>
-        </form>
-    </section>
+                    <mat-label>Mail</mat-label>
+                    <input matInput placeholder="Placeholder" id="signup_mail" formControlName="signup_mail">
+                    <mat-icon matSuffix *ngIf="!signup_form.signup_mail.errors">done</mat-icon>
+                    <mat-icon matSuffix *ngIf="signup_form.signup_mail.errors">close</mat-icon>
+                    <mat-hint>Insert your mail here</mat-hint>
+                </mat-form-field>
+                
+                <ng-container formGroupName="passwords">
+                    <mat-form-field class="register-field" appearance="legacy">
+                        <mat-label>Enter your password</mat-label>
+                        <input matInput [type]="hideSignUp ? 'password' : 'text'" id="password1" minlength="5" formControlName="password1">
+                        <button mat-icon-button matSuffix type="button" 
+                            (click)="hideSignUp = !hideSignUp" 
+                            [attr.aria-label]="'Hide password'" 
+                            [attr.aria-pressed]="hideSignUp"
+                            tabindex="-1">
+                                <mat-icon>{{hideSignUp ? 'visibility_off' : 'visibility'}}</mat-icon>    
+                        </button>
+                        <mat-icon matSuffix *ngIf="!password_form.hasError('notSame') && password_form.controls.password1.valid">done</mat-icon>
+                        <mat-icon matSuffix *ngIf="password_form.hasError('notSame') || !password_form.controls.password1.valid">close</mat-icon>
+                        <mat-hint>Insert a really strong password here</mat-hint>
+                    </mat-form-field>
 
-    <section class="privacy">
-        <h3>Privacy and security</h3>
-        Your password and your mail are encrypted before being stored in our database. Please, take a look to our 
-        <a [routerLink]="['/privacy']" routerLinkActive="router-link-active" title="Privacy Policy">Privacy Policy</a>.
-    </section>
+                    <mat-form-field class="register-field" appearance="legacy">
+                        <mat-label>Retype your password</mat-label>
+                        <input matInput [type]="hideSignUp ? 'password' : 'text'" id="password2" minlength="5"  formControlName="password2">
+                        <button mat-icon-button matSuffix type="button" 
+                            (click)="hideSignUp = !hideSignUp" 
+                            [attr.aria-label]="'Hide password'" 
+                            [attr.aria-pressed]="hideSignUp"
+                            tabindex="-1">
+                                <mat-icon>{{hideSignUp ? 'visibility_off' : 'visibility'}}</mat-icon>    
+                        </button>
+                        <mat-icon matSuffix *ngIf="!password_form.hasError('notSame') && password_form.controls.password2.valid">done</mat-icon>
+                        <mat-icon matSuffix *ngIf="password_form.hasError('notSame') || !password_form.controls.password2.valid">close</mat-icon>
+                        <mat-hint>Insert your password again.</mat-hint>
+                    </mat-form-field>  
+                </ng-container>       
+                
+                
+                <mat-checkbox formControlName="conditionsAgree">
+                    I'm agree with the <a [routerLink]="['/privacy']" routerLinkActive="router-link-active" title="Privacy Policy">Privacy Policy</a>
+                    and I accept to provide you with my nickname and my e-mail address
+                </mat-checkbox>
+                <section>
+                    <button [disabled]="!registerFormGroup.valid" type="submit" mat-flat-button color="primary">Register</button>
+                </section>
+            </form>
+        </section>
+
+        <section class="privacy">
+            <h3>Privacy and security</h3>
+            Your password and your mail are encrypted before being stored in our database. Please, take a look to our 
+            <a [routerLink]="['/privacy']" routerLinkActive="router-link-active" title="Privacy Policy">Privacy Policy</a>.
+        </section>
+</ng-container>
+<ng-container *ngIf="this.isRecoveringPassword">
+    <h2>Recovery password</h2>
+    <a (click)="this.isRecoveringPassword = false">Click here to log in or sign up</a>
+    <form #recoveryForm [formGroup]="recoveryFormGroup" (ngSubmit)="recoverySubmit()" 
+            (keyup.enter)="enterEvent('recovery')" *ngIf="!this.isRecoveringPasswordFirstStep">
+        <mat-form-field class="register-field" appearance="legacy" >
+            <mat-label>Nick</mat-label>
+            <input matInput placeholder="Placeholder" id="recovery_nick" formControlName="recovery_nick" autofocus>
+            <mat-icon matSuffix *ngIf="!recovery_form.recovery_nick.errors">done</mat-icon>
+            <mat-icon matSuffix *ngIf="recovery_form.recovery_nick.errors">close</mat-icon>
+            <mat-hint>Insert your nickname here</mat-hint>
+        </mat-form-field>
+        <mat-form-field class="register-field" appearance="legacy">
+            <mat-label>Mail</mat-label>
+            <input matInput placeholder="Placeholder" id="recovery_mail" formControlName="recovery_mail">
+            <mat-icon matSuffix *ngIf="!recovery_form.recovery_mail.errors">done</mat-icon>
+            <mat-icon matSuffix *ngIf="recovery_form.recovery_mail.errors">close</mat-icon>
+            <mat-hint>Insert your mail here</mat-hint>
+        </mat-form-field>
+        <button [disabled]="!recoveryFormGroup.valid" type="submit" mat-flat-button color="primary">Send me a mail</button>
+    </form>
+
+
+    <form #recoveryForm2 [formGroup]="recoveryFormSecondStageGroup" (ngSubmit)="recoverySecondStageSubmit()" 
+            (keyup.enter)="enterEvent('recovery')" *ngIf="this.isRecoveringPasswordFirstStep">
+        <mat-form-field class="register-field" appearance="legacy" >
+            <mat-label>Token</mat-label>
+            <input matInput placeholder="Placeholder" id="recovery_token" formControlName="recovery_token" autofocus>
+            <mat-icon matSuffix *ngIf="!recovery_second_stage_form.recovery_token.errors">done</mat-icon>
+            <mat-icon matSuffix *ngIf="recovery_second_stage_form.recovery_token.errors">close</mat-icon>
+            <mat-hint>Paste the token that you've received by mail</mat-hint>
+        </mat-form-field>
+        <ng-container formGroupName="passwords">
+            <mat-form-field class="register-field" appearance="legacy">
+                <mat-label>Enter your password</mat-label>
+                <input matInput [type]="hideSignUp ? 'password' : 'text'" id="password1" minlength="5" formControlName="password1">
+                <button mat-icon-button matSuffix type="button" 
+                    (click)="hideSignUp = !hideSignUp" 
+                    [attr.aria-label]="'Hide password'" 
+                    [attr.aria-pressed]="hideSignUp"
+                    tabindex="-1">
+                        <mat-icon>{{hideSignUp ? 'visibility_off' : 'visibility'}}</mat-icon>    
+                </button>
+                <mat-icon matSuffix *ngIf="!password_form.hasError('notSame') && password_form.controls.password1.valid">done</mat-icon>
+                <mat-icon matSuffix *ngIf="password_form.hasError('notSame') || !password_form.controls.password1.valid">close</mat-icon>
+                <mat-hint>Insert a really strong password here</mat-hint>
+            </mat-form-field>
+
+            <mat-form-field class="register-field" appearance="legacy">
+                <mat-label>Retype your password</mat-label>
+                <input matInput [type]="hideSignUp ? 'password' : 'text'" id="password2" minlength="5"  formControlName="password2">
+                <button mat-icon-button matSuffix type="button" 
+                    (click)="hideSignUp = !hideSignUp" 
+                    [attr.aria-label]="'Hide password'" 
+                    [attr.aria-pressed]="hideSignUp"
+                    tabindex="-1">
+                        <mat-icon>{{hideSignUp ? 'visibility_off' : 'visibility'}}</mat-icon>    
+                </button>
+                <mat-icon matSuffix *ngIf="!password_form.hasError('notSame') && password_form.controls.password2.valid">done</mat-icon>
+                <mat-icon matSuffix *ngIf="password_form.hasError('notSame') || !password_form.controls.password2.valid">close</mat-icon>
+                <mat-hint>Insert your password again.</mat-hint>
+            </mat-form-field>  
+        </ng-container>     
+        <button [disabled]="!recoveryFormSecondStageGroup.valid" type="submit" mat-flat-button color="primary">Change my password</button>
+        </form>
+</ng-container>
