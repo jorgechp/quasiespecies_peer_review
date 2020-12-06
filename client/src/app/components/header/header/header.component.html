@@ -22,6 +22,7 @@
         <a class="flex-content--link" [routerLink]="['/language']" routerLinkActive="flex-content__right-link--active" aria-label="Language"><mat-icon>language</mat-icon>  </a>    
         <a class="flex-content--link" [routerLink]="['/help']" routerLinkActive="flex-content__right-link--active" aria-label="Help"><mat-icon>help_outline</mat-icon>    </a>   
         <button class="mat-icon-button" mat-icon-button 
+            *ngIf="this.isLogged == true;"
             aria-label="Logout" 
             (click)="this.doLogout()" ><mat-icon class="mat-icon--logout">exit_to_app</mat-icon>  </button>   
       </div> 

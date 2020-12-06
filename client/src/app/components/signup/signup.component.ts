@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, AbstractControl, Form } from '@angular/forms';
 import { Validators } from '@angular/forms';
@@ -51,7 +52,8 @@ export class SignupComponent implements OnInit, OnDestroy {
     }
   }
 
-  constructor(private formBuilder: FormBuilder,
+  constructor(private router: Router,
+              private formBuilder: FormBuilder,
               private snackMessageService: SnackMessageService,
               private userService: UserService) {
 
@@ -137,6 +139,7 @@ export class SignupComponent implements OnInit, OnDestroy {
           (response: boolean) => {
             if (response){
               this.snackMessageService.notifyNewSnackMessage('Welcome, ' + nick.value + '!');
+              this.router.navigateByUrl('/');
             }
           },
           (error) => {
@@ -162,7 +165,7 @@ export class SignupComponent implements OnInit, OnDestroy {
         this.createUserSuscription = this.userService.registerUser(nick.value, mail.value, password.value).subscribe(
           (response: NewUserInterface) => {
             if (response.id !== undefined){
-              this.snackMessageService.notifyNewSnackMessage('Your user is now registered and now you can log in the system. Thanks!');
+              this.snackMessageService.notifyNewSnackMessage('Your user is now registered and now you can log in the system. Thanks!');              
             }
           },
           (error) => {

@@ -32,7 +32,7 @@ export class TrainComponent implements OnInit, OnDestroy {
               private snackMessageService: SnackMessageService) { }
 
   ngOnInit(): void {
-    this.subscribeCheckLogin();
+    this.subscribeCheckLogin();   
     this.snackMessageService.notifyDismiss();
   }
 
