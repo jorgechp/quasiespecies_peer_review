@@ -15,11 +15,6 @@
   },
   "private": true,
   "dependencies": {
-    "@nativescript/angular": "~10.1.0",
-    "@nativescript/core": "~7.0.0",
-    "@nativescript/theme": "~2.5.0",
-    "reflect-metadata": "~0.1.12",
-    "tslib": "^2.0.0",
     "@angular/animations": "~11.0.1",
     "@angular/cdk": "^11.0.0",
     "@angular/common": "~11.0.1",
@@ -30,7 +25,14 @@
     "@angular/platform-browser": "~11.0.1",
     "@angular/platform-browser-dynamic": "~11.0.1",
     "@angular/router": "~11.0.1",
+    "@nativescript/angular": "~10.1.0",
+    "@nativescript/core": "~7.0.0",
+    "@nativescript/theme": "~2.5.0",
+    "cookieconsent": "^3.1.1",
+    "ngx-cookieconsent": "^2.2.3",
+    "reflect-metadata": "~0.1.12",
     "rxjs": "~6.6.0",
+    "tslib": "^2.0.0",
     "zone.js": "~0.10.2"
   },
   "devDependencies": {
