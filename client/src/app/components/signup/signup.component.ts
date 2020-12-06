@@ -29,6 +29,7 @@ export class SignupComponent implements OnInit, OnDestroy {
   createUserSuscription: Subscription | undefined;
   loginSuscription: Subscription | undefined;
   recoveryUserSuscription: Subscription | undefined;
+  recoveryUserSecondStageSuscription: Subscription | undefined;
   isLogged = true;
 
   private validatePasswords(group: FormGroup): null | object {
@@ -95,6 +96,9 @@ export class SignupComponent implements OnInit, OnDestroy {
     }
     if (this.recoveryUserSuscription !== undefined){
       this.recoveryUserSuscription.unsubscribe();
+    }
+    if (this.recoveryUserSecondStageSuscription !== undefined){
+      this.recoveryUserSecondStageSuscription.unsubscribe();
     }
   }
 
@@ -198,7 +202,7 @@ export class SignupComponent implements OnInit, OnDestroy {
     const password = this.passwordFormGroup.get('password1');
 
     if (token && password){
-      this.recoveryUserSuscription = this.userService.userRecoveryChangePassword(token.value, password.value).subscribe(
+      this.recoveryUserSecondStageSuscription = this.userService.userRecoveryChangePassword(token.value, password.value).subscribe(
         (response: boolean) => {
             if (response){
               this.snackMessageService.notifyNewSnackMessage('OK!, you can use your new password from now on.');

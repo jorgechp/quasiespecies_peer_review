@@ -2,132 +2,136 @@
     <app-signup></app-signup>
 </section>
 <section *ngIf="this.isLogged">
-    <p>
-        In  this section you can see your stats.
-    </p>
     <h2>General stats</h2>
+    <ng-container *ngIf="this.numberOfAnswers > 0">    
+        <section>
+            You have answered {{this.numberOfAnswers}} times. Down below you can see your confusion matrix:
+        </section>
 
-    <section>
-        You have answered {{this.numberOfAnswers}} times. Down below you can see your confusion matrix:
-    </section>
-
-    <section class="stats__confusion-matrix">
-        <app-confusion-matrix [confusionMatrixData] = 'this.confusionMatrixDataFull'
-                                [highFactor] = '1' [mediumFactor] = '1' [lowFactor] = '1' footer="Absolute answers" [maxLimit]='0'>
-        </app-confusion-matrix>    
-        
-        <app-confusion-matrix [confusionMatrixData] = 'this.confusionMatrixDataFull'
-        [highFactor] = 'this.totalHigh' [mediumFactor] = 'this.totalMedium' [lowFactor] = 'this.totalLow' footer="Relative answers" [maxLimit]='this.limit'>
-        </app-confusion-matrix>  
-    </section>
-    <section class="stats__legend">        
-         * Dark cells <span class="stats__legend--square">■</span> contains values equal or greater than {{this.limit}}.
-    </section>
-    <h2 *ngIf="this.submissionProfile !== undefined || this.evolutionItems !== undefined">
-        Partition and submission profile
-    </h2>
-    <section class="stats__partitions" *ngIf="this.partition !== undefined">
-        <p>
-        At this point, we can infere your partition and your partition. According to your results,
-         with a probability of <span class="text-bold">{{(this.partition.score_partition * 100) | number: '1.2-2'}}%</span> your partition is:   
-        </p>     
-        <p class="output_string" *ngIf="this.partition.id_partition == 0"> 
-            <!-- (s1,s2)(s3) -->
-            <span>K<sub>F<sub>1</sub></sub> = &#123;&#123;S<sub>1</sub>, S<sub>2</sub>&#125;,&#123;S<sub>3</sub>&#125;&#125;</span>
-        </p>        
-        <p class="output_string" *ngIf="this.partition.id_partition == 1"> 
-            <!-- (s1,s3)(s2) -->
-            <span>K<sub>F<sub>2</sub></sub> = &#123;&#123;S<sub>1</sub>, S<sub>3</sub>&#125;,&#123;S<sub>2</sub>&#125;&#125;</span>
-        </p>   
-        <p class="output_string" *ngIf="this.partition.id_partition == 2"> 
-            <!-- (s2,s3),(s1) -->
-            <span>K<sub>F<sub>3</sub></sub> = &#123;&#123;S<sub>2</sub>, S<sub>3</sub>&#125;,&#123;S<sub>1</sub>&#125;&#125;</span>
-        </p>   
-        <p class="output_string" *ngIf="this.partition.id_partition == 3"> 
-            <!-- (s1,s2)(s3) -->
-            <span>K<sub>F<sub>4</sub></sub> = &#123;&#123;S<sub>1</sub>, S<sub>2</sub>, S<sub>3</sub>&#125;&#125;</span>
-        </p>   
-        <p class="output_string" *ngIf="this.partition.id_partition == 4"> 
-            <!-- (s1,s2,s3) -->
-            <span>K<sub>F</sub> = &#123;&#123;S<sub>1</sub>, S<sub>2</sub>&#125;,&#123;S<sub>3</sub>&#125;&#125;</span>
-        </p>   
-        <p class="output_string" *ngIf="this.partition.id_partition == 5"> 
-            <!-- (s1),(s2),(s3) -->
-            <span>K<sub>F</sub> = &#123;&#123;S<sub>1</sub>&#125;,&#123;S<sub>2</sub>&#125;,&#123;S<sub>3</sub>&#125;&#125;</span>
-        </p>   
-    </section>
-
-    <section class="stats_submission_profiles" *ngIf="this.submissionProfile !== undefined">
-        <p>
-            In addition, we can determine your submission profile.
-        </p>
-        <div class="output_string">(
-            <span *ngFor="let submissionProfile of this.submissionProfile.partitions let last = last;">
-                <ng-container *ngIf="submissionProfile.impact == TypeOfJournal.LOW">LOW-Impact</ng-container>             
-                <ng-container *ngIf="submissionProfile.impact == TypeOfJournal.MEDIUM">MEDIUM-Impact</ng-container>             
-                <ng-container *ngIf="submissionProfile.impact == TypeOfJournal.HIGH">HIGH-Impact</ng-container>             
-                <ng-container *ngIf="!last">, </ng-container>     
-            </span>
-            )
-        </div>
-        <p>
-            With a probability of
-            <span class="text-bold" *ngFor="let submissionProfile of this.submissionProfile.partitions let last = last;">
-                <ng-container>{{(submissionProfile.score * 100) | number: '1.2-2'}}%</ng-container>             
-                <ng-container *ngIf="!last"> and </ng-container>     
-            </span>
-            , respectively.
-        </p>
-    </section>
-    <section *ngIf="this.evolutionItems !== undefined">
-        <h2>
-            Your evolution
-        </h2>
-        <table mat-table [dataSource]="this.evolutionItems" class="evolution_table">
-            <ng-container matColumnDef="index">
-                <th mat-header-cell *matHeaderCellDef> Step. </th>
-                <td mat-cell *matCellDef="let element"> {{element.index}} </td>
-              </ng-container>            
-              
-              <ng-container matColumnDef="id_partition">
-                <th mat-header-cell *matHeaderCellDef> Id Partition </th>
-                <td mat-cell *matCellDef="let element"> 
-                    <ng-container *ngIf="element.id_partition == 0">
-                        <!-- (s1,s2)(s3) -->
-                        <span>K<sub>F<sub>1</sub></sub> = &#123;&#123;S<sub>1</sub>, S<sub>2</sub>&#125;,&#123;S<sub>3</sub>&#125;&#125;</span>
-                    </ng-container>
-                    <ng-container *ngIf="element.id_partition == 1">
-                        <!-- (s1,s3)(s2) -->
-                        <span>K<sub>F<sub>2</sub></sub> = &#123;&#123;S<sub>1</sub>, S<sub>3</sub>&#125;,&#123;S<sub>2</sub>&#125;&#125;</span>
-                    </ng-container>     
-                    <ng-container *ngIf="element.id_partition == 2">
-                        <!-- (s2,s3)(s1) -->
-                        <span>K<sub>F<sub>3</sub></sub> = &#123;&#123;S<sub>2</sub>, S<sub>3</sub>&#125;,&#123;S<sub>1</sub>&#125;&#125;</span>
-                    </ng-container>     
-                    <ng-container *ngIf="element.id_partition == 3">
-                        <!-- (s1,s2,s3) -->
-                        <span>K<sub>C</sub> = &#123;&#123;S<sub>1</sub>, S<sub>2</sub>, S<sub>3</sub>&#125;&#125;</span>
-                    </ng-container>     
-                    <ng-container *ngIf="element.id_partition == 4">
-                        <!-- (s1,s2),(s3) -->
-                        <span>K<sub>F<sub>4</sub></sub> = &#123;&#123;S<sub>1</sub>, S<sub>2</sub>&#125;,&#123;S<sub>3</sub>&#125;&#125;</span>
-                    </ng-container> 
-                    <ng-container *ngIf="element.id_partition == 5">
-                        <!-- (s1),(s2),(s3) -->
-                        <span>K<sub>F</sub> = &#123;&#123;S<sub>1</sub>&#125;,&#123;S<sub>2</sub>&#125;,&#123;S<sub>3</sub>&#125;&#125;</span>
-                    </ng-container>                            
-                </td>
-              </ng-container>            
-       
-              <ng-container matColumnDef="id_submission_profile">
-                <th mat-header-cell *matHeaderCellDef> Submission profile </th>
-                <td mat-cell *matCellDef="let element"> {{element.id_submission_profile}} </td>
-              </ng-container>          
-
+        <section class="stats__confusion-matrix">
+            <app-confusion-matrix [confusionMatrixData] = 'this.confusionMatrixDataFull'
+                                    [highFactor] = '1' [mediumFactor] = '1' [lowFactor] = '1' footer="Absolute answers" [maxLimit]='0'>
+            </app-confusion-matrix>    
             
-              <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
-              <tr mat-row *matRowDef="let row; columns: columnsToDisplay;"></tr>
-        </table>
-    </section>
+            <app-confusion-matrix [confusionMatrixData] = 'this.confusionMatrixDataFull'
+            [highFactor] = 'this.totalHigh' [mediumFactor] = 'this.totalMedium' [lowFactor] = 'this.totalLow' footer="Relative answers" [maxLimit]='this.limit'>
+            </app-confusion-matrix>  
+        </section>
+        <section class="stats__legend">        
+            * Dark cells <span class="stats__legend--square">■</span> contains values equal or greater than {{this.limit}}.
+        </section>
+        <h2 *ngIf="this.submissionProfile !== undefined || this.evolutionItems !== undefined">
+            Partition and submission profile
+        </h2>
+        <section class="stats__partitions" *ngIf="this.partition !== undefined">
+            <p>
+            At this point, we can infere your partition and your partition. According to your results,
+            with a probability of <span class="text-bold">{{(this.partition.score_partition * 100) | number: '1.2-2'}}%</span> your partition is:   
+            </p>     
+            <p class="output_string" *ngIf="this.partition.id_partition == 0"> 
+                <!-- (s1,s2)(s3) -->
+                <span>K<sub>F<sub>1</sub></sub> = &#123;&#123;S<sub>1</sub>, S<sub>2</sub>&#125;,&#123;S<sub>3</sub>&#125;&#125;</span>
+            </p>        
+            <p class="output_string" *ngIf="this.partition.id_partition == 1"> 
+                <!-- (s1,s3)(s2) -->
+                <span>K<sub>F<sub>2</sub></sub> = &#123;&#123;S<sub>1</sub>, S<sub>3</sub>&#125;,&#123;S<sub>2</sub>&#125;&#125;</span>
+            </p>   
+            <p class="output_string" *ngIf="this.partition.id_partition == 2"> 
+                <!-- (s2,s3),(s1) -->
+                <span>K<sub>F<sub>3</sub></sub> = &#123;&#123;S<sub>2</sub>, S<sub>3</sub>&#125;,&#123;S<sub>1</sub>&#125;&#125;</span>
+            </p>   
+            <p class="output_string" *ngIf="this.partition.id_partition == 3"> 
+                <!-- (s1,s2)(s3) -->
+                <span>K<sub>F<sub>4</sub></sub> = &#123;&#123;S<sub>1</sub>, S<sub>2</sub>, S<sub>3</sub>&#125;&#125;</span>
+            </p>   
+            <p class="output_string" *ngIf="this.partition.id_partition == 4"> 
+                <!-- (s1,s2,s3) -->
+                <span>K<sub>F</sub> = &#123;&#123;S<sub>1</sub>, S<sub>2</sub>&#125;,&#123;S<sub>3</sub>&#125;&#125;</span>
+            </p>   
+            <p class="output_string" *ngIf="this.partition.id_partition == 5"> 
+                <!-- (s1),(s2),(s3) -->
+                <span>K<sub>F</sub> = &#123;&#123;S<sub>1</sub>&#125;,&#123;S<sub>2</sub>&#125;,&#123;S<sub>3</sub>&#125;&#125;</span>
+            </p>   
+        </section>
 
+        <section class="stats_submission_profiles" *ngIf="this.submissionProfile !== undefined">
+            <p>
+                In addition, we can determine your submission profile.
+            </p>
+            <div class="output_string output_string_table_evolution">(
+                <span *ngFor="let submissionProfile of this.submissionProfile.partitions let last = last;">
+                    <ng-container *ngIf="submissionProfile.impact == TypeOfJournal.LOW">LOW-Impact</ng-container>             
+                    <ng-container *ngIf="submissionProfile.impact == TypeOfJournal.MEDIUM">MEDIUM-Impact</ng-container>             
+                    <ng-container *ngIf="submissionProfile.impact == TypeOfJournal.HIGH">HIGH-Impact</ng-container>             
+                    <ng-container *ngIf="!last">, </ng-container>     
+                </span>
+                )
+            </div>
+            <p>
+                With a probability of
+                <span class="text-bold" *ngFor="let submissionProfile of this.submissionProfile.partitions let last = last;">
+                    <ng-container>{{(submissionProfile.score * 100) | number: '1.2-2'}}%</ng-container>             
+                    <ng-container *ngIf="!last"> and </ng-container>     
+                </span>
+                , respectively.
+            </p>
+        </section>
+        <section *ngIf="this.evolutionItems !== undefined">
+            <h2>
+                Your evolution
+            </h2>
+            <table mat-table [dataSource]="this.evolutionItems" class="evolution_table">
+                <ng-container matColumnDef="index">
+                    <th mat-header-cell *matHeaderCellDef> Step. </th>
+                    <td mat-cell *matCellDef="let element"> {{element.index}} </td>
+                </ng-container>            
+                
+                <ng-container matColumnDef="id_partition">
+                    <th mat-header-cell *matHeaderCellDef> Id Partition </th>
+                    <td mat-cell class="partition_cell" *matCellDef="let element"> 
+                        <ng-container *ngIf="element.id_partition == 0">
+                            <!-- (s1,s2)(s3) -->
+                            <span>K<sub>F<sub>1</sub></sub> = &#123;&#123;S<sub>1</sub>, S<sub>2</sub>&#125;,&#123;S<sub>3</sub>&#125;&#125;</span>
+                        </ng-container>
+                        <ng-container *ngIf="element.id_partition == 1">
+                            <!-- (s1,s3)(s2) -->
+                            <span>K<sub>F<sub>2</sub></sub> = &#123;&#123;S<sub>1</sub>, S<sub>3</sub>&#125;,&#123;S<sub>2</sub>&#125;&#125;</span>
+                        </ng-container>     
+                        <ng-container *ngIf="element.id_partition == 2">
+                            <!-- (s2,s3)(s1) -->
+                            <span>K<sub>F<sub>3</sub></sub> = &#123;&#123;S<sub>2</sub>, S<sub>3</sub>&#125;,&#123;S<sub>1</sub>&#125;&#125;</span>
+                        </ng-container>     
+                        <ng-container *ngIf="element.id_partition == 3">
+                            <!-- (s1,s2,s3) -->
+                            <span>K<sub>C</sub> = &#123;&#123;S<sub>1</sub>, S<sub>2</sub>, S<sub>3</sub>&#125;&#125;</span>
+                        </ng-container>     
+                        <ng-container *ngIf="element.id_partition == 4">
+                            <!-- (s1,s2),(s3) -->
+                            <span>K<sub>F<sub>4</sub></sub> = &#123;&#123;S<sub>1</sub>, S<sub>2</sub>&#125;,&#123;S<sub>3</sub>&#125;&#125;</span>
+                        </ng-container> 
+                        <ng-container *ngIf="element.id_partition == 5">
+                            <!-- (s1),(s2),(s3) -->
+                            <span>K<sub>F</sub> = &#123;&#123;S<sub>1</sub>&#125;,&#123;S<sub>2</sub>&#125;,&#123;S<sub>3</sub>&#125;&#125;</span>
+                        </ng-container>                            
+                    </td>
+                </ng-container>            
+        
+                <ng-container matColumnDef="id_submission_profile">
+                    <th mat-header-cell *matHeaderCellDef> Submission profile </th>
+                    <td mat-cell class="submission_profile_cell" *matCellDef="let element"> {{element.id_submission_profile}} </td>
+                </ng-container>          
+
+                
+                <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+                <tr mat-row *matRowDef="let row; columns: columnsToDisplay;"></tr>
+            </table>
+        </section>
+    </ng-container>
+    <ng-container *ngIf="this.numberOfAnswers == 0">
+        <section>
+            At the moment, you have not trained jet. You can go to the <a [routerLink]="[ '/train']" title="Train section">train section</a> and
+            read some abstracts.
+        </section>
+    </ng-container>
+    
 </section>

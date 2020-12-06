@@ -9,17 +9,17 @@
         </p>
 
         <section class="section__paper">
-            <h1>
-                Title: {{this.currentArticle.title}}
+            <h1 class="article_header">
+                {{this.currentArticle.title}}
             </h1>
-            <h2>Abstract</h2>
+            <h2 class="article_header">Abstract</h2>
             <p class="train__abstract">
                 {{this.currentArticle.abstract}}
             </p>
-            <h2>Author's Keywords</h2>
+            <h2 class="article_header">Author's Keywords</h2>
             <p>{{this.currentArticle.authors_keywords | keywordsPipe}}</p>
                 
-            <h2>KeywordPlus</h2>
+            <h2 class="article_header">KeywordPlus</h2>
             <p>{{this.currentArticle.keywords_plus  | keywordsPipe}}</p>    
         </section>   
 

@@ -26,8 +26,9 @@
                     <mat-icon matSuffix *ngIf="login_form.login_password.errors">close</mat-icon>
                     <mat-hint>Insert your password</mat-hint>
                 </mat-form-field>
-
-                <button [disabled]="!loginFormGroup.valid" type="submit" mat-flat-button color="primary">Log in</button>
+                <section>
+                    <button [disabled]="!loginFormGroup.valid" type="submit" mat-flat-button color="primary">Log in</button>
+                </section>
             </form>
         </section>
 
@@ -84,11 +85,13 @@
                     </mat-form-field>  
                 </ng-container>       
                 
-                
-                <mat-checkbox formControlName="conditionsAgree">
-                    I'm agree with the <a [routerLink]="['/privacy']" routerLinkActive="router-link-active" title="Privacy Policy">Privacy Policy</a>
-                    and I accept to provide you with my nickname and my e-mail address
-                </mat-checkbox>
+                <section>
+                    <mat-checkbox formControlName="conditionsAgree"></mat-checkbox>
+                    <span>
+                        I'm agree with the <a [routerLink]="['/privacy']" routerLinkActive="router-link-active" title="Privacy Policy">Privacy Policy</a>
+                        and I accept to provide you with my nickname and my e-mail address
+                    </span>
+                </section>
                 <section>
                     <button [disabled]="!registerFormGroup.valid" type="submit" mat-flat-button color="primary">Register</button>
                 </section>

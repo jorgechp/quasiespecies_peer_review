@@ -158,10 +158,10 @@ export class StatsComponent implements OnInit, OnDestroy {
                 case TypeOfJournal.LOW:
                   submissionProfileString.push('LOW-Impact');
                   break;
-                case TypeOfJournal.LOW:
+                case TypeOfJournal.MEDIUM:
                   submissionProfileString.push('MEDIUM-Impact');
                   break;
-                case TypeOfJournal.LOW:
+                case TypeOfJournal.HIGH:
                   submissionProfileString.push('HIGH-Impact');
                   break;
               }

@@ -36,12 +36,18 @@
     font-weight: normal;     
 }
 
+
 .confusion-matrix--first_column{
     writing-mode: vertical-lr;
     text-orientation: sideways;
-    font-weight: normal;    
-    transform: rotate(180deg);
-    width: 20px;
+    font-weight: normal; 
+    width: 28.5px;
+}
+
+@-moz-document url-prefix() {
+    .confusion-matrix--first_column{
+        transform: rotate(180deg);      
+    }
 }
 
 .confusion-matrix--first-headers{

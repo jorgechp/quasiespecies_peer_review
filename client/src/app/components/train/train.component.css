@@ -14,6 +14,10 @@
     margin-bottom: 20px;
 }
 
+.article_header{
+    font-weight: bold;
+}
+
 .section__paper h3{
     color: #5E6068;
     font-size: 20px;
@@ -28,17 +32,7 @@
 
 .train__buttons{
     display: flex;
-    justify-content: space-between;
-}
-
-.train__buttons--low{
-    background-color: #55544E;
-}
-
-.train__buttons--medium{
-    background-color: #55544E;
-}
-
-.train__buttons--high{
-    background-color: #55544E;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+    gap: 15px;
 }
