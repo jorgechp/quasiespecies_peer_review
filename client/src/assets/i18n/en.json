@@ -1,10 +1,11 @@
 {
     "GENERAL":{
-        "PRIVACY": "Privacy policy"
+        "PRIVACY": "Privacy policy",
+        "THANKS": "Thanks!"
     },
     "LANGUAGE":{
         "ENGLISH": "English",
-        "SPANISH": "Spanish"
+        "SPANISH": "Español"
     },
     "WELCOME":{
         "TITLE": "Quasi-Species Peer review",
@@ -12,10 +13,11 @@
     },
     "SIGNUP":{
         "ALREADY_HAVE_ACCONUT": "Already have an account? then log in ...",
-        "NOT_REMEMBER_ACCOUNT": "Click here if you don't remember your account",
+        "NOT_REMEMBER_ACCOUNT": "Click here if you don't remember your password",
         "NICK": "Nick",
         "HINT_NICKNAME": "Insert your nickname here",
         "PASSWORD": "Password",
+        "PASSWORD_2": "Retype your password",
         "HINT_PASSWORD": "Insert your password",
         "HINT_PASSWORD_2": "Insert a really strong password here",
         "HINT_PASSWORD_AGAIN": "Insert your password again.",
@@ -23,10 +25,19 @@
         "CREATE_NEW_ACCOUNT": "... or create a new account",
         "MAIL": "Mail",
         "HINT_MAIL": "Insert your mail here",     
-        "AGREE_1": "I'm agree with the ",
+        "AGREE_1": "I'm agree with the",
         "AGREE_2": "and I accept to provide you with my nickname and my e-mail address",
         "REGISTER": "Register",
         "PRIVACY_SECURITY": "Privacy and Security",
-        "PRIVACY_TEXT_1": "Your password and your mail are encrypted before being stored in our database. Please, take a look to our"
+        "PRIVACY_TEXT_1": "Your password and your mail are encrypted before being stored in our database. Please, take a look to our",
+        "CLICK_TO_LOGIN": "Click here to log in or sign up",
+        "SEND_ME_MAIL": "Send me a mail",
+        "TOKEN": "Token",
+        "HINT_TOKEN": "Paste the token that you've received by mail",
+        "CHANGE_PASSWORD": "Change my password",
+        "COOKIES_REJECTED_HEADER": "You have rejected cookies.",
+        "COOKIES_REJECTED_1": "Cookies are needed to log in or sign up in our website. We use cookies only to keep you logged in our website, as you can see in our ",
+        "COOKIES_REJECTED_2": "We don't share your personal data with third parties.",
+        "COOKIES_REJECTED_3": "If you want to use your account, cookies should be allowed again. You can enable cookies by clicking in the Cookies dialog, in the bottom left side dialog."        
     }
 }

@@ -1,32 +1,43 @@
 {
     "GENERAL":{
-        "PRIVACY": "Privacy policy"
+        "PRIVACY": "Política de privacidad",
+        "THANKS": "¡Gracias!"
     },
     "LANGUAGE":{
         "ENGLISH": "English",
-        "SPANISH": "Spanish"
+        "SPANISH": "Español"
     },
     "WELCOME":{
         "TITLE": "Quasi-Species Peer review",
-        "WELCOME": "What can you do here?"
+        "WELCOME": "¿Qué puedes hacer por aquí?"
     },
     "SIGNUP":{
-        "ALREADY_HAVE_ACCONUT": "Already ssss an account? then log in ...",
-        "NOT_REMEMBER_ACCOUNT": "Click here if you don't remember your account",
+        "ALREADY_HAVE_ACCONUT": "¿Ya estás registrado? Puedes iniciar sesión ...",
+        "NOT_REMEMBER_ACCOUNT": "Haz click aquí si no recuerdas tu contraseña",
         "NICK": "Nick",
-        "HINT_NICKNAME": "Insert your nickname here",
-        "PASSWORD": "Password",
-        "HINT_PASSWORD": "Insert your password",
-        "HINT_PASSWORD_2": "Insert a really strong password here",
-        "HINT_PASSWORD_AGAIN": "Insert your password again.",
-        "LOG_IN": "Log in",
-        "CREATE_NEW_ACCOUNT": "... or create a new account",
-        "MAIL": "Mail",
-        "HINT_MAIL": "Insert your mail here",     
-        "AGREE_1": "I'm agree with the ",
-        "AGREE_2": "and I accept to provide you with my nickname and my e-mail address",
-        "REGISTER": "Register",
-        "PRIVACY_SECURITY": "Privacy and Security",
-        "PRIVACY_TEXT_1": "Your password and your mail are encrypted before being stored in our database. Please, take a look to our"
+        "HINT_NICKNAME": "Introduce tu nick aquí",
+        "PASSWORD": "Contraseña",
+        "PASSWORD_2": "Vuelve a escribir tu contraseña",
+        "HINT_PASSWORD": "Introduce tu contraseña",
+        "HINT_PASSWORD_2": "Introduce aquí una contraseña muy fuerte",
+        "HINT_PASSWORD_AGAIN": "Introduce tu contraseña, otra vez",
+        "LOG_IN": "Iniciar sesión",
+        "CREATE_NEW_ACCOUNT": "... o crea una nueva cuenta",
+        "MAIL": "Correo electrónico",
+        "HINT_MAIL": "Introduce tu correo electrónico aquí",     
+        "AGREE_1": "Estoy de acuerdo con la",
+        "AGREE_2": "y acepto facilitar mi nick y mi correo electrónico.",
+        "REGISTER": "Registrar",
+        "PRIVACY_SECURITY": "Privacidad y seguridad",
+        "PRIVACY_TEXT_1": "Tu contraseña y tu correo electrónico son cifrados antes de ser almacenados en nuestra base de datos. Por favor, echa un vistazo a nuestra",
+        "CLICK_TO_LOGIN": "Haz click aquí para iniciar sesión o registrarte",
+        "SEND_ME_MAIL": "Envíame un correo electrónico",
+        "TOKEN": "Token",
+        "HINT_TOKEN": "Pega el token que has recibido por correo electrónico.",
+        "CHANGE_PASSWORD": "Cambia mi contraseña",
+        "COOKIES_REJECTED_HEADER": "Has rechazado las cookies.",
+        "COOKIES_REJECTED_1": "Las cookies son necesarias para iniciar sesión o registrarse. Usamos cookies exclusivamente para mantener tu sesión iniciada como puedes ver en nuestra",
+        "COOKIES_REJECTED_2": "No compartimos tus datos personales con terceros.",
+        "COOKIES_REJECTED_3": "Si deseas utilizar tu cuenta, debes permitir las cookies otra vez. Puedes habilitar las cookies haciendo click en el diálogo de Cookies, en la solapa de la parte inferior izquierda de esta página."        
     }
 }

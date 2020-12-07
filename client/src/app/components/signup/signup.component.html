@@ -56,7 +56,7 @@
                 
                 <ng-container formGroupName="passwords">
                     <mat-form-field class="register-field" appearance="legacy">
-                        <mat-label>{{'SIGNUP.PASSWORD' | translate}}</mat-label>
+                        <mat-label>{{'SIGNUP.PASSWORD_2' | translate}}</mat-label>
                         <input matInput [type]="hideSignUp ? 'password' : 'text'" id="password1" minlength="5" formControlName="password1">
                         <button mat-icon-button matSuffix type="button" 
                             (click)="hideSignUp = !hideSignUp" 
@@ -110,40 +110,40 @@
 <ng-container *ngIf="this.isRecoveringPassword">
     <h2>Recovery password</h2>
     <p class="recovery_link">
-        <a (click)="this.isRecoveringPassword = false">🔗  Click here to log in or sign up</a>
+        <a (click)="this.isRecoveringPassword = false">🔗  {{'SIGNUP.CLICK_TO_LOGIN' | translate}}</a>
     </p>
     <form #recoveryForm [formGroup]="recoveryFormGroup" (ngSubmit)="recoverySubmit()" 
             (keyup.enter)="enterEvent('recovery')" *ngIf="this.isRecoveringPasswordFirstStep">
         <mat-form-field class="register-field" appearance="legacy" >
-            <mat-label>Nick</mat-label>
+            <mat-label>{{'SIGNUP.NICK' | translate}}</mat-label>
             <input matInput placeholder="Placeholder" id="recovery_nick" formControlName="recovery_nick" autofocus>
             <mat-icon matSuffix *ngIf="!recovery_form.recovery_nick.errors">done</mat-icon>
             <mat-icon matSuffix *ngIf="recovery_form.recovery_nick.errors">close</mat-icon>
-            <mat-hint>Insert your nickname here</mat-hint>
+            <mat-hint>{{'SIGNUP.HINT_NICKNAME' | translate}}</mat-hint>
         </mat-form-field>
         <mat-form-field class="register-field" appearance="legacy">
-            <mat-label>Mail</mat-label>
+            <mat-label>{{'SIGNUP.MAIL' | translate}}</mat-label>
             <input matInput placeholder="Placeholder" id="recovery_mail" formControlName="recovery_mail">
             <mat-icon matSuffix *ngIf="!recovery_form.recovery_mail.errors">done</mat-icon>
             <mat-icon matSuffix *ngIf="recovery_form.recovery_mail.errors">close</mat-icon>
-            <mat-hint>Insert your mail here</mat-hint>
+            <mat-hint>{{'SIGNUP.HINT_MAIL' | translate}}</mat-hint>
         </mat-form-field>
-        <button [disabled]="!recoveryFormGroup.valid" type="submit" mat-flat-button color="primary">Send me a mail</button>
+        <button [disabled]="!recoveryFormGroup.valid" type="submit" mat-flat-button color="primary">{{'SIGNUP.SEND_ME_MAIL' | translate}}</button>
     </form>
 
 
     <form #recoveryForm2 [formGroup]="recoveryFormSecondStageGroup" (ngSubmit)="recoverySecondStageSubmit()" 
             (keyup.enter)="enterEvent('recovery')" *ngIf="!this.isRecoveringPasswordFirstStep">
         <mat-form-field class="register-field" appearance="legacy" >
-            <mat-label>Token</mat-label>
+            <mat-label>{{'SIGNUP.TOKEN' | translate}}</mat-label>
             <input matInput placeholder="Placeholder" id="recovery_token" formControlName="recovery_token" autofocus>
             <mat-icon matSuffix *ngIf="!recovery_second_stage_form.recovery_token.errors">done</mat-icon>
             <mat-icon matSuffix *ngIf="recovery_second_stage_form.recovery_token.errors">close</mat-icon>
-            <mat-hint>Paste the token that you've received by mail</mat-hint>
+            <mat-hint>{{'SIGNUP.HINT_TOKEN' | translate}}</mat-hint>
         </mat-form-field>
         <ng-container formGroupName="passwords">
             <mat-form-field class="register-field" appearance="legacy">
-                <mat-label>Enter your password</mat-label>
+                <mat-label>{{'SIGNUP.PASSWORD' | translate}}</mat-label>
                 <input matInput [type]="hideSignUp ? 'password' : 'text'" id="password1" minlength="5" formControlName="password1">
                 <button mat-icon-button matSuffix type="button" 
                     (click)="hideSignUp = !hideSignUp" 
@@ -154,11 +154,11 @@
                 </button>
                 <mat-icon matSuffix *ngIf="!password_form.hasError('notSame') && password_form.controls.password1.valid">done</mat-icon>
                 <mat-icon matSuffix *ngIf="password_form.hasError('notSame') || !password_form.controls.password1.valid">close</mat-icon>
-                <mat-hint>Insert a really strong password here</mat-hint>
+                <mat-hint>{{'SIGNUP.HINT_PASSWORD_2' | translate}}</mat-hint>
             </mat-form-field>
 
             <mat-form-field class="register-field" appearance="legacy">
-                <mat-label>Retype your password</mat-label>
+                <mat-label>{{'SIGNUP.PASSWORD_2' | translate}}</mat-label>
                 <input matInput [type]="hideSignUp ? 'password' : 'text'" id="password2" minlength="5"  formControlName="password2">
                 <button mat-icon-button matSuffix type="button" 
                     (click)="hideSignUp = !hideSignUp" 
@@ -169,27 +169,26 @@
                 </button>
                 <mat-icon matSuffix *ngIf="!password_form.hasError('notSame') && password_form.controls.password2.valid">done</mat-icon>
                 <mat-icon matSuffix *ngIf="password_form.hasError('notSame') || !password_form.controls.password2.valid">close</mat-icon>
-                <mat-hint>Insert your password again.</mat-hint>
+                <mat-hint>{{'SIGNUP.HINT_PASSWORD_AGAIN' | translate}}</mat-hint>
             </mat-form-field>  
         </ng-container>     
-        <button [disabled]="!recoveryFormSecondStageGroup.valid" type="submit" mat-flat-button color="primary">Change my password</button>
+        <button [disabled]="!recoveryFormSecondStageGroup.valid" type="submit" mat-flat-button color="primary">{{'SIGNUP.CHANGE_PASSWORD' | translate}}</button>
         </form>
     </ng-container>
 </ng-container>
 <ng-container *ngIf="!this.isAcceptedCookies">
     <section>
-        <h2>You have rejected cookies.</h2>
+        <h2>{{'SIGNUP.COOKIES_REJECTED_HEADER' | translate}}</h2>
         <section>
             <p>
-                Cookies are needed to log in or sign up in our website. We use cookies only to keep you logged in our website, as you can see in our
-                <a [routerLink]="[ '/privacy']" title="Privacy policy">Privacy policy</a>. We don't share your personal data with third parties.
+                {{'SIGNUP.COOKIES_REJECTED_1' | translate}}
+                <a [routerLink]="[ '/privacy']" title="{{'GENERAL.PRIVACY' | translate}}">{{'GENERAL.PRIVACY' | translate}}</a>. {{'SIGNUP.COOKIES_REJECTED_2' | translate}}
             <p>
             <p>
-                If you want to user your account, cookies should be allowed again. You can enable cookies by clicking in the Cookies dialog, in 
-                the bottom left side dialog.
+                {{'SIGNUP.COOKIES_REJECTED_3' | translate}}
             </p>
             <p>
-                Thanks!
+                {{'GENERAL.COOKIES_THANKS' | translate}}
             </p>
         </section>
     </section>
