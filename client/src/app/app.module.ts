@@ -26,6 +26,7 @@ import {MatInputModule} from '@angular/material/input';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {MatTableModule} from '@angular/material/table';
 import {MatCheckboxModule} from '@angular/material/checkbox';
+import {MatMenuModule} from '@angular/material/menu';
 
 import { FooterComponent } from '@src/app/components/footer/footer.component';
 import { TrainComponent } from '@src/app/components/train/train.component';
@@ -104,7 +105,8 @@ const cookieConfig: NgcCookieConsentConfig = {
     MatInputModule,
     MatSnackBarModule,
     MatTableModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatMenuModule
   ],
   providers: [ {provide: HTTP_INTERCEPTORS , useClass: InterceptorHttp, multi: true}],
   bootstrap: [AppComponent],

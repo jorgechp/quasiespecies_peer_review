@@ -2,6 +2,10 @@
     "GENERAL":{
         "PRIVACY": "Privacy policy"
     },
+    "LANGUAGE":{
+        "ENGLISH": "English",
+        "SPANISH": "Spanish"
+    },
     "WELCOME":{
         "TITLE": "Quasi-Species Peer review",
         "WELCOME": "What can you do here?"

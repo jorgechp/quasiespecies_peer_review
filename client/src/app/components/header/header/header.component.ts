@@ -1,3 +1,4 @@
+import { TranslateService } from '@ngx-translate/core';
 import { NgcCookieConsentService, NgcStatusChangeEvent } from 'ngx-cookieconsent';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { UserService } from '@src/app/services/user.service';
@@ -18,11 +19,15 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   isLogged = false;
   isAcceptedCookies = true;
+  currentLanguage: string;
 
-  constructor(private ccService: NgcCookieConsentService,
+  constructor(private translate: TranslateService,
+              private ccService: NgcCookieConsentService,
               private router: Router,
               private snackMessageService: SnackMessageService,
-              private userService: UserService) { }
+              private userService: UserService) {
+                this.currentLanguage = translate.currentLang;
+              }
 
   ngOnInit(): void {
     this.cookiesStatusChangeSubscription = this.ccService.statusChange$.subscribe(
@@ -60,6 +65,20 @@ export class HeaderComponent implements OnInit, OnDestroy {
         this.router.navigateByUrl('/');
       }
     );
+  }
+
+  changeLanguage(newLanguage: string): void{
+    switch (newLanguage){
+      case 'es':
+        this.translate.use('es');
+        this.currentLanguage = 'es';
+        break;
+      case 'en':
+      default:
+        this.translate.use('en');
+        this.currentLanguage = 'en';
+        break;
+    }
   }
 
 }

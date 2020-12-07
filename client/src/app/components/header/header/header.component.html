@@ -18,8 +18,17 @@
           </a>
         </div>   
       </div>   
-      <div class="flex-content__right-links"> 
-        <a class="flex-content--link" [routerLink]="['/language']" routerLinkActive="flex-content__right-link--active" aria-label="Language"><mat-icon>language</mat-icon>  </a>    
+      <div class="flex-content__right-links">
+        <mat-menu #menu="matMenu">
+          <button *ngIf="this.currentLanguage !== 'en'" mat-menu-item (click)="changeLanguage('en');">            
+            <span>{{'LANGUAGE.ENGLISH' | translate}}</span>
+          </button>
+          <button *ngIf="this.currentLanguage !== 'es'" mat-menu-item (click)="changeLanguage('es');">            
+            <span>{{'LANGUAGE.SPANISH' | translate}}</span>
+          </button>
+        </mat-menu>
+
+        <a class="flex-content--link" [matMenuTriggerFor]="menu" routerLinkActive="flex-content__right-link--active" aria-label="Language"><mat-icon>language</mat-icon>  </a>    
         <a class="flex-content--link" [routerLink]="['/help']" routerLinkActive="flex-content__right-link--active" aria-label="Help"><mat-icon>help_outline</mat-icon>    </a>   
         <button class="mat-icon-button" mat-icon-button 
             *ngIf="this.isLogged == true;"
