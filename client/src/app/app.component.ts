@@ -24,7 +24,7 @@ export class AppComponent implements OnInit, OnDestroy{
               private snackBar: MatSnackBar,
               private snackService: SnackMessageService){
                 translate.setDefaultLang('en');
-                translate.use('en');
+                translate.use(translate.getBrowserCultureLang());
               }
 
   ngOnInit(): void {
