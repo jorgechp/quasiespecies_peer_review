@@ -43,5 +43,16 @@
         "COOKIES_REJECTED_1": "Cookies are needed to log in or sign up in our website. We use cookies only to keep you logged in our website, as you can see in our ",
         "COOKIES_REJECTED_2": "We don't share your personal data with third parties.",
         "COOKIES_REJECTED_3": "If you want to use your account, cookies should be allowed again. You can enable cookies by clicking in the Cookies dialog, in the bottom left side dialog."        
+    },
+    "TRAIN": {
+        "INTRO": "We have selected a random article for you. Down below, you will find information regarding the title, abstract and keywords. Read carefully the paper's information and decide if you would send this paper to a low, medium or high impact journal.",
+        "ABSTRACT": "Abstract",
+        "AUTHORS_KEYWORDS": "Author's Keywords",
+        "KEYWORDS_PLUS": "KeywordPlus",
+        "YOUR_DECISION": "Your decision",
+        "DECISION_QUESTION": "Which type of journal do you think is the most suitable for the paper?",
+        "LOW_IMPACT_JOURNAL": "Low impact Journal",
+        "MEDIUM_IMPACT_JOURNAL": "Medium impact Journal",
+        "HIGH_IMPACT_JOURNAL": "High impact Journal"
     }
 }

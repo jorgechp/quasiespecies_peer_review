@@ -43,5 +43,16 @@
         "COOKIES_REJECTED_1": "Las cookies son necesarias para iniciar sesión o registrarse. Usamos cookies exclusivamente para mantener tu sesión iniciada como puedes ver en nuestra",
         "COOKIES_REJECTED_2": "No compartimos tus datos personales con terceros.",
         "COOKIES_REJECTED_3": "Si deseas utilizar tu cuenta, debes permitir las cookies otra vez. Puedes habilitar las cookies haciendo click en el diálogo de Cookies, en la solapa de la parte inferior izquierda de esta página."        
+    },
+    "TRAIN": {
+        "INTRO": "Hemos seleccionado, aleatoriamente, un artículo para ti. Abajo encontrarás toda su título, abstract y palabras clave. Lee antentamente la información sobre el artículo y decide si lo sometería a una revista de bajo, medio o alto impacto.",
+        "ABSTRACT": "Abstract",
+        "AUTHORS_KEYWORDS": "Palabras clave de autor (Author's keywords)",
+        "KEYWORDS_PLUS": "KeywordPlus",
+        "YOUR_DECISION": "Tu decisión",
+        "DECISION_QUESTION": "¿Qué tipo de revista crees que es la más adecuada para este artículo?",
+        "LOW_IMPACT_JOURNAL": "Revista de bajo impacto",
+        "MEDIUM_IMPACT_JOURNAL": "Revista de impacto medio",
+        "HIGH_IMPACT_JOURNAL": "Revista de alto impacto"
     }
 }

@@ -4,39 +4,38 @@
 <section *ngIf="this.isLogged">
     <section *ngIf="this.currentArticle !== undefined" class="section__train">    
         <p>
-            We have selected a random article for you. Down below, you will find information regarding the title, abstract and keywords. Read carefully the paper's 
-            information and decide if you would send this paper to a low, medium or high impact journal.
+            {{'TRAIN.INTRO' | translate}}
         </p>
 
         <section class="section__paper">
             <h1 class="article_header">
                 {{this.currentArticle.title}}
             </h1>
-            <h2 class="article_header">Abstract</h2>
+            <h2 class="article_header">{{'TRAIN.ABSTRACT' | translate}}</h2>
             <p class="train__abstract">
                 {{this.currentArticle.abstract}}
             </p>
-            <h2 class="article_header">Author's Keywords</h2>
+            <h2 class="article_header">{{'TRAIN.AUTHORS_KEYWORDS' | translate}}</h2>
             <p>{{this.currentArticle.authors_keywords | keywordsPipe}}</p>
                 
-            <h2 class="article_header">KeywordPlus</h2>
+            <h2 class="article_header">{{'TRAIN.KEYWORDS_PLUS' | translate}}</h2>
             <p>{{this.currentArticle.keywords_plus  | keywordsPipe}}</p>    
         </section>   
 
-        <h2>Your decision</h2>
+        <h2>{{'TRAIN.YOUR_DECISION' | translate}}</h2>
         <p>
-            Which type of journal do you think is the most suitable for the paper?
+            {{'TRAIN.DECISION_QUESTION' | translate}}
         </p>
         <div class="train__buttons">
             <button class="train__buttons--low" mat-flat-button color="primary" 
                     [disabled]='this.isButtonsDisabled' 
-                    (click)="this.doArticleAnswer('LOW')">Low impact Journal</button>
+                    (click)="this.doArticleAnswer('LOW')">{{'TRAIN.LOW_IMPACT_JOURNAL' | translate}}</button>
             <button class="train__buttons--medium" mat-flat-button color="primary" 
                     [disabled]='this.isButtonsDisabled' 
-                    (click)="this.doArticleAnswer('MEDIUM')">Medium impact Journal</button>
+                    (click)="this.doArticleAnswer('MEDIUM')">{{'TRAIN.MEDIUM_IMPACT_JOURNAL' | translate}}</button>
             <button class="train__buttons--high" mat-flat-button color="primary" 
                     [disabled]='this.isButtonsDisabled'
-                    (click)="this.doArticleAnswer('HIGH')">High impact Journal</button>
+                    (click)="this.doArticleAnswer('HIGH')">{{'TRAIN.HIGH_IMPACT_JOURNAL' | translate}}</button>
         </div>
     </section>
 </section>
