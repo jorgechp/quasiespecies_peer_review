@@ -79,5 +79,8 @@
         "SUBMISSION_PROFILE": "Submission profile",
         "NOT_ENOUGH_DATA_1": "At the moment, you have not trained jet. You can go to the",
         "NOT_ENOUGH_DATA_2": "and read some articles."
+    },
+    "PRIVACY":{
+        "OUR_PRIVACY_POLICY": "Our Privacy Policy"
     }
 }
