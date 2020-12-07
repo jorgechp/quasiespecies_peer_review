@@ -1,3 +1,4 @@
+import { NgcCookieConsentService, NgcStatusChangeEvent } from 'ngx-cookieconsent';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { UserService } from '@src/app/services/user.service';
 import { Subscription } from 'rxjs';
@@ -12,19 +13,29 @@ import { SnackMessageService } from '@src/app/services/snack-message.service';
 export class HeaderComponent implements OnInit, OnDestroy {
 
   logoutSuscription: Subscription | undefined;
+  private cookiesStatusChangeSubscription: Subscription | undefined; ;
   private loginSuscription: Subscription | undefined;
 
   isLogged = false;
+  isAcceptedCookies = true;
 
-  constructor(private router: Router,
+  constructor(private ccService: NgcCookieConsentService,
+              private router: Router,
               private snackMessageService: SnackMessageService,
               private userService: UserService) { }
 
   ngOnInit(): void {
+    this.cookiesStatusChangeSubscription = this.ccService.statusChange$.subscribe(
+      (event: NgcStatusChangeEvent) => {
+        this.isAcceptedCookies = event.status === 'allow';
+      });
     this.subscribeCheckLogin();
   }
 
   ngOnDestroy(): void {
+    if (this.cookiesStatusChangeSubscription !== undefined){
+      this.cookiesStatusChangeSubscription.unsubscribe();
+    }
     if (this.logoutSuscription !== undefined){
       this.logoutSuscription.unsubscribe();
     }

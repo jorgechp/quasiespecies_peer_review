@@ -6,6 +6,7 @@ import { NewUserInterface } from '@src/app/models/new-user-interface.model';
 import { SnackMessageService } from '@src/app/services/snack-message.service';
 import { UserService } from '@src/app/services/user.service';
 import { Subscription } from 'rxjs';
+import { NgcCookieConsentService, NgcStatusChangeEvent } from 'ngx-cookieconsent';
 
 
 @Component({
@@ -23,15 +24,17 @@ export class SignupComponent implements OnInit, OnDestroy {
 
   isRecoveringPassword = false;
   isRecoveringPasswordFirstStep = true;
+  isLogged = true;
+  isAcceptedCookies = true;
 
   hideLogin = true;
   hideSignUp = true;
 
-  createUserSuscription: Subscription | undefined;
-  loginSuscription: Subscription | undefined;
-  recoveryUserSuscription: Subscription | undefined;
-  recoveryUserSecondStageSuscription: Subscription | undefined;
-  isLogged = true;
+  private cookiesStatusChangeSubscription: Subscription | undefined ;
+  private createUserSuscription: Subscription | undefined;
+  private loginSuscription: Subscription | undefined;
+  private recoveryUserSuscription: Subscription | undefined;
+  private recoveryUserSecondStageSuscription: Subscription | undefined;
 
   private validatePasswords(group: FormGroup): null | object {
     const password = group.get('password1');
@@ -52,7 +55,8 @@ export class SignupComponent implements OnInit, OnDestroy {
     }
   }
 
-  constructor(private router: Router,
+  constructor(private ccService: NgcCookieConsentService,
+              private router: Router,
               private formBuilder: FormBuilder,
               private snackMessageService: SnackMessageService,
               private userService: UserService) {
@@ -87,9 +91,17 @@ export class SignupComponent implements OnInit, OnDestroy {
 
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.cookiesStatusChangeSubscription = this.ccService.statusChange$.subscribe(
+      (event: NgcStatusChangeEvent) => {
+        this.isAcceptedCookies = event.status === 'allow';
+      });
+  }
 
   ngOnDestroy(): void {
+    if (this.cookiesStatusChangeSubscription !== undefined){
+      this.cookiesStatusChangeSubscription.unsubscribe();
+    }
     if (this.createUserSuscription !== undefined){
       this.createUserSuscription.unsubscribe();
     }

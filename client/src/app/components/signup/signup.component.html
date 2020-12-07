@@ -1,3 +1,4 @@
+<ng-container *ngIf="this.isAcceptedCookies">
     <ng-container *ngIf="!this.isRecoveringPassword">  
         <section>
             <h2>Already have an account? then log in ...</h2>
@@ -171,4 +172,23 @@
         </ng-container>     
         <button [disabled]="!recoveryFormSecondStageGroup.valid" type="submit" mat-flat-button color="primary">Change my password</button>
         </form>
+    </ng-container>
+</ng-container>
+<ng-container *ngIf="!this.isAcceptedCookies">
+    <section>
+        <h2>You have rejected cookies.</h2>
+        <section>
+            <p>
+                Cookies are needed to log in or sign up in our website. We use cookies only to keep you logged in our website, as you can see in our
+                <a [routerLink]="[ '/privacy']" title="Privacy policy">Privacy policy</a>. We don't share your personal data with third parties.
+            <p>
+            <p>
+                If you want to user your account, cookies should be allowed again. You can enable cookies by clicking in the Cookies dialog, in 
+                the bottom left side dialog.
+            </p>
+            <p>
+                Thanks!
+            </p>
+        </section>
+    </section>
 </ng-container>
