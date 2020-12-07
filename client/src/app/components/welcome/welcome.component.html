@@ -1,9 +1,9 @@
 <main>
     <section>
-        <h1>Quasi-Species Peer Review</h1>
+        <h1>{{'WELCOME.TITLE' | translate}}</h1>
     </section>
     <app-signup *ngIf="!this.isLogged"></app-signup>
     <section *ngIf="this.isLogged">
-        <h2>Welcome</h2>
+        <h2>{{'WELCOME.WELCOME' | translate}}</h2>
     </section>
 </main>

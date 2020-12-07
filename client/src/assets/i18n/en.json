@@ -1,0 +1,28 @@
+{
+    "GENERAL":{
+        "PRIVACY": "Privacy policy"
+    },
+    "WELCOME":{
+        "TITLE": "Quasi-Species Peer review",
+        "WELCOME": "What can you do here?"
+    },
+    "SIGNUP":{
+        "ALREADY_HAVE_ACCONUT": "Already have an account? then log in ...",
+        "NOT_REMEMBER_ACCOUNT": "Click here if you don't remember your account",
+        "NICK": "Nick",
+        "HINT_NICKNAME": "Insert your nickname here",
+        "PASSWORD": "Password",
+        "HINT_PASSWORD": "Insert your password",
+        "HINT_PASSWORD_2": "Insert a really strong password here",
+        "HINT_PASSWORD_AGAIN": "Insert your password again.",
+        "LOG_IN": "Log in",
+        "CREATE_NEW_ACCOUNT": "... or create a new account",
+        "MAIL": "Mail",
+        "HINT_MAIL": "Insert your mail here",     
+        "AGREE_1": "I'm agree with the ",
+        "AGREE_2": "and I accept to provide you with my nickname and my e-mail address",
+        "REGISTER": "Register",
+        "PRIVACY_SECURITY": "Privacy and Security",
+        "PRIVACY_TEXT_1": "Your password and your mail are encrypted before being stored in our database. Please, take a look to our"
+    }
+}

@@ -1,4 +1,6 @@
 import { Component, OnInit, OnDestroy  } from '@angular/core';
+import {TranslateService} from '@ngx-translate/core';
+
 import {MatSnackBar, MatSnackBarRef, TextOnlySnackBar} from '@angular/material/snack-bar';
 import { SnackMessageService } from '@src/app/services/snack-message.service';
 import { Subscription } from 'rxjs';
@@ -18,8 +20,12 @@ export class AppComponent implements OnInit, OnDestroy{
   snackBarRef: MatSnackBarRef<TextOnlySnackBar> | undefined;
 
 
-  constructor(private snackBar: MatSnackBar,
-              private snackService: SnackMessageService){}
+  constructor(private translate: TranslateService,
+              private snackBar: MatSnackBar,
+              private snackService: SnackMessageService){
+                translate.setDefaultLang('en');
+                translate.use('en');
+              }
 
   ngOnInit(): void {
 

@@ -1,20 +1,20 @@
 <ng-container *ngIf="this.isAcceptedCookies">
     <ng-container *ngIf="!this.isRecoveringPassword">  
         <section>
-            <h2>Already have an account? then log in ...</h2>
+            <h2>{{'SIGNUP.ALREADY_HAVE_ACCONUT' | translate}}</h2>
             <p class="recovery_link">
-                <a (click)="this.isRecoveringPassword = true">🔗  Click here if you don't remember your account</a>
+                <a (click)="this.isRecoveringPassword = true">🔗  {{'SIGNUP.NOT_REMEMBER_ACCOUNT' | translate}}</a>
             </p>
             <form #loginForm [formGroup]="loginFormGroup" (ngSubmit)="loginSubmit()" (keyup.enter)="enterEvent('login')">
                 <mat-form-field class="register-field" appearance="legacy" >
-                    <mat-label>Nick</mat-label>
+                    <mat-label>{{'SIGNUP.NICK' | translate}}</mat-label>
                     <input matInput placeholder="Placeholder" id="login_nick" formControlName="login_nick" autofocus>
                     <mat-icon matSuffix *ngIf="!login_form.login_nick.errors">done</mat-icon>
                     <mat-icon matSuffix *ngIf="login_form.login_nick.errors">close</mat-icon>
-                    <mat-hint>Insert your nickname here</mat-hint>
+                    <mat-hint>{{'SIGNUP.HINT_NICKNAME' | translate}}</mat-hint>
                 </mat-form-field>
                 <mat-form-field class="register-field" appearance="legacy">
-                    <mat-label>Enter your password</mat-label>
+                    <mat-label>{{'SIGNUP.PASSWORD' | translate}}</mat-label>
                     <input matInput [type]="hideLogin ? 'password' : 'text'" formControlName="login_password">
                     <button mat-icon-button matSuffix type="button"
                         (click)="hideLogin = !hideLogin" 
@@ -25,10 +25,10 @@
                     </button>
                     <mat-icon matSuffix *ngIf="!login_form.login_password.errors">done</mat-icon>
                     <mat-icon matSuffix *ngIf="login_form.login_password.errors">close</mat-icon>
-                    <mat-hint>Insert your password</mat-hint>
+                    <mat-hint>{{'SIGNUP.PASSWORD' | translate}}</mat-hint>
                 </mat-form-field>
                 <section>
-                    <button [disabled]="!loginFormGroup.valid" type="submit" mat-flat-button color="primary">Log in</button>
+                    <button [disabled]="!loginFormGroup.valid" type="submit" mat-flat-button color="primary">{{'SIGNUP.LOG_IN' | translate}}</button>
                 </section>
             </form>
         </section>
@@ -36,27 +36,27 @@
 
 
         <section>    
-            <h2>... or create a new account</h2>
+            <h2>{{'SIGNUP.CREATE_NEW_ACCOUNT' | translate}}</h2>
             <form #signupForm [formGroup]="registerFormGroup" (ngSubmit)="registerSubmit()" (keyup.enter)="enterEvent('signup')">
                 <mat-form-field class="register-field" appearance="legacy">
-                    <mat-label>Nick</mat-label>
+                    <mat-label>{{'SIGNUP.NICK' | translate}}</mat-label>
                     <input matInput placeholder="Placeholder" id="signup_nick" formControlName="signup_nick">
                     <mat-icon matSuffix *ngIf="!signup_form.signup_nick.errors">done</mat-icon>
                     <mat-icon matSuffix *ngIf="signup_form.signup_nick.errors">close</mat-icon>
-                    <mat-hint>Insert your nickname here</mat-hint>
+                    <mat-hint>{{'SIGNUP.HINT_NICKNAME' | translate}}</mat-hint>
                 </mat-form-field>
 
                 <mat-form-field class="register-field" appearance="legacy">
-                    <mat-label>Mail</mat-label>
+                    <mat-label>{{'SIGNUP.MAIL' | translate}}</mat-label>
                     <input matInput placeholder="Placeholder" id="signup_mail" formControlName="signup_mail">
                     <mat-icon matSuffix *ngIf="!signup_form.signup_mail.errors">done</mat-icon>
                     <mat-icon matSuffix *ngIf="signup_form.signup_mail.errors">close</mat-icon>
-                    <mat-hint>Insert your mail here</mat-hint>
+                    <mat-hint>{{'SIGNUP.HINT_MAIL' | translate}}</mat-hint>
                 </mat-form-field>
                 
                 <ng-container formGroupName="passwords">
                     <mat-form-field class="register-field" appearance="legacy">
-                        <mat-label>Enter your password</mat-label>
+                        <mat-label>{{'SIGNUP.PASSWORD' | translate}}</mat-label>
                         <input matInput [type]="hideSignUp ? 'password' : 'text'" id="password1" minlength="5" formControlName="password1">
                         <button mat-icon-button matSuffix type="button" 
                             (click)="hideSignUp = !hideSignUp" 
@@ -67,7 +67,7 @@
                         </button>
                         <mat-icon matSuffix *ngIf="!password_form.hasError('notSame') && password_form.controls.password1.valid">done</mat-icon>
                         <mat-icon matSuffix *ngIf="password_form.hasError('notSame') || !password_form.controls.password1.valid">close</mat-icon>
-                        <mat-hint>Insert a really strong password here</mat-hint>
+                        <mat-hint>{{'SIGNUP.HINT_PASSWORD_2' | translate}}</mat-hint>
                     </mat-form-field>
 
                     <mat-form-field class="register-field" appearance="legacy">
@@ -82,27 +82,29 @@
                         </button>
                         <mat-icon matSuffix *ngIf="!password_form.hasError('notSame') && password_form.controls.password2.valid">done</mat-icon>
                         <mat-icon matSuffix *ngIf="password_form.hasError('notSame') || !password_form.controls.password2.valid">close</mat-icon>
-                        <mat-hint>Insert your password again.</mat-hint>
+                        <mat-hint>{{'SIGNUP.HINT_PASSWORD_AGAIN' | translate}}</mat-hint>
                     </mat-form-field>  
                 </ng-container>       
                 
                 <section>
                     <mat-checkbox formControlName="conditionsAgree"></mat-checkbox>
                     <span>
-                        I'm agree with the <a [routerLink]="['/privacy']" routerLinkActive="router-link-active" title="Privacy Policy">Privacy Policy</a>
-                        and I accept to provide you with my nickname and my e-mail address
+                        {{'SIGNUP.AGREE_1' | translate}} <a [routerLink]="['/privacy']" 
+                                                            routerLinkActive="router-link-active" 
+                                                            title="{{'GENERAL.PRIVACY' | translate}}">{{'GENERAL.PRIVACY' | translate}}</a>
+                        {{'SIGNUP.AGREE_2' | translate}}
                     </span>
                 </section>
                 <section>
-                    <button [disabled]="!registerFormGroup.valid" type="submit" mat-flat-button color="primary">Register</button>
+                    <button [disabled]="!registerFormGroup.valid" type="submit" mat-flat-button color="primary">{{'SIGNUP.REGISTER' | translate}}</button>
                 </section>
             </form>
         </section>
 
         <section class="privacy">
-            <h3>Privacy and security</h3>
-            Your password and your mail are encrypted before being stored in our database. Please, take a look to our 
-            <a [routerLink]="['/privacy']" routerLinkActive="router-link-active" title="Privacy Policy">Privacy Policy</a>.
+            <h3>{{'SIGNUP.PRIVACY_SECURITY' | translate}}</h3>
+            {{'SIGNUP.PRIVACY_TEXT_1' | translate}}
+            <a [routerLink]="['/privacy']" routerLinkActive="router-link-active" title="{{'GENERAL.PRIVACY' | translate}}">{{'GENERAL.PRIVACY' | translate}}</a>.
         </section>
 </ng-container>
 <ng-container *ngIf="this.isRecoveringPassword">
