@@ -1,7 +1,11 @@
 {
     "GENERAL":{
         "PRIVACY": "Política de privacidad",
-        "THANKS": "¡Gracias!"
+        "THANKS": "¡Gracias!",
+        "LOW_IMPACT": "Bajo impacto",
+        "MEDIUM_IMPACT": "Impacto medio",
+        "HIGH_IMPACT": "Alto impacto",
+        "TRAIN": "Entrenamiento"
     },
     "LANGUAGE":{
         "ENGLISH": "English",
@@ -54,5 +58,26 @@
         "LOW_IMPACT_JOURNAL": "Revista de bajo impacto",
         "MEDIUM_IMPACT_JOURNAL": "Revista de impacto medio",
         "HIGH_IMPACT_JOURNAL": "Revista de alto impacto"
+    },
+    "STATS":{
+        "TITLE": "Estadística generales",
+        "INTRO_1": "Has respondido",
+        "INTRO_TIMES": "veces.",
+        "INTRO_2": "A continuación, se muestra tu matriz de confusión:",
+        "DARK_CELLS": "Las celdas oscuras",
+        "DARK_CELLS_2": "contienen valores iguales o superiores a",
+        "PARTITION_SUBMISSION_PROFILE": "Partición y perfil de submission",
+        "PARTITION_1": "En este punto, podemos inferir tu partición y tu perfil de submission. De acuerdo con tus resultados,",
+        "PARTITION_2": "con una probailidad de",
+        "PARTITION_3": "tu partición es",
+        "DETERMINE_PROFILE": "Además, podemos determinar tu perfil de submission",
+        "PROFILE_1": "Con una probabilidad de",
+        "PROFILE_2": ", respectivamente.",
+        "EVOLUTION": "Tu evolución",
+        "STEP": "Etapa",
+        "ID_PARTITION": "Id de Partición",
+        "SUBMISSION_PROFILE": "Perfil de submission",
+        "NOT_ENOUGH_DATA_1": "En este momento, aún no has entrenado. Puedes ir a",
+        "NOT_ENOUGH_DATA_2": "y leer algunos artículos."
     }
 }

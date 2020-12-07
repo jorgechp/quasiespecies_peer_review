@@ -1,7 +1,11 @@
 {
     "GENERAL":{
         "PRIVACY": "Privacy policy",
-        "THANKS": "Thanks!"
+        "THANKS": "Thanks!",
+        "LOW_IMPACT": "Low-Impact",
+        "MEDIUM_IMPACT": "Medium-Impact",
+        "HIGH_IMPACT": "High-Impact",
+        "TRAIN": "Train section"
     },
     "LANGUAGE":{
         "ENGLISH": "English",
@@ -54,5 +58,26 @@
         "LOW_IMPACT_JOURNAL": "Low impact Journal",
         "MEDIUM_IMPACT_JOURNAL": "Medium impact Journal",
         "HIGH_IMPACT_JOURNAL": "High impact Journal"
+    },
+    "STATS":{
+        "TITLE": "General stats",
+        "INTRO_1": "You have answered",
+        "INTRO_TIMES": "times.",
+        "INTRO_2": "Down below you can see your confusion matrix:",
+        "DARK_CELLS": "Dark cells",
+        "DARK_CELLS_2": "contains values equal or greater than",
+        "PARTITION_SUBMISSION_PROFILE": "Partition and submission profile",
+        "PARTITION_1": "At this point, we can infere your partition and your submission profile. According to your results,",
+        "PARTITION_2": "with a probability of",
+        "PARTITION_3": "your partition is",
+        "DETERMINE_PROFILE": "In addition, we can determine your submission profile",
+        "PROFILE_1": "With a probability of",
+        "PROFILE_2": ", respectively.",
+        "EVOLUTION": "Your evolution",
+        "STEP": "Step",
+        "ID_PARTITION": "Id Partition",
+        "SUBMISSION_PROFILE": "Submission profile",
+        "NOT_ENOUGH_DATA_1": "At the moment, you have not trained jet. You can go to the",
+        "NOT_ENOUGH_DATA_2": "and read some articles."
     }
 }
