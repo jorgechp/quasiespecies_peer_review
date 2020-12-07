@@ -8,13 +8,13 @@
 
           <a *ngIf="this.isAcceptedCookies" class="flex-content--link" [routerLink]="['/train']" routerLinkActive="flex-content__right-link--active" >
             <mat-icon class="mat-icon">psychology</mat-icon>        
-            <span>Train </span>
+            <span>{{'HEADER.TRAIN' | translate}}</span>
           </a>   
         </div>     
         <div class="icon-with-text">
           <a *ngIf="this.isAcceptedCookies" class="flex-content--link" [routerLink]="['/stats']" routerLinkActive="flex-content__right-link--active" >
             <mat-icon class="mat-icon">show_chart</mat-icon>       
-            <span>Stats</span>
+            <span>{{'HEADER.STATS' | translate}}</span>
           </a>
         </div>   
       </div>   

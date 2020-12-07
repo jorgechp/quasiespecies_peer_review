@@ -11,6 +11,10 @@
         "TITLE": "Quasi-Species Peer review",
         "WELCOME": "¿Qué puedes hacer por aquí?"
     },
+    "HEADER":{
+        "TRAIN": "Entrenar",
+        "STATS": "Estadísticas"
+    },
     "SIGNUP":{
         "ALREADY_HAVE_ACCONUT": "¿Ya estás registrado? Puedes iniciar sesión ...",
         "NOT_REMEMBER_ACCOUNT": "Haz click aquí si no recuerdas tu contraseña",
