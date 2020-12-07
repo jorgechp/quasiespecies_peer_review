@@ -81,6 +81,37 @@
         "NOT_ENOUGH_DATA_2": "and read some articles."
     },
     "PRIVACY":{
-        "OUR_PRIVACY_POLICY": "Our Privacy Policy"
+        "OUR_PRIVACY_POLICY": "Our Privacy Policy",
+        "PRIVACY_1": "This website is stored at the University of Granada servers.This privacy policy will explain how our organization uses the personal data we collect from you when you use our website.",
+        "PRIVACY_2": "What data do we collect?.",
+        "PRIVACY_3": "If you create an account, we'll collect the following personal data:",
+        "PRIVACY_YOUR_NICKNAME": "Your nickname",
+        "PRIVACY_YOUR_MAIL": "Your mail",
+        "PRIVACY_4": "How do we collect your data?",
+        "PRIVACY_5": "You directly provide us with most all the data we collect. We collect data and process data when you create an account. If you don't register in our site, you will be anonymous for us.",
+        "PRIVACY_6": "Except for your nickname, the rest of your data is encrypted in our database.",
+        "PRIVACY_7": "How will we use your data?",
+        "PRIVACY_8": "We need your personal data to create an account for you and manage your training process. In addition, we will generate ",
+        "PRIVACY_9": "for you, based in the data you provide.",
+        "PRIVACY_10": "What are your data protection rights?",
+        "PRIVACY_RIGHT_1": "You have the right to request copies of your personal data. But take into consideration that your data is stored encrypted so is not human-readable.",
+        "PRIVACY_RIGHT_2": "You have the right to request us to correct any information you believe is inaccurate. You also have the right to request to complete the information you believe is incomplete.",
+        "PRIVACY_RIGHT_3": "You have the right to request to erase your personal data.",
+        "PRIVACY_RIGHT_4": "You have the right to request us to restrict the processing of your personal data, under certain conditions.",
+        "PRIVACY_RIGHT_5": "You have the right to object to processing of your personal data, under certain conditions.",
+        "PRIVACY_RIGHT_6": "You have the right to request to transfer the data that we have collected to another organization, or directly to you, under certain conditions.",
+        "PRIVACY_COOKIES": "Cookies",
+        "PRIVACY_17": "Cookies are text files placed on your computer to collect standard Internet log information and visitor behavior information. When you visit our websites, we may collect information from you automatically through cookies or similar technology",
+        "PRIVACY_18": "For further information, visit",
+        "PRIVACY_19": "How do we use cookies?",
+        "PRIVACY_20": "We use cookies in a range of ways to keeping you signed in.",
+        "PRIVACY_21": "What types of cookies do we use?",
+        "PRIVACY_22": "There are a number of different types of cookies, however, we only use functionality cookies, to keeping you signed in.",
+        "PRIVACY_23": "How to manage cookies?",
+        "PRIVACY_24": "Our site contains links to other websites. Our privacy policy applies only to our website, so if you click on a link to another website, you should read their privacy policy.",
+        "PRIVACY_25": "Changes to our privacy policy",
+        "PRIVACY_26": "Our website its privacy policy under regular review and places any updates on this web page. This privacy policy was last updated on 7 December 2020.",
+        "PRIVACY_27": "How to contact us?",
+        "PRIVACY_28": "If you have any questions about our privacy policy, the data we hold on you, or you would like to exercise one of your data protection rights, please do not hesitate to contact us."        
     }
 }
