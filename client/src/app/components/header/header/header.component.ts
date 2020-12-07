@@ -13,7 +13,7 @@ import { SnackMessageService } from '@src/app/services/snack-message.service';
 export class HeaderComponent implements OnInit, OnDestroy {
 
   logoutSuscription: Subscription | undefined;
-  private cookiesStatusChangeSubscription: Subscription | undefined; ;
+  private cookiesStatusChangeSubscription: Subscription | undefined;
   private loginSuscription: Subscription | undefined;
 
   isLogged = false;

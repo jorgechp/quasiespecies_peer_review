@@ -177,7 +177,7 @@ export class SignupComponent implements OnInit, OnDestroy {
         this.createUserSuscription = this.userService.registerUser(nick.value, mail.value, password.value).subscribe(
           (response: NewUserInterface) => {
             if (response.id !== undefined){
-              this.snackMessageService.notifyNewSnackMessage('Your user is now registered and now you can log in the system. Thanks!');              
+              this.snackMessageService.notifyNewSnackMessage('Your user is now registered and now you can log in the system. Thanks!');
             }
           },
           (error) => {
@@ -230,7 +230,7 @@ export class SignupComponent implements OnInit, OnDestroy {
               this.snackMessageService.notifyNewSnackMessage('This token has expired, or is not valid.');
             }
           }
-        )
+        );
     }
   }
 }
