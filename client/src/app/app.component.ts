@@ -6,6 +6,8 @@ import { SnackMessageService } from '@src/app/services/snack-message.service';
 import { Subscription } from 'rxjs';
 import { SnackBarConfiguration } from '@src/app/models/snackbar-config-interface';
 
+const ENABLED_LANGUAGES = ['en', 'es'];
+const DEFAULT_LANGUAGE = 'en';
 
 @Component({
   selector: 'app-root',
@@ -19,12 +21,18 @@ export class AppComponent implements OnInit, OnDestroy{
   snackDismissRequestSuscription: Subscription | undefined;
   snackBarRef: MatSnackBarRef<TextOnlySnackBar> | undefined;
 
+  
 
   constructor(private translate: TranslateService,
               private snackBar: MatSnackBar,
               private snackService: SnackMessageService){
-                translate.setDefaultLang('en');
-                translate.use(translate.getBrowserCultureLang());
+                translate.setDefaultLang(DEFAULT_LANGUAGE);
+                const browserLanguage = translate.getBrowserCultureLang();
+                if (ENABLED_LANGUAGES.includes(browserLanguage)){
+                  translate.use(browserLanguage);
+                }else{
+                  translate.use(DEFAULT_LANGUAGE);
+                }
               }
 
   ngOnInit(): void {
