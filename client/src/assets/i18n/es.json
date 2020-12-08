@@ -5,7 +5,8 @@
         "LOW_IMPACT": "Bajo impacto",
         "MEDIUM_IMPACT": "Impacto medio",
         "HIGH_IMPACT": "Alto impacto",
-        "TRAIN": "Entrenamiento"
+        "TRAIN": "Entrenamiento",
+        "STATS": "Estadísticas"
     },
     "LANGUAGE":{
         "ENGLISH": "English",
@@ -112,6 +113,8 @@
         "PRIVACY_25": "Cambios en nuestra Política de Privacidad",
         "PRIVACY_26": "Revisamos periodicamente la política de privacidad, y la actualizamos en consecuencia. La última actualización de nuestra Política de Privacidad des del 7 de diciembre del 2020.",
         "PRIVACY_27": "¿Cómo contactarnos?",
-        "PRIVACY_28": "Si tienes preguntas sobre nuestra Política de Privacidad y los datos que recogemos sobre ti. O bien quieres ejercer tus derechos con respecto a tus datos personales. No dudes en contactarnos."        
+        "PRIVACY_28": "Si tienes preguntas sobre nuestra Política de Privacidad y los datos que recogemos sobre ti. O bien quieres ejercer tus derechos con respecto a tus datos personales. No dudes en contactarnos.",
+        "PRIVACY_29": "Adicionalmente, también recogemos tu contraseña, necesaria para evitar accesos no autorizados en tu cuenta. Por otro lado, guardamos todas tus respuestas en el",        
+        "PRIVACY_30": "No compartimos tus datos personales con terceros"     
     }
 }

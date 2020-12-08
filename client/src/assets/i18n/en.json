@@ -5,7 +5,8 @@
         "LOW_IMPACT": "Low-Impact",
         "MEDIUM_IMPACT": "Medium-Impact",
         "HIGH_IMPACT": "High-Impact",
-        "TRAIN": "Train section"
+        "TRAIN": "Train section",
+        "STATS": "Stats section"
     },
     "LANGUAGE":{
         "ENGLISH": "English",
@@ -112,6 +113,8 @@
         "PRIVACY_25": "Changes to our privacy policy",
         "PRIVACY_26": "Our website its privacy policy under regular review and places any updates on this web page. This privacy policy was last updated on 7 December 2020.",
         "PRIVACY_27": "How to contact us?",
-        "PRIVACY_28": "If you have any questions about our privacy policy, the data we hold on you, or you would like to exercise one of your data protection rights, please do not hesitate to contact us."        
+        "PRIVACY_28": "If you have any questions about our privacy policy, the data we hold on you, or you would like to exercise one of your data protection rights, please do not hesitate to contact us.",        
+        "PRIVACY_29": "In addition, we also collect a password to keep secured your account from unwanted access an we store all your responses in the ",        
+        "PRIVACY_30": "We don't share your data with third parties."     
     }
 }
