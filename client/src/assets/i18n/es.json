@@ -81,6 +81,37 @@
         "NOT_ENOUGH_DATA_2": "y leer algunos artículos."
     },
     "PRIVACY":{
-        "OUR_PRIVACY_POLICY": "Nuestra política de privacidad"
+        "OUR_PRIVACY_POLICY": "Nuestra Política de Privacidad",
+        "PRIVACY_1": "Este sitio se encuentra alojado en servidores de la Universidad de Granada. La siguiente Política de Privacidad explica cómo nuestra organización usa los datos personales que recogemos cuando navegas por nuestra web.",
+        "PRIVACY_2": "¿Qué datos necesitamos?",
+        "PRIVACY_3": "Si creas una cuenta, utilizaremos los siguientes datos personales:",
+        "PRIVACY_YOUR_NICKNAME": "Tu nick",
+        "PRIVACY_YOUR_MAIL": "Tu correo electrónico",
+        "PRIVACY_4": "¿Cómo recolectamos tus datos personales?",
+        "PRIVACY_5": "Al registrate, nos cedes directamente todos los datos que recogemos sobre ti. Recogemos tus datos personales y los procesamos cuando creas una cuenta de usario. Si no te registras en nuestro sitio, tu navegación será completamente anónima.",
+        "PRIVACY_6": "Con la excepción de tu nickname, el resto de tus datos personales son cifrados antes de ser almacenados en nuestra base de datos.",
+        "PRIVACY_7": "¿Por qué recogemos tus datos personales?",
+        "PRIVACY_8": "Necesitamos tus datos personales para crear tu cuenta y gestionar tu proceso de entrenamiento. En adición, generamos",
+        "PRIVACY_9": "para ti, en base a los datos que tú nos proporcionas.",
+        "PRIVACY_10": "¿Cuáles son tus derechos en relación a los datos que nos facilitas?",
+        "PRIVACY_RIGHT_1": "Tienes derecho a solicitar copias de tus datos personales. Pero ten en cuenta que tus datos personales se guardan cifrados, y no tienen un formato legible por un ser humano.",
+        "PRIVACY_RIGHT_2": "Tienes derecho a solicitarnos corregir cualquier información que consideres inexacta o incompleta.",
+        "PRIVACY_RIGHT_3": "Tienes derecho a solicitarnos la eliminación de tus datos personales.",
+        "PRIVACY_RIGHT_4": "Tienes derecho a solicitarnos restringir el tratamiento de tus datos personales. Lo que implicaría la eliminación de tu cuenta de usuario.",
+        "PRIVACY_RIGHT_5": "Tienes derecho a oponerte al tratamiento de tus datos personales, bajo ciertas condiciones.",
+        "PRIVACY_RIGHT_6": "Tienes derecho a solicitar la transferencia de tus datos personales a otra organización, bajo ciertas condiciones.",
+        "PRIVACY_COOKIES": "Cookies",
+        "PRIVACY_17": "Las cookies son archivos de texto que guardamos en tu ordenador para registrar información sobre ti que nos permite saber quién eres y mantener tu sesión conectada.",
+        "PRIVACY_18": "Para más información, visita",
+        "PRIVACY_19": "Cómo usamos las cookies?",
+        "PRIVACY_20": "Usamos las cookies con el fin de mantener tu sesión iniciada.",
+        "PRIVACY_21": "¿Qué tipo de cookies utilizamos?",
+        "PRIVACY_22": "Existen diferentes tipos de cookies. En nuestro sitio, solamente utilizamos cookies funcionales, necesarias para mantener tu sesión.",
+        "PRIVACY_23": "¿Cómo gestionamos las cookies?",
+        "PRIVACY_24": "Nuestro sitio contiene enlaces a otros sitios web. Ten en cuenta que nuestra política de privacidad solamente se aplica dentro de nuestr sitio web.",
+        "PRIVACY_25": "Cambios en nuestra Política de Privacidad",
+        "PRIVACY_26": "Revisamos periodicamente la política de privacidad, y la actualizamos en consecuencia. La última actualización de nuestra Política de Privacidad des del 7 de diciembre del 2020.",
+        "PRIVACY_27": "¿Cómo contactarnos?",
+        "PRIVACY_28": "Si tienes preguntas sobre nuestra Política de Privacidad y los datos que recogemos sobre ti. O bien quieres ejercer tus derechos con respecto a tus datos personales. No dudes en contactarnos."        
     }
 }
