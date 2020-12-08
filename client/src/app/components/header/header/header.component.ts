@@ -24,6 +24,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   constructor(private translate: TranslateService,
               private ccService: NgcCookieConsentService,
               private router: Router,
+              private translateService: TranslateService,
               private snackMessageService: SnackMessageService,
               private userService: UserService) {
                 this.currentLanguage = translate.currentLang;
@@ -61,7 +62,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.logoutSuscription = this.userService.logout().subscribe(
       (response: boolean) => {
         console.log('Logout');
-        this.snackMessageService.notifyNewSnackMessage('See you soon!');
+        this.snackMessageService.notifyNewSnackMessage(this.translateService.instant('SNACK.HEADER_LOGOUT'));
         this.router.navigateByUrl('/');
       }
     );

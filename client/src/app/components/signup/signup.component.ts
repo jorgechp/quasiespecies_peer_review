@@ -1,3 +1,4 @@
+import { TranslateService } from '@ngx-translate/core';
 import { Router } from '@angular/router';
 import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, AbstractControl, Form } from '@angular/forms';
@@ -57,6 +58,7 @@ export class SignupComponent implements OnInit, OnDestroy {
 
   constructor(private ccService: NgcCookieConsentService,
               private router: Router,
+              private translateService: TranslateService,
               private formBuilder: FormBuilder,
               private snackMessageService: SnackMessageService,
               private userService: UserService) {
@@ -150,16 +152,16 @@ export class SignupComponent implements OnInit, OnDestroy {
         this.loginSuscription = this.userService.loginUser(nick.value, password.value).subscribe(
           (response: boolean) => {
             if (response){
-              this.snackMessageService.notifyNewSnackMessage('Welcome, ' + nick.value + '!');
+              this.snackMessageService.notifyNewSnackMessage(this.translateService.instant('SNACK.LOGIN_OK') + ' ' + nick.value + '!');
               this.router.navigateByUrl('/');
             }
           },
           (error) => {
             if (error.status === 400){
-              this.snackMessageService.notifyNewSnackMessage('You can\'t login because there already exists an active login. Please, logout.');
+              this.snackMessageService.notifyNewSnackMessage(this.translateService.instant('SNACK.LOGIN_400'));
             }
             else if (error.status === 401){
-              this.snackMessageService.notifyNewSnackMessage('Your login details are incorrect. Please, check your nick or your password.');
+              this.snackMessageService.notifyNewSnackMessage(this.translateService.instant('SNACK.REGISTER_401'));
             }
            }
         );
@@ -177,12 +179,12 @@ export class SignupComponent implements OnInit, OnDestroy {
         this.createUserSuscription = this.userService.registerUser(nick.value, mail.value, password.value).subscribe(
           (response: NewUserInterface) => {
             if (response.id !== undefined){
-              this.snackMessageService.notifyNewSnackMessage('Your user is now registered and now you can log in the system. Thanks!');
+              this.snackMessageService.notifyNewSnackMessage(this.translateService.instant('SNACK.REGISTER_OK'));
             }
           },
           (error) => {
             if (error.status === 400){
-              this.snackMessageService.notifyNewSnackMessage('Ups!, this nickname is in use. Please, use a different one. Maybe you\'re trying to log in?');
+              this.snackMessageService.notifyNewSnackMessage(this.translateService.instant('SNACK.REGISTER_400'));
             }
            }
         );
@@ -204,7 +206,7 @@ export class SignupComponent implements OnInit, OnDestroy {
             },
             (error) => {
               if (error.status === 400){
-                this.snackMessageService.notifyNewSnackMessage('The nickname or the user is not valid.');
+                this.snackMessageService.notifyNewSnackMessage(this.translateService.instant('SNACK.RECOVERY_404'));
               }
             }
         );
@@ -220,14 +222,14 @@ export class SignupComponent implements OnInit, OnDestroy {
       this.recoveryUserSecondStageSuscription = this.userService.userRecoveryChangePassword(token.value, password.value).subscribe(
         (response: boolean) => {
             if (response){
-              this.snackMessageService.notifyNewSnackMessage('OK!, you can use your new password from now on.');
+              this.snackMessageService.notifyNewSnackMessage(this.translateService.instant('SNACK.RECOVERY_SECOND_Ok'));
               this.isRecoveringPasswordFirstStep = true;
               this.isRecoveringPassword = false;
             }
           },
           (error) => {
             if (error.status === 400){
-              this.snackMessageService.notifyNewSnackMessage('This token has expired, or is not valid.');
+              this.snackMessageService.notifyNewSnackMessage(this.translateService.instant('SNACK.RECOVERY_SECOND_400'));
             }
           }
         );

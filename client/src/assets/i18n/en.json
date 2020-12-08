@@ -8,6 +8,22 @@
         "TRAIN": "Train section",
         "STATS": "Stats section"
     },
+    "SNACK":{
+        "LOGIN_OK": "Welcome,",
+        "LOGIN_400": "You can't login because there already exists an active login. Please, logout.",
+        "LOGIN_401": "your login details are incorrect. Please, check your nick or your password.",
+        "REGISTER_OK": "Your user is now registered and now you can log in the system. Thanks!",
+        "REGISTER_400": "Ups!, this nickname is in use. Please, use a different one. Maybe you're trying to log in?",
+        "RECOVERY_404": "The nickname or the mail are not valid.",
+        "RECOVERY_SECOND_Ok": "OK!, you can use your new password from now on.",
+        "RECOVERY_SECOND_400": "This token has expired, or is not valid.",
+        "HEADER_LOGOUT": "See you soon!",
+        "TRAIN_ERROR_RETRIEVING_ARTICLES": "We can't retrieve an article for you in this moment. Please come back later.", 
+        "TRAIN_ERROR_SCORE_1": "Sorry! This article belongs to a", 
+        "TRAIN_ERROR_SCORE_2": "-impact journal. Score: 0", 
+        "TRAIN_OK_SCORE_1": "Great! You've taken the right decission. This article belongs to a", 
+        "TRAIN_OK_SCORE_2": "-impact journal. Score: 1"
+    },
     "LANGUAGE":{
         "ENGLISH": "English",
         "SPANISH": "Español"

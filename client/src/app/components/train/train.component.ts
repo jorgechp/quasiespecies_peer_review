@@ -1,3 +1,4 @@
+import { TranslateService } from '@ngx-translate/core';
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { AnswerResult } from '@src/app/models/answer-result-model';
@@ -28,11 +29,12 @@ export class TrainComponent implements OnInit, OnDestroy {
 
   constructor(private trainService: TrainService,
               private router: Router,
+              private translateService: TranslateService,
               private userService: UserService,
               private snackMessageService: SnackMessageService) { }
 
   ngOnInit(): void {
-    this.subscribeCheckLogin();   
+    this.subscribeCheckLogin();
     this.snackMessageService.notifyDismiss();
   }
 
@@ -76,7 +78,7 @@ export class TrainComponent implements OnInit, OnDestroy {
             this.getArticle();
             break;
           default:
-            this.snackMessageService.notifyNewSnackMessage('We can\'t retrieve an article for you in this moment. Please come back later.');
+            this.snackMessageService.notifyNewSnackMessage(this.translateService.instant('SNACK.TRAIN_ERROR_RETRIEVING_ARTICLES'));
             break;
         }
       }
@@ -94,7 +96,7 @@ export class TrainComponent implements OnInit, OnDestroy {
             this.router.navigateByUrl('/');
             break;
           default:
-            this.snackMessageService.notifyNewSnackMessage('We can\'t retrieve an article for you in this moment. Please come back later.');
+            this.snackMessageService.notifyNewSnackMessage(this.translateService.instant('SNACK.TRAIN_ERROR_RETRIEVING_ARTICLES'));
             break;
       }
     }
@@ -107,12 +109,13 @@ export class TrainComponent implements OnInit, OnDestroy {
       this.userAnswerSuscription = this.trainService.answer(response).subscribe(
         (answer: AnswerResult) => {
           if (answer.user_score === 1){
-            this.snackMessageService.notifyNewSnackMessage('Great! You\'ve taken the right decission.'
-                                                            + 'This article belongs to a ' + response + '-impact journal. Score: 1'
+            this.snackMessageService.notifyNewSnackMessage(this.translateService.instant('SNACK.TRAIN_OK_SCORE_1') + ' '
+                                                            + response + this.translateService.instant('SNACK.TRAIN_OK_SCORE_2')
                                                             , TrainComponent.SNACK_SERVICE_TRAIN_NOTIFICATION_TIME);
           }else{
-            this.snackMessageService.notifyNewSnackMessage('Sorry! This article belongs to a ' + answer.real_journal_quality
-                                                            + '-impact journal. Score: 0'
+            this.snackMessageService.notifyNewSnackMessage(this.translateService.instant('SNACK.TRAIN_ERROR_SCORE_1')
+                                                            + ' ' + answer.real_journal_quality
+                                                            + this.translateService.instant('SNACK.TRAIN_ERROR_SCORE_2')
                                                             , TrainComponent.SNACK_SERVICE_TRAIN_NOTIFICATION_TIME);
           }
           this.snackMessageService.subscribeDissmising().subscribe(

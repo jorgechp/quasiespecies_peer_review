@@ -8,6 +8,22 @@
         "TRAIN": "Entrenamiento",
         "STATS": "Estadísticas"
     },
+    "SNACK":{
+        "LOGIN_OK": "¡Bienvenido,",
+        "LOGIN_400": "No puedes iniciar sesión porque ya existe un login activo. Por favor, cierra sesión.",
+        "LOGIN_401": "Tus datos son incorrectos. Por favor, comprueba tu nick y tu contraseña.",
+        "REGISTER_OK": "Tu usario ha sido registrado y ahora puedes iniciar sesión en el sistema. ¡Gracias!",
+        "REGISTER_400": "¡Ups!, este nick se encuentra en uso. Por favor, utiliza uno diferente. ¿Tal vez estés intentando iniciar sesión?",   
+        "RECOVERY_404": "Tu nombre de usuario o tu correo no son válidos.",
+        "RECOVERY_SECOND_Ok": "¡Perfecto!, a partir de ahora, utiliza tu nueva contraseña.",
+        "RECOVERY_SECOND_400": "Este token ha expirado, o no es válido.",
+        "HEADER_LOGOUT": "¡Hasta pronto!",
+        "TRAIN_ERROR_RETRIEVING_ARTICLES": "No podemos mostrarte artículos en este momento. Por favor, vuelve más tarde", 
+        "TRAIN_ERROR_SCORE_1": "¡Lo siento! este artículo pertenece a un journal de impacto", 
+        "TRAIN_ERROR_SCORE_2": ". Puntuación: 0", 
+        "TRAIN_OK_SCORE_1": "¡Perfecto! Has tomado la decisión correcta. Este artículo pertenece a un journal de impacto", 
+        "TRAIN_OK_SCORE_2": "-. Puntuación: 1"
+    },
     "LANGUAGE":{
         "ENGLISH": "English",
         "SPANISH": "Español"
