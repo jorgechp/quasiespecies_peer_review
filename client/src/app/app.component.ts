@@ -21,8 +21,6 @@ export class AppComponent implements OnInit, OnDestroy{
   snackDismissRequestSuscription: Subscription | undefined;
   snackBarRef: MatSnackBarRef<TextOnlySnackBar> | undefined;
 
-  
-
   constructor(private translate: TranslateService,
               private snackBar: MatSnackBar,
               private snackService: SnackMessageService){
