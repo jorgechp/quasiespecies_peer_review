@@ -1,3 +1,4 @@
+import { CONFIG } from '@src/app/config';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
@@ -8,11 +9,11 @@ import { tap } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class UserService {
-  private registerUserUrl = 'http://localhost:7000/user/';
-  private loginUserUrl = 'http://localhost:7000/user/login';
-  private logoutUserUrl = 'http://localhost:7000/user/logout';
-  private recoveryUserUrl = 'http://localhost:7000/user/login/recovery';
-  private recoveryUserSecondStageUrl = 'http://localhost:7000/user/login/recovery/token';
+  private registerUserUrl = CONFIG.HOST + ':' + CONFIG.PORT + '/user/';
+  private loginUserUrl = CONFIG.HOST + ':' + CONFIG.PORT + '/user/login';
+  private logoutUserUrl = CONFIG.HOST + ':' + CONFIG.PORT + '/user/logout';
+  private recoveryUserUrl = CONFIG.HOST + ':' + CONFIG.PORT + '/user/login/recovery';
+  private recoveryUserSecondStageUrl = CONFIG.HOST + ':' + CONFIG.PORT + '/user/login/recovery/token';
 
   private isLoggedIn$ = new BehaviorSubject<boolean>(false);
   private isLoggedInObservable = this.isLoggedIn$.asObservable();

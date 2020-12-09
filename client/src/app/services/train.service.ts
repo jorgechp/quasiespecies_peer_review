@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { Article } from '@src/app/models/article-interface.model';
 import { AnswerResult } from '@src/app/models/answer-result-model';
 import { UserScore } from '@src/app/models/user-score.model';
+import { CONFIG } from '@src/app/config';
 
 const EVOLUTION_ROWS_PER_STEP = 15;
 
@@ -11,11 +12,11 @@ const EVOLUTION_ROWS_PER_STEP = 15;
   providedIn: 'root'
 })
 export class TrainService {
-  private getArticleUrl = 'http://localhost:7000/train/article';
-  private getLastArticleUrl = 'http://localhost:7000/train/article/last';
-  private userAnswerUrl = 'http://localhost:7000/train/article';
-  private userScoreTableUrl = 'http://localhost:7000/train/score/table';
-  private userScoreTableEvolutionUrl = 'http://localhost:7000/train/score/table/' + EVOLUTION_ROWS_PER_STEP;
+  private getArticleUrl = CONFIG.HOST + ':' + CONFIG.PORT + '/train/article';
+  private getLastArticleUrl = CONFIG.HOST + ':' + CONFIG.PORT + '/train/article/last';
+  private userAnswerUrl = CONFIG.HOST + ':' + CONFIG.PORT + '/train/article';
+  private userScoreTableUrl = CONFIG.HOST + ':' + CONFIG.PORT + '/train/score/table';
+  private userScoreTableEvolutionUrl = CONFIG.HOST + ':' + CONFIG.PORT + '/train/score/table/' + EVOLUTION_ROWS_PER_STEP;
 
   constructor(private httpClient: HttpClient) { }
 
