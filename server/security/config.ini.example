@@ -1,0 +1,13 @@
+[GENERAL]
+host = 0.0.0.0
+port = 7000
+debug = True
+
+[MAIL]
+server_smtp = smtp.xyz.com
+server_port = 465
+mail_account = xyz@abcdefg.xyz
+mail_password = abcdefghijk
+
+[SECURITY]
+key='dev'
