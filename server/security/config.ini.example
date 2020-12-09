@@ -9,5 +9,8 @@ server_port = 465
 mail_account = xyz@abcdefg.xyz
 mail_password = abcdefghijk
 
+[API]
+cors_allowed_origin = http://localhost/*
+
 [SECURITY]
 key='dev'
