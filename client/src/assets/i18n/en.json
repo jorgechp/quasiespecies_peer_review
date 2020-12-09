@@ -42,7 +42,7 @@
         "NICK": "Nick",
         "HINT_NICKNAME": "Insert your nickname here",
         "PASSWORD": "Password",
-        "PASSWORD_2": "Retype your password",
+        "PASSWORD_2": "Password",
         "HINT_PASSWORD": "Insert your password",
         "HINT_PASSWORD_2": "Insert a really strong password here",
         "HINT_PASSWORD_AGAIN": "Insert your password again.",

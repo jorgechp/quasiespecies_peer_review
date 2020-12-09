@@ -25,6 +25,8 @@ export class SignupComponent implements OnInit, OnDestroy {
 
   isRecoveringPassword = false;
   isRecoveringPasswordFirstStep = true;
+  isRegisterHidden: boolean;
+
   isLogged = true;
   isAcceptedCookies = true;
 
@@ -36,6 +38,7 @@ export class SignupComponent implements OnInit, OnDestroy {
   private loginSuscription: Subscription | undefined;
   private recoveryUserSuscription: Subscription | undefined;
   private recoveryUserSecondStageSuscription: Subscription | undefined;
+
 
   private validatePasswords(group: FormGroup): null | object {
     const password = group.get('password1');
@@ -63,6 +66,7 @@ export class SignupComponent implements OnInit, OnDestroy {
               private snackMessageService: SnackMessageService,
               private userService: UserService) {
 
+    this.isRegisterHidden = false;
     this.loginFormGroup = formBuilder.group({
       login_nick: new FormControl('', [Validators.required]),
       login_password: new FormControl('', [Validators.required])
@@ -179,6 +183,7 @@ export class SignupComponent implements OnInit, OnDestroy {
         this.createUserSuscription = this.userService.registerUser(nick.value, mail.value, password.value).subscribe(
           (response: NewUserInterface) => {
             if (response.id !== undefined){
+              this.isRegisterHidden = true;
               this.snackMessageService.notifyNewSnackMessage(this.translateService.instant('SNACK.REGISTER_OK'));
             }
           },

@@ -35,7 +35,7 @@
 
 
 
-        <section>    
+        <section *ngIf="!this.isRegisterHidden">    
             <h2>{{'SIGNUP.CREATE_NEW_ACCOUNT' | translate}}</h2>
             <form #signupForm [formGroup]="registerFormGroup" (ngSubmit)="registerSubmit()" (keyup.enter)="enterEvent('signup')">
                 <mat-form-field class="register-field" appearance="legacy">
@@ -56,7 +56,7 @@
                 
                 <ng-container formGroupName="passwords">
                     <mat-form-field class="register-field" appearance="legacy">
-                        <mat-label>{{'SIGNUP.PASSWORD_2' | translate}}</mat-label>
+                        <mat-label>{{'SIGNUP.PASSWORD' | translate}}</mat-label>
                         <input matInput [type]="hideSignUp ? 'password' : 'text'" id="password1" minlength="5" formControlName="password1">
                         <button mat-icon-button matSuffix type="button" 
                             (click)="hideSignUp = !hideSignUp" 
@@ -67,7 +67,7 @@
                         </button>
                         <mat-icon matSuffix *ngIf="!password_form.hasError('notSame') && password_form.controls.password1.valid">done</mat-icon>
                         <mat-icon matSuffix *ngIf="password_form.hasError('notSame') || !password_form.controls.password1.valid">close</mat-icon>
-                        <mat-hint>{{'SIGNUP.HINT_PASSWORD_2' | translate}}</mat-hint>
+                        <mat-hint>{{'SIGNUP.HINT_PASSWORD' | translate}}</mat-hint>
                     </mat-form-field>
 
                     <mat-form-field class="register-field" appearance="legacy">

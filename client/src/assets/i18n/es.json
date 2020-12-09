@@ -42,7 +42,7 @@
         "NICK": "Nick",
         "HINT_NICKNAME": "Introduce tu nick aquí",
         "PASSWORD": "Contraseña",
-        "PASSWORD_2": "Vuelve a escribir tu contraseña",
+        "PASSWORD_2": "Contraseña",
         "HINT_PASSWORD": "Introduce tu contraseña",
         "HINT_PASSWORD_2": "Introduce aquí una contraseña muy fuerte",
         "HINT_PASSWORD_AGAIN": "Introduce tu contraseña, otra vez",
