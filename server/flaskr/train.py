@@ -32,6 +32,7 @@ def construct_train_blueprint(train_manager: TrainManager):
 
 
     @bp.route('/article', methods=['GET'])
+    @cross_origin(origin='http://localhost/*', headers=['Content- Type', 'Authorization'])
     def get_random_article():
         if 'username' not in session:
             response = process_response(False)
@@ -43,6 +44,7 @@ def construct_train_blueprint(train_manager: TrainManager):
         return response, 200
 
     @bp.route('/article/last', methods=['GET'])
+    @cross_origin(origin='http://localhost/*', headers=['Content- Type', 'Authorization'])
     def get_article():
         if 'username' not in session:
             response = process_response(False)
@@ -92,6 +94,7 @@ def construct_train_blueprint(train_manager: TrainManager):
 
     @bp.route('/score/table', methods=['GET'])
     @bp.route('/score/table/<int:rows_per_step>', methods=['GET'])
+    @cross_origin(origin='http://localhost/*', headers=['Content- Type', 'Authorization'])
     def get_table(rows_per_step=0):
         if 'username' not in session:
             abort(403)
