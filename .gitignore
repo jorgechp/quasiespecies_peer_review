@@ -137,3 +137,5 @@ dmypy.json
 .idea/inspectionProfiles/Project_Default.xml
 .idea/libraries/R_User_Library.xml
 .idea/encodings.xml
+/server/security/config.ini
+/server/security/key
