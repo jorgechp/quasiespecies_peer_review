@@ -60,8 +60,8 @@ class UserManager(object):
 
     def send_recovery_mail(self, user_mail: str, client_token: str):
         config = configparser.ConfigParser()
-        config.read('security/mail_config.ini')
-        default_config = config['DEFAULT']
+        config.read('security/config.ini')
+        default_config = config['MAIL']
 
         mail_client = MailManagement(default_config['server_port']
                                      , str(default_config['mail_password'])
