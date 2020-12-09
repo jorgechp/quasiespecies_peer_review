@@ -1,4 +1,13 @@
+import configparser
+
 from flaskr.api import launch_api
 
-app = launch_api()
-app.run(host='0.0.0.0', port='7000', debug=True)
+config = configparser.ConfigParser()
+config.read('security/config.ini')
+default_config = config['GENERAL']
+security_config = config['SECURITY']
+
+app = launch_api(key=security_config['key'])
+app.run(host=default_config['host'],
+        port=default_config['port'],
+        debug=default_config['debug'])

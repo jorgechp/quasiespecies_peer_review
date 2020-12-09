@@ -13,14 +13,14 @@ from management.train_manager import TrainManager
 from management.user_manager import UserManager
 
 
-def launch_api(instance_path=None,test_config=None) -> Flask:
+def launch_api(instance_path=None,test_config=None, key=None) -> Flask:
     # create and configure the app
     app = Flask(__name__, instance_relative_config=True, instance_path=instance_path)
 
 
 
     app.config.from_mapping(
-        SECRET_KEY='dev',
+        SECRET_KEY=key,
         DATABASE=os.path.join(app.instance_path, 'peer_review.db')
     )
 
