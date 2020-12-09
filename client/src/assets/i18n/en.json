@@ -79,7 +79,7 @@
     "STATS":{
         "TITLE": "General stats",
         "INTRO_1": "You have answered",
-        "INTRO_TIMES": "times.",
+        "INTRO_TIMES": "times",
         "INTRO_2": "Down below you can see your confusion matrix:",
         "DARK_CELLS": "Dark cells",
         "DARK_CELLS_2": "contains values equal or greater than",
@@ -94,7 +94,7 @@
         "STEP": "Step",
         "ID_PARTITION": "Id Partition",
         "SUBMISSION_PROFILE": "Submission profile",
-        "NOT_ENOUGH_DATA_1": "At the moment, you have not trained jet. You can go to the",
+        "NOT_ENOUGH_DATA_1": "At the moment, you have not trained enough. You can go to the",
         "NOT_ENOUGH_DATA_2": "and read some articles."
     },
     "PRIVACY":{

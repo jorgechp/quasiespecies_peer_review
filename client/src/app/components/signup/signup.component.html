@@ -154,7 +154,7 @@
                 </button>
                 <mat-icon matSuffix *ngIf="!password_form.hasError('notSame') && password_form.controls.password1.valid">done</mat-icon>
                 <mat-icon matSuffix *ngIf="password_form.hasError('notSame') || !password_form.controls.password1.valid">close</mat-icon>
-                <mat-hint>{{'SIGNUP.HINT_PASSWORD_2' | translate}}</mat-hint>
+                <mat-hint>{{'SIGNUP.HINT_PASSWORD' | translate}}</mat-hint>
             </mat-form-field>
 
             <mat-form-field class="register-field" appearance="legacy">

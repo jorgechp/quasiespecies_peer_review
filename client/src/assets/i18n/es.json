@@ -94,7 +94,7 @@
         "STEP": "Etapa",
         "ID_PARTITION": "Id de Partición",
         "SUBMISSION_PROFILE": "Perfil de submission",
-        "NOT_ENOUGH_DATA_1": "En este momento, aún no has entrenado. Puedes ir a",
+        "NOT_ENOUGH_DATA_1": "En este momento, aún no has entrenado lo suficiente. Puedes ir a",
         "NOT_ENOUGH_DATA_2": "y leer algunos artículos."
     },
     "PRIVACY":{
