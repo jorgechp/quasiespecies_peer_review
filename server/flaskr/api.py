@@ -13,7 +13,7 @@ from management.train_manager import TrainManager
 from management.user_manager import UserManager
 
 
-def launch_api(instance_path=None,test_config=None, key=None) -> Flask:
+def launch_api(instance_path=None,test_config=None, key=None, cors_allowed='*') -> Flask:
     # create and configure the app
     app = Flask(__name__, instance_relative_config=True, instance_path=instance_path)
 
@@ -56,7 +56,7 @@ def launch_api(instance_path=None,test_config=None, key=None) -> Flask:
     #Enable CORS on all domains
     CORS(app, resources={r"/*": {"origins": "http://localhost/port"}})
 
-    app.register_blueprint(construct_train_blueprint(train_manager))
-    app.register_blueprint(construct_user_blueprint(user_manager))
+    app.register_blueprint(construct_train_blueprint(train_manager, cors_allowed))
+    app.register_blueprint(construct_user_blueprint(user_manager, cors_allowed))
 
     return app

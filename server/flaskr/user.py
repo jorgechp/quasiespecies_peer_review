@@ -7,16 +7,15 @@ from flaskr.utils import process_response
 from management.user_manager import UserManager
 
 
-
-def construct_user_blueprint(user_manager: UserManager):
+def construct_user_blueprint(user_manager: UserManager, cors_exception: str):
     bp = Blueprint('user', __name__, url_prefix='/user')
 
-    CORS(bp, resources={r"/user*": {"origins": "http://localhost/*"}}, headers=['Content-Type', 'Authorization'],
+    CORS(bp, resources={r"/user*": {"origins": cors_exception}}, headers=['Content-Type', 'Authorization'],
      expose_headers='Authorization')
 
 
     @bp.route('/login', methods=['GET', 'POST', 'OPTIONS'])
-    @cross_origin(origin='http://localhost/*', headers=['Content- Type', 'Authorization'])
+    @cross_origin(origin=cors_exception, headers=['Content- Type', 'Authorization'])
     def user_session():
         if request.method == 'GET':
             return check_login()
@@ -57,7 +56,7 @@ def construct_user_blueprint(user_manager: UserManager):
         return response
 
     @bp.route('/login/recovery', methods=['POST', 'OPTIONS'])
-    @cross_origin(origin='http://localhost/*', headers=['Content- Type', 'Authorization'])
+    @cross_origin(origin=cors_exception, headers=['Content- Type', 'Authorization'])
     def user_recovery():
         if request.method == 'POST':
             return recovery_login()
@@ -83,7 +82,7 @@ def construct_user_blueprint(user_manager: UserManager):
         return response, 200
 
     @bp.route('/login/recovery/token', methods=['POST', 'OPTIONS'])
-    @cross_origin(origin='http://localhost/*', headers=['Content- Type', 'Authorization'])
+    @cross_origin(origin=cors_exception, headers=['Content- Type', 'Authorization'])
     def user_recovery_second_step():
         if request.method == 'POST':
             return recovery_change_password()
@@ -119,7 +118,7 @@ def construct_user_blueprint(user_manager: UserManager):
             return response, 400
 
     @bp.route('/logout', methods=['POST', 'OPTIONS'])
-    @cross_origin(origin='http://localhost/*', headers=['Content- Type', 'Authorization'])
+    @cross_origin(origin=cors_exception, headers=['Content- Type', 'Authorization'])
     def perfom_logout():
         session.clear()
         response = process_response(True, authorization__required=True)
