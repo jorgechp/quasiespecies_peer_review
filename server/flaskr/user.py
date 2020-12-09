@@ -3,8 +3,8 @@ from flask import (
 )
 from flask_cors import cross_origin, CORS
 
-from server.flaskr.utils import process_response
-from server.management.user_manager import UserManager
+from flaskr.utils import process_response
+from management.user_manager import UserManager
 
 
 

@@ -1,9 +1,9 @@
 import configparser
 from dataclasses import dataclass
 
-from server.db.database_manager import DatabaseManager
-from server.management.mail_management import MailManagement
-from server.security.security_manager import SecurityManager
+from db.database_manager import DatabaseManager
+from management.mail_management import MailManagement
+from security.security_manager import SecurityManager
 
 
 @dataclass

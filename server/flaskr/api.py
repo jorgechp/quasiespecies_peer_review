@@ -8,9 +8,9 @@ from flask import g
 from . import db
 from .train import construct_train_blueprint
 from .user import construct_user_blueprint
-from ..db.database_manager import DatabaseManager
-from ..management.train_manager import TrainManager
-from ..management.user_manager import UserManager
+from db.database_manager import DatabaseManager
+from management.train_manager import TrainManager
+from management.user_manager import UserManager
 
 
 def launch_api(instance_path=None,test_config=None) -> Flask:

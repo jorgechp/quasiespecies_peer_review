@@ -4,8 +4,8 @@ from flask import (
 )
 from flask_cors import CORS, cross_origin
 
-from server.flaskr.utils import process_response
-from server.management.train_manager import TrainManager
+from flaskr.utils import process_response
+from management.train_manager import TrainManager
 
 DEFAULT_SCORE_LIMIT = 20
 EVOLUTION_STEPS = 10
