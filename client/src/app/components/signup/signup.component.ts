@@ -165,7 +165,7 @@ export class SignupComponent implements OnInit, OnDestroy {
               this.snackMessageService.notifyNewSnackMessage(this.translateService.instant('SNACK.LOGIN_400'));
             }
             else if (error.status === 401){
-              this.snackMessageService.notifyNewSnackMessage(this.translateService.instant('SNACK.REGISTER_401'));
+              this.snackMessageService.notifyNewSnackMessage(this.translateService.instant('SNACK.LOGIN_401'));
             }
            }
         );
