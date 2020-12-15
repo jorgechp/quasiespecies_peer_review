@@ -14,6 +14,7 @@
         "LOGIN_401": "your login details are incorrect. Please, check your nick or your password.",
         "REGISTER_OK": "Your user is now registered and now you can log in the system. Thanks!",
         "REGISTER_400": "Ups!, this nickname is in use. Please, use a different one. Maybe you're trying to log in?",
+        "REGISTER_401": "We can't process your sign up at this moment. Sorry for the inconveniences",
         "RECOVERY_404": "The nickname or the mail are not valid.",
         "RECOVERY_SECOND_Ok": "OK!, you can use your new password from now on.",
         "RECOVERY_SECOND_400": "This token has expired, or is not valid.",
