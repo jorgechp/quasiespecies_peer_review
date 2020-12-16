@@ -19,6 +19,7 @@ export class TrainComponent implements OnInit, OnDestroy {
 
   public currentArticle: Article | undefined;
   public isButtonsDisabled = false;
+  public numberOfAnswers = 0;
 
   isLogged = false;
 
@@ -26,6 +27,8 @@ export class TrainComponent implements OnInit, OnDestroy {
   getArticleSuscription: Subscription | undefined;
   userAnswerSuscription: Subscription | undefined;
   loginSuscription: Subscription | undefined;
+  snackMessageSubscription: Subscription | undefined;
+  numberOfUserAnswersSuscription: Subscription | undefined;
 
   constructor(private trainService: TrainService,
               private router: Router,
@@ -36,6 +39,7 @@ export class TrainComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.subscribeCheckLogin();
     this.snackMessageService.notifyDismiss();
+    this.getNumberOfUserAnswers();
   }
 
   ngOnDestroy(): void {
@@ -50,6 +54,12 @@ export class TrainComponent implements OnInit, OnDestroy {
     }
     if (this.loginSuscription !== undefined){
       this.loginSuscription.unsubscribe();
+    }
+    if (this.snackMessageSubscription !== undefined){
+      this.snackMessageSubscription.unsubscribe();
+    }
+    if (this.numberOfUserAnswersSuscription !== undefined){
+      this.numberOfUserAnswersSuscription.unsubscribe();
     }
   }
 
@@ -89,6 +99,7 @@ export class TrainComponent implements OnInit, OnDestroy {
     this.getArticleSuscription = this.trainService.getArticle().subscribe(
       (article: Article) => {
           this.currentArticle = article;
+          this.getArticleSuscription?.unsubscribe();
       },
       error => {
         switch (error.status){
@@ -103,11 +114,21 @@ export class TrainComponent implements OnInit, OnDestroy {
     );
   }
 
+  getNumberOfUserAnswers(): void{
+    this.numberOfUserAnswersSuscription = this.trainService.getNumberOfUserAnswers().subscribe(
+      (numberOfAnswers: number ) => {
+        this.numberOfAnswers = numberOfAnswers;
+        this.numberOfUserAnswersSuscription?.unsubscribe();
+      }
+    );
+  }
+
   doArticleAnswer(response: string): void{
     this.isButtonsDisabled = true;
     if (response !== undefined){
       this.userAnswerSuscription = this.trainService.answer(response).subscribe(
         (answer: AnswerResult) => {
+          this.numberOfAnswers = answer.total_answers;
           if (answer.user_score === 1){
             this.snackMessageService.notifyNewSnackMessage(this.translateService.instant('SNACK.TRAIN_OK_SCORE_1') + ' '
                                                             + response + this.translateService.instant('SNACK.TRAIN_OK_SCORE_2')
@@ -118,8 +139,8 @@ export class TrainComponent implements OnInit, OnDestroy {
                                                             + this.translateService.instant('SNACK.TRAIN_ERROR_SCORE_2')
                                                             , TrainComponent.SNACK_SERVICE_TRAIN_NOTIFICATION_TIME);
           }
-          this.snackMessageService.subscribeDissmising().subscribe(
-            () => { this.getArticle(); this.isButtonsDisabled = false; }
+          this.snackMessageSubscription = this.snackMessageService.subscribeDissmising().subscribe(
+            () => { this.snackMessageSubscription?.unsubscribe(); this.getArticle(); this.isButtonsDisabled = false; }
           );
         }
       );

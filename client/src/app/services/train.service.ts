@@ -12,10 +12,12 @@ const EVOLUTION_ROWS_PER_STEP = 15;
   providedIn: 'root'
 })
 export class TrainService {
+
   private getArticleUrl = CONFIG.HOST + ':' + CONFIG.PORT + '/train/article';
   private getLastArticleUrl = CONFIG.HOST + ':' + CONFIG.PORT + '/train/article/last';
   private userAnswerUrl = CONFIG.HOST + ':' + CONFIG.PORT + '/train/article';
   private userScoreTableUrl = CONFIG.HOST + ':' + CONFIG.PORT + '/train/score/table';
+  private userNumberOfAnswers = CONFIG.HOST + ':' + CONFIG.PORT + '/train/score/times';
   private userScoreTableEvolutionUrl = CONFIG.HOST + ':' + CONFIG.PORT + '/train/score/table/' + EVOLUTION_ROWS_PER_STEP;
 
   constructor(private httpClient: HttpClient) { }
@@ -39,6 +41,10 @@ export class TrainService {
   answer(response: string): Observable<AnswerResult>{
     const answer = {impact: response};
     return this.httpClient.post<AnswerResult>(this.userAnswerUrl, JSON.stringify(answer), { withCredentials: true });
+  }
+
+  getNumberOfUserAnswers(): Observable<number> {
+    return this.httpClient.get<number>(this.userNumberOfAnswers, { withCredentials: true });
   }
 
 }

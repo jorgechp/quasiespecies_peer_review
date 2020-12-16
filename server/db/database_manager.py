@@ -60,7 +60,13 @@ class DatabaseManager(object):
         """
 
         db, cursor = self.__get_cursor()
-        cursor.execute("SELECT * FROM article ORDER BY RANDOM() LIMIT 1;")
+        query = "SELECT article.idarticle, article.title, article.abstract, " \
+                "article.authors_keywords, article.keywords_plus, article.idjournal " \
+                "FROM article JOIN journal ON article.idJournal = journal.idJournal " \
+                "WHERE journal.idImpactType IN (SELECT idimpacttype FROM impact_type " \
+                "ORDER BY random() LIMIT 1) ORDER BY random() LIMIT 1"
+
+        cursor.execute(query)
         response = cursor.fetchone()
         DatabaseManager.close_connections(db, cursor)
         return response

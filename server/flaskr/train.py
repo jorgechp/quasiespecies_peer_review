@@ -45,7 +45,7 @@ def construct_train_blueprint(train_manager: TrainManager, cors_exception: str):
 
     @bp.route('/article/last', methods=['GET'])
     @cross_origin(origin=cors_exception, headers=['Content- Type', 'Authorization'])
-    def get_article():
+    def get_last_article():
         if 'username' not in session:
             response = process_response(False)
             return response, 403
@@ -111,6 +111,15 @@ def construct_train_blueprint(train_manager: TrainManager, cors_exception: str):
 
         return process_response(score_tables), 200
 
+    @bp.route('/score/times', methods=['GET'])
+    @cross_origin(origin=cors_exception, headers=['Content- Type', 'Authorization'])
+    def get_number_user_answers():
+        if 'username' not in session:
+            abort(403)
+        number_of_results = train_manager.count_user_score_table(session['username'])
+        return process_response(number_of_results), 200
+
     return bp
+
 
 

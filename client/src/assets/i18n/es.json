@@ -6,7 +6,8 @@
         "MEDIUM_IMPACT": "Impacto medio",
         "HIGH_IMPACT": "Alto impacto",
         "TRAIN": "Entrenamiento",
-        "STATS": "Estadísticas"
+        "STATS": "Estadísticas",
+        "HELP": "Sección de Ayuda"
     },
     "SNACK":{
         "LOGIN_OK": "¡Bienvenido,",
@@ -31,7 +32,11 @@
     },
     "WELCOME":{
         "TITLE": "Quasi-Species Peer review",
-        "WELCOME": "¿Qué puedes hacer por aquí?"
+        "WELCOME": "¿Qué puedes hacer por aquí?",
+        "WELCOME_1": "Bienvenido a Quasi Species Peer-review",
+        "WELCOME_2": "Si deseas entrenar tus habilidades, ve a",
+        "WELCOME_3": "Después de entrenar un poco, puedes visitar",
+        "WELCOME_4": "Si deseas aprender más sobre este proyecto, échale un vistazo a la"
     },
     "HEADER":{
         "TRAIN": "Entrenar",
@@ -72,6 +77,8 @@
         "AUTHORS_KEYWORDS": "Palabras clave de autor (Author's keywords)",
         "KEYWORDS_PLUS": "KeywordPlus",
         "YOUR_DECISION": "Tu decisión",
+        "NUMBER_OF_ANSWERS": "Número de respuestas:",
+        "STATS_AVAILABLE": "¡Ya puedes ver tus estadísticas!",
         "DECISION_QUESTION": "¿Qué tipo de revista crees que es la más adecuada para este artículo?",
         "LOW_IMPACT_JOURNAL": "Revista de bajo impacto",
         "MEDIUM_IMPACT_JOURNAL": "Revista de impacto medio",

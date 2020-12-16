@@ -23,6 +23,12 @@
     font-size: 20px;
 }
 
+.section_times{
+    text-align: right;
+    font-style: italic;
+    font-size: 16px;
+}
+
 .train__abstract{
     text-align: justify;
     text-indent: 25px;

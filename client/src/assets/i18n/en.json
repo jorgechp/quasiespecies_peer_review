@@ -6,7 +6,8 @@
         "MEDIUM_IMPACT": "Medium-Impact",
         "HIGH_IMPACT": "High-Impact",
         "TRAIN": "Train section",
-        "STATS": "Stats section"
+        "STATS": "Stats section",
+        "HELP": "Help section"
     },
     "SNACK":{
         "LOGIN_OK": "Welcome,",
@@ -31,7 +32,11 @@
     },
     "WELCOME":{
         "TITLE": "Quasi-Species Peer review",
-        "WELCOME": "What can you do here?"
+        "WELCOME": "What can you do here?",
+        "WELCOME_1": "Welcome to Quasi-Species Peer Review.",
+        "WELCOME_2": "If you want to train your skills, please go to",
+        "WELCOME_3": "After training a bit, you can visit the",
+        "WELCOME_4": "If you wish to learn more about this project, go to the"
     },
     "HEADER":{
         "TRAIN": "Train",
@@ -71,6 +76,8 @@
         "ABSTRACT": "Abstract",
         "AUTHORS_KEYWORDS": "Author's Keywords",
         "KEYWORDS_PLUS": "KeywordPlus",
+        "NUMBER_OF_ANSWERS": "Number of answers",
+        "STATS_AVAILABLE": "You can see your stats now!",
         "YOUR_DECISION": "Your decision",
         "DECISION_QUESTION": "Which type of journal do you think is the most suitable for the paper?",
         "LOW_IMPACT_JOURNAL": "Low impact Journal",

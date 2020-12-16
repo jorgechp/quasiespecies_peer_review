@@ -1,3 +1,4 @@
+
 import numpy as np
 
 from dataclasses import dataclass
@@ -51,6 +52,7 @@ class AnswerResult:
     real_journal_quality: str
     user_journal_quality: str
     user_score: int
+    total_answers: int
 
 @dataclass_json
 @dataclass
@@ -113,8 +115,9 @@ class TrainManager(object):
         score = 1 if real_journal_impact is user_journal_impact else 0
 
         self._database_manager.add_user_answer(id_user, id_article, impact, score)
+        number_of_answers = self._database_manager.count_user_score_table(id_user)
 
-        return AnswerResult(real_journal_impact.value, user_journal_impact.value, score)
+        return AnswerResult(real_journal_impact.value, user_journal_impact.value, score, number_of_answers)
 
     def get_article(self, id_article: int) -> Article:
         returned_article_information = self._database_manager.get_article(id_article)

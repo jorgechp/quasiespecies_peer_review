@@ -5,5 +5,16 @@
     <app-signup *ngIf="!this.isLogged"></app-signup>
     <section *ngIf="this.isLogged">
         <h2>{{'WELCOME.WELCOME' | translate}}</h2>
+        <section>
+            {{'WELCOME.WELCOME_1' | translate}}
+            
+            <ul>
+                <li>{{'WELCOME.WELCOME_2' | translate}} <a [routerLink]="[ '/train' ]" title="{{'GENERAL.TRAIN' | translate}}">{{'GENERAL.TRAIN' | translate}}</a>.</li>
+                <li>{{'WELCOME.WELCOME_3' | translate}} <a [routerLink]="[ '/stats' ]" title="{{'GENERAL.STATS' | translate}}">{{'GENERAL.STATS' | translate}}</a>.</li>
+            </ul>
+    
+            {{'WELCOME.WELCOME_4' | translate}} <a [routerLink]="[ '/help' ]" title="{{'GENERAL.HELP' | translate}}">{{'GENERAL.HELP' | translate}}</a>.
+        </section>
     </section>
+
 </main>
