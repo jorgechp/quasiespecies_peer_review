@@ -17,13 +17,6 @@ def create_connection(name: str) -> sqlite3.Connection:
         connection.close()
         exit(1)
 
-def translate_quartile_into_impact(quartile: int) -> int:
-    if quartile <= 2:
-        return 3
-    elif quartile == 3:
-        return 2
-    else:
-        return 1
 
 def read_journal_list(path: str, idArea : int, cursorObj : sqlite3.Cursor) -> dict:
     list_of_journals = []
@@ -37,22 +30,22 @@ def read_journal_list(path: str, idArea : int, cursorObj : sqlite3.Cursor) -> di
             journal_impact = row["Journal Impact Factor"]
             list_of_journals.append((journal_name,journal_impact))
 
-    num_of_articles = len(list_of_journals)
-    quartile_limit = num_of_articles / 4 + 1
+    num_of_journals = len(list_of_journals)
+    barrier_limit = round(num_of_journals / 3.0)
 
     for index, article in enumerate(list_of_journals):
-        current_quartile = int(index / quartile_limit + 1)
+        current_position = int(index / barrier_limit)
 
         journal_name = article[0].upper()
         journal_impact = article[1]
-        journal_impact_type = translate_quartile_into_impact(current_quartile)
+        journal_impact_type = 3 - current_position
 
         cursorObj.execute(
             """
             INSERT INTO journal(name,quartile,impact,idImpactType,idArea) 
             VALUES
                 ('{}',{},{},{},{})            
-            """.format(journal_name, current_quartile, journal_impact, journal_impact_type, idArea)
+            """.format(journal_name, current_position, journal_impact, journal_impact_type, idArea)
         )
         idJournal = cursorObj.lastrowid
         journal_name_id_dict[journal_name] = idJournal

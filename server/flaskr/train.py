@@ -89,7 +89,7 @@ def construct_train_blueprint(train_manager: TrainManager, cors_exception: str):
         if partition_id == 0:
             abort(400)
 
-        user_scores = train_manager.get_quartile_score(session['username'], partition_id, limit)
+        user_scores = train_manager.get_score(session['username'], partition_id, limit)
         return user_scores.to_json()
 
     @bp.route('/score/table', methods=['GET'])

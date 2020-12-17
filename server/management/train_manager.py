@@ -75,14 +75,6 @@ class TrainManager(object):
         else:
             return 0
 
-    @staticmethod
-    def __convert_quartile_to_impact(quartile: int) -> Impact:
-        if quartile <= 2:
-            return Impact.HIGH
-        elif quartile == 3:
-            return Impact.MEDIUM
-        else:
-            return Impact.LOW
 
     @staticmethod
     def __parse_impact(impact):
@@ -109,15 +101,14 @@ class TrainManager(object):
         return self._database_manager.get_quartile_from_article(article_to_check.id)
 
     def answer_from_user(self, id_user: int, id_article: int, impact: str) -> AnswerResult:
-        real_quartile = self._database_manager.get_quartile_from_article(id_article)
-        real_journal_impact = TrainManager.__convert_quartile_to_impact(real_quartile)
-        user_journal_impact = TrainManager.__parse_impact(impact)
-        score = 1 if real_journal_impact is user_journal_impact else 0
+        real_journal_impact = self._database_manager.get_impact_type(id_article)
+
+        score = 1 if real_journal_impact == impact else 0
 
         self._database_manager.add_user_answer(id_user, id_article, impact, score)
         number_of_answers = self._database_manager.count_user_score_table(id_user)
 
-        return AnswerResult(real_journal_impact.value, user_journal_impact.value, score, number_of_answers)
+        return AnswerResult(real_journal_impact, impact, score, number_of_answers)
 
     def get_article(self, id_article: int) -> Article:
         returned_article_information = self._database_manager.get_article(id_article)
@@ -127,8 +118,8 @@ class TrainManager(object):
                        returned_article_information[3].replace(' ', ';'),
                        returned_article_information[4].replace(' ', ';'))
 
-    def get_quartile_score(self, user_id: int, partition: int, limit: int) -> UserScores:
-        returned_scores = self._database_manager.get_quartile_score(user_id, partition, limit)
+    def get_score(self, user_id: int, partition: int, limit: int) -> UserScores:
+        returned_scores = self._database_manager.get_score(user_id, partition, limit)
 
         positives = sum([row['score'] for row in returned_scores])
         negatives = len(returned_scores) - positives

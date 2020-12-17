@@ -17,15 +17,6 @@ class DatabaseManager(object):
         cursor.close()
         db.cursor()
 
-    @staticmethod
-    def convert_quartile_to_impact(quartile: int) -> str:
-        if quartile <= 2:
-            return "HIGH"
-        elif quartile == 3:
-            return "MEDIUM"
-        else:
-            return "LOW"
-
     def get_number_of_articles(self) -> int:
         """
         Returns the name of articles stored in the database.
@@ -68,6 +59,22 @@ class DatabaseManager(object):
 
         cursor.execute(query)
         response = cursor.fetchone()
+        DatabaseManager.close_connections(db, cursor)
+        return response
+
+    def get_impact_type(self, id_article) -> int:
+
+        db, cursor = self.__get_cursor()
+        cursor.execute("""
+                            SELECT impact_type.description 
+                            FROM impact_type 
+                            JOIN journal 
+                            ON impact_type.idImpactType = journal.idImpactType 
+                            JOIN article
+                            ON article.idJournal = journal.idJournal
+                            WHERE article.idArticle = {}
+                    """.format(id_article))
+        response = cursor.fetchone()[0]
         DatabaseManager.close_connections(db, cursor)
         return response
 
@@ -173,7 +180,7 @@ class DatabaseManager(object):
         DatabaseManager.close_connections(db, cursor)
         return response
 
-    def get_quartile_score(self, user_id: int, partition: int, limit: int):
+    def get_score(self, user_id: int, partition: int, limit: int):
         db, cursor = self.__get_cursor()
         cursor.execute("""
                             SELECT score 
