@@ -141,7 +141,8 @@ class DatabaseManager(object):
                        )
         DatabaseManager.close_connections(db, cursor)
 
-    def add_user(self, nick: str, mail: str, password: bytes) -> int:
+
+    def add_user(self, nick: str, mail: str, password: bytes, is_editor: bool, is_reviewer: bool) -> int:
         db, cursor = self.__get_cursor()
 
         try:
@@ -150,9 +151,24 @@ class DatabaseManager(object):
                                 VALUES ("{}","{}","{}")
                             """.format(nick, mail, password)
                            )
+
+            response = cursor.lastrowid
+
+            user_has_role_query = """
+                            INSERT INTO user_has_role(idUser, idRole) 
+                            VALUES ({},{})
+                        """
+
+            if is_editor:
+                cursor.execute(user_has_role_query.format(response, 1))
+            if is_reviewer:
+                cursor.execute(user_has_role_query.format(response, 2))
+
         except sqlite3.IntegrityError:
             return -1
-        response = cursor.lastrowid
+
+
+
         db.commit()
         DatabaseManager.close_connections(db, cursor)
         return response

@@ -81,6 +81,8 @@ export class SignupComponent implements OnInit, OnDestroy {
     this.registerFormGroup = formBuilder.group({
       signup_nick: new FormControl('', [Validators.required]),
       signup_mail: new FormControl('', [Validators.required, Validators.email]),
+      im_editor: new FormControl(false),
+      im_reviewer: new FormControl(false),
       conditionsAgree: new FormControl('', [Validators.requiredTrue]),
       passwords: this.passwordFormGroup
    });
@@ -177,10 +179,18 @@ export class SignupComponent implements OnInit, OnDestroy {
     if (this.registerFormGroup.valid){
       const nick = this.registerFormGroup.get('signup_nick');
       const mail = this.registerFormGroup.get('signup_mail');
+      const imEditor = this.registerFormGroup.value.im_editor;
+      const imReviewer = this.registerFormGroup.value.im_reviewer;
       const password = this.passwordFormGroup.get('password1');
 
+
+
       if (nick && mail && password){
-        this.createUserSuscription = this.userService.registerUser(nick.value, mail.value, password.value).subscribe(
+        this.createUserSuscription = this.userService.registerUser(nick.value,
+                                         mail.value,
+                                         password.value,
+                                         imEditor,
+                                         imReviewer).subscribe(
           (response: NewUserInterface) => {
             if (response.id !== undefined){
               this.isRegisterHidden = true;

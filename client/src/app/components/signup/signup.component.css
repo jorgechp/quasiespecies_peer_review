@@ -9,3 +9,15 @@
     color: #4A4A4A;    
     cursor: pointer;
 }
+
+.register-field__user-role {
+    margin-top: 15px;
+}
+
+.register-field__user-role mat-checkbox{    
+    margin-right: 5px;
+}
+
+.register-field__user-role mat-checkbox:not(:first-child) {
+    margin-left: 5px;    
+}

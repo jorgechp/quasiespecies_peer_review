@@ -125,7 +125,7 @@ def construct_user_blueprint(user_manager: UserManager, cors_exception: str):
         return response
 
     @bp.route('/', methods=['POST'])
-    def add_user_answer():
+    def add_user():
         json_request = request.get_json(force=True)
 
         if 'mail' not in json_request or 'nick' not in json_request or 'password' not in json_request:
@@ -135,8 +135,10 @@ def construct_user_blueprint(user_manager: UserManager, cors_exception: str):
         plain_mail = json_request['mail']
         nick = json_request['nick']
         plain_password = json_request['password']
+        is_editor = json_request['editor']
+        is_reviewer = json_request['reviewer']
 
-        new_user = user_manager.add_user(nick, plain_mail, plain_password)
+        new_user = user_manager.add_user(nick, plain_mail, plain_password, is_editor, is_reviewer)
         if new_user == -1:
             response = process_response({'message': 'Duplicated user'})
             return response, 400

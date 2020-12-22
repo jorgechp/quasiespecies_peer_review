@@ -83,11 +83,17 @@
                         <mat-icon matSuffix *ngIf="!password_form.hasError('notSame') && password_form.controls.password2.valid">done</mat-icon>
                         <mat-icon matSuffix *ngIf="password_form.hasError('notSame') || !password_form.controls.password2.valid">close</mat-icon>
                         <mat-hint>{{'SIGNUP.HINT_PASSWORD_AGAIN' | translate}}</mat-hint>
-                    </mat-form-field>  
-                </ng-container>       
+                    </mat-form-field>    
+                </ng-container>  
+                <p class="register-field__user-role">
+                    <mat-checkbox formControlName="im_reviewer"></mat-checkbox>
+                    <span> I'm reviewer</span>               
+                    <mat-checkbox formControlName="im_editor"></mat-checkbox>
+                    <span> I'm editor</span>
+                </p>     
                 
-                <section>
-                    <mat-checkbox formControlName="conditionsAgree"></mat-checkbox>
+                <section>                    
+                    <mat-checkbox formControlName="conditionsAgree"></mat-checkbox>                  
                     <span>
                         {{'SIGNUP.AGREE_1' | translate}} <a [routerLink]="['/privacy']" 
                                                             routerLinkActive="router-link-active" 

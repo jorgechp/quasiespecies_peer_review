@@ -26,11 +26,11 @@ class UserManager(object):
         self._database_manager = database_manager
         self._num_articles = database_manager.get_number_of_articles()
 
-    def add_user(self, nick: str, plain_mail: str, plain_password: str) -> User:
+    def add_user(self, nick: str, plain_mail: str, plain_password: str, is_editor: bool, is_reviewer: bool) -> User:
         encrypted_mail = self._security_manager.encrypt_mail(plain_mail).decode()
         hashed_password = self._security_manager.hash_password(plain_password)
 
-        id_user = self._database_manager.add_user(nick, encrypted_mail, hashed_password)
+        id_user = self._database_manager.add_user(nick, encrypted_mail, hashed_password, is_editor, is_reviewer)
         if id_user == -1:
             return id_user
         return User(id_user, nick, plain_mail)

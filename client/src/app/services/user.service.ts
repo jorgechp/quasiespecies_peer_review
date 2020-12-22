@@ -30,8 +30,16 @@ export class UserService {
     );
   }
 
-  registerUser(userNick: string, userMail: string, userPassword: string): Observable<NewUserInterface>{
-    const newUser = {nick: userNick, mail: userMail, password: userPassword};
+  registerUser(userNick: string,
+               userMail: string,
+               userPassword: string,
+               isEditor: boolean,
+               isReviewer: boolean): Observable<NewUserInterface>{
+    const newUser = {nick: userNick,
+                    mail: userMail,
+                    password: userPassword,
+                    editor: isEditor,
+                    reviewer: isReviewer};
     return this.httpClient.post<NewUserInterface>(this.registerUserUrl, JSON.stringify(newUser));
   }
 
