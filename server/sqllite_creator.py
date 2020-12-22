@@ -68,11 +68,33 @@ try:
 
     cursorObj.execute(
         """
+            CREATE TABLE role(
+                        idRole INTEGER PRIMARY KEY,
+                        name TEXT UNIQUE NOT NULL                     
+                )
+        """
+    )
+
+    cursorObj.execute(
+        """
             CREATE TABLE user(
                         idUser INTEGER PRIMARY KEY,
                         nick TEXT UNIQUE NOT NULL,
                         password TEXT NOT NULL,
-                        mail TEXT NOT NULL                        
+                        mail TEXT NOT NULL                      
+                )
+        """
+    )
+
+    cursorObj.execute(
+        """
+            CREATE TABLE user_has_role(
+                        idUser INTEGER NOT NULL,
+                        idRole INTEGER NOT NULL,
+                        
+                        PRIMARY KEY(idUser,idRole),
+                        FOREIGN KEY(idUser) REFERENCES user(idUser),              
+                        FOREIGN KEY(idRole) REFERENCES role(idRole)              
                 )
         """
     )

@@ -83,11 +83,14 @@ cursorObj = connection.cursor()
 
 general_journal_name_id_dict = dict()
 
-#Insert Impac types
+#Insert Impact types
 cursorObj.execute("INSERT INTO impact_type(description) VALUES('LOW')")
 cursorObj.execute("INSERT INTO impact_type(description) VALUES('MEDIUM')")
 cursorObj.execute("INSERT INTO impact_type(description) VALUES('HIGH')")
 
+#Insert User roles
+cursorObj.execute("INSERT INTO role(name) VALUES('editor')")
+cursorObj.execute("INSERT INTO role(name) VALUES('reviewer')")
 
 #Insert journals
 for area in journal_areas:
