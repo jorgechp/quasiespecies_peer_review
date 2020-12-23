@@ -7,7 +7,8 @@
         "HIGH_IMPACT": "Alto impacto",
         "TRAIN": "Entrenamiento",
         "STATS": "Estadísticas",
-        "HELP": "Sección de Ayuda"
+        "HELP": "Sección de Ayuda",
+        "SUBMISSION_PROFILE":"Perfil de Envío"
     },
     "SNACK":{
         "LOGIN_OK": "¡Bienvenido,",
@@ -67,6 +68,8 @@
         "HINT_TOKEN": "Pega el token que has recibido por correo electrónico.",
         "CHANGE_PASSWORD": "Cambia mi contraseña",
         "COOKIES_REJECTED_HEADER": "Has rechazado las cookies.",
+        "IM_EDITOR": "Soy editor en una revista",
+        "IM_REVIEWER": "Soy revisor en una revista",
         "COOKIES_REJECTED_1": "Las cookies son necesarias para iniciar sesión o registrarse. Usamos cookies exclusivamente para mantener tu sesión iniciada como puedes ver en nuestra",
         "COOKIES_REJECTED_2": "No compartimos tus datos personales con terceros.",
         "COOKIES_REJECTED_3": "Si deseas utilizar tu cuenta, debes permitir las cookies otra vez. Puedes habilitar las cookies haciendo click en el diálogo de Cookies, en la solapa de la parte inferior izquierda de esta página."        
@@ -104,6 +107,31 @@
         "SUBMISSION_PROFILE": "Perfil de submission",
         "NOT_ENOUGH_DATA_1": "En este momento, aún no has entrenado lo suficiente. Puedes ir a",
         "NOT_ENOUGH_DATA_2": "y leer algunos artículos."
+    },
+    "HELP":{
+        "HELP_TITLE": "Ayuda",
+        "ABOUT": "Sobre este sitio web",
+        "HELP_1": "QuasiSpecies peer review es una página diseñada para ayudar a la comunidad de investigadores a mejorar sus habilidades a la hora de decidir a qué revista científica deberían enviar un artículo. Los autores, normalmente, producen trabajos que pueden tener calidades diferentes. Estos artículos son enviados a revistas con diferente impacto.",
+        "HELP_2": "Autores y revistas quieren incremetnar su impacto. Desde el punto de vista del autor, enviar su trabajo a revistas de alto impacto le permitirán conseguir mayor visibilidad e impacto. Por otro lado, las revistas quieren publicar artículos de alta calidad con el fin de incrementar su visibilidad.",
+        "HELP_3": "Con esta perspectiva, autores y editores necesitan impacto para sobrevivir. Las revistas de muy bajo impacto se enfrentan al riesgo de ser eliminadas de los índices y perder el interés de los investigadores. Los autores que solo consiguen un bajo impacto, asumen un alto coste en términos de falta de visibilidad.",
+        "HELP_4": "Durante el proceso de presentación de artículos, los autores envían sus trabajos a la revista que hayan seleccionado y, entonces, comienza un proceso de revisión. Normalmente, un artículo será revisado por otros autores considerados expertos en el área del trabajo.  Este proceso recibe el nombre de",
+        "PEER_REVIEW": "revisión por pares",
+        "PEER_REVIEW_LINK": "https://es.wikipedia.org/wiki/Revisi%C3%B3n_por_pares",
+        "HELP_5": "Los revisores necesitan asegurarse de que la calidad del artículo está conforme a los requisitos de calidad de la revista. Si un artículo reúne los requisitos deseados, entonces los revisores proponen al Editor publicar el artículo. Si un artículo no tiene la calidad adecuada, los revisores pueden proponer cambios a realizar, o rechazar el artículo",
+        "HELP_6": "Finalmente, el Editor toma una decisión aceptando, rechazando o reclamando cambios a los autores a fin de solventar los problemas encontrados en su trabajo.",
+        "HELP_7": "Redactar un artículo implica un coste de esfuerzo y tiempo, mientras que el proceso de revisión también conlleva un tiempo adicional. Los autores asumen ese coste en tiempo y es fuerzo al someter sus artículos en revistas. Si un artículo es rechazado, los autores deben decidir qué hacer: A veces, un autor puede decidir enviar su artículo a otro journal, comenzando un nuevo proceso de revisión. Los autores también podrían decidir mejorar to improve su artículo antes de someterlo a un proceso de revisión, nuevamente. Finalmente, los autores pueden decidir no enviar el artículo a ninguna otra revista, descartándolo.",        
+        "HELP_8": "A veces, un autor puede escribir un artículo de buena calidad y decidir enviarlo a una revista de medio o incluso bajo impacto. Si el artículo finalmente se publica, la visibilidad que se logrará será inferior a su visibilidad potencial, y la recompensa obtenida por el autor se verá penalizada",
+        "HELP_9": "En cualquier caso, estas decisiones implican costes.",
+        "HELP_10": "En este escenario, la necesidad para reducir el coste de publicación de un artículo es claro. Los autores ganan experiencia cuando someten artículos a una revista y reciben una decisión sobre el mismo. Asi que, conforme transcurre el tiempo, un autor puede mejorar sus habilidades escogiendo las revistas más adecuadas. Los investigadores novatos pueden tener más dificultad para reducir sus costes de publicación.",
+        "HELP_11": "La mayor dificultad reside en la habilidad de un autor para identificar la calidad de su propio trabajo. Es posible que un autor no pueda distinguir entre artículos de baja y media calidad, o entre artículos de media y alta calidad, o es incluso posible no distinguir la calidad de un artículo, en absoluto.  Podemos decir que la habilidad de un autor para identificar la calidad de una artículos se expresa mediante su",
+        "AUTHORS_PARTITION": "Partición de Autor",
+        "HELP_12": "Además de la partición, cada autor tiene un ",
+        "HELP_13": "Un perfil de envío define el tipo de revista elegida por un autor, y se obtiene en base a la partición de autor. Esto es, si un autor no puede distinguir entre artículos de baja y media calidad, quizás puede decidir someter todos los artículos de estas calidades a revistas de bajo impacto. ",
+        "HELP_14": "La partición y el perfil de envío tienen un efecto directo sobre la recompensa lograda por un autor. Por lo que es importante entrenar a los autores para modificarlos a fin de mejorar su recompensa potencial.",
+        "HELP_15": "En esta página, te ofrecemos una herramienta gratuíta para ayudarte a identificar tu partición, perfil de envío, y para mejorarlos. La web está dividida en dos secciones:",
+        "HELP_16": "En esta sección, se muestran artículos elegidos de forma aleatoria y tienes que decidir a qué tipo de revista los enviarías. Obtendrás una recompensa en función de tus respuestas.",
+        "HELP_17": "Puedes ver tus estadísticas actuales, descucbrir tu partición y tu perfil de envío. Además, puedes visualizar tu evolución.",
+        "HELP_18": "Si quieres más información sobre el juego de autores y editores, puedes echar un vistazo a los siguientes artículos:"
     },
     "PRIVACY":{
         "OUR_PRIVACY_POLICY": "Nuestra Política de Privacidad",

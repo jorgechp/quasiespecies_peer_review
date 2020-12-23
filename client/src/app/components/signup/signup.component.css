@@ -4,10 +4,11 @@
     width: 200px;
 }
 
-.recovery_link{
+.recovery_link a{
     font-size: 10;
     color: #4A4A4A;    
     cursor: pointer;
+    font-weight: normal;
 }
 
 .register-field__user-role {
