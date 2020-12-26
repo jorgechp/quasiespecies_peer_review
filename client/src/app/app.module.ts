@@ -97,10 +97,10 @@ const cookieConfig: NgcCookieConsentConfig = {
     }),
     ReCaptchaModule.forRoot({
       invisible: {
-          sitekey: CONFIG.RECAPTCHA_KEY
+          sitekey: CONFIG.RECAPTCHA_KEY_V3
       },
       normal: {
-          sitekey: CONFIG.RECAPTCHA_KEY
+          sitekey: CONFIG.RECAPTCHA_KEY_V2
       },
       language: 'en'
     }),
