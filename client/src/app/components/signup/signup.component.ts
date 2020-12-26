@@ -1,7 +1,7 @@
 import { TranslateService } from '@ngx-translate/core';
 import { Router } from '@angular/router';
-import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
-import { FormGroup, FormControl, FormBuilder, AbstractControl, Form } from '@angular/forms';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { FormGroup, FormControl, FormBuilder, AbstractControl } from '@angular/forms';
 import { Validators } from '@angular/forms';
 import { NewUserInterface } from '@src/app/models/new-user-interface.model';
 import { SnackMessageService } from '@src/app/services/snack-message.service';
@@ -26,6 +26,7 @@ export class SignupComponent implements OnInit, OnDestroy {
   isRecoveringPassword = false;
   isRecoveringPasswordFirstStep = true;
   isRegisterHidden: boolean;
+  isCaptchaValid = false;
 
   isLogged = true;
   isAcceptedCookies = true;
@@ -127,11 +128,16 @@ export class SignupComponent implements OnInit, OnDestroy {
 
   get login_form(): { [key: string]: AbstractControl; } { return this.loginFormGroup.controls; }
   get signup_form(): { [key: string]: AbstractControl; } { return this.registerFormGroup.controls; }
-  get recovery_form(): { [key: string]: AbstractControl; } { return this.recoveryFormGroup.controls; }
+  get recovery_form(): { [key: string]: AbstractControl; } { return this.recoveryFormGroup.controls; }  
   get recovery_second_stage_form(): { [key: string]: AbstractControl; } { return this.recoveryFormSecondStageGroup.controls; }
   get password_form(): FormGroup { return this.passwordFormGroup; }
 
+
   enterEvent(formName: string): void{
+    if(!this.isCaptchaValid){
+      return;
+    }
+
     if (formName === 'login' && this.loginFormGroup.valid){
       this.loginSubmit();
     }
@@ -249,5 +255,13 @@ export class SignupComponent implements OnInit, OnDestroy {
           }
         );
     }
+  }
+
+  onCaptchaExpired(): void {
+    this.isCaptchaValid = false;
+  }
+
+  onCaptchaResponse(event: any): void {
+      console.log(event);
   }
 }

@@ -139,3 +139,5 @@ dmypy.json
 .idea/encodings.xml
 /server/security/config.ini
 /server/security/key
+client/src/app/config.ts
+client/src/app/config.ts
