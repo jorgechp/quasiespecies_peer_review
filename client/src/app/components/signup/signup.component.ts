@@ -8,6 +8,8 @@ import { SnackMessageService } from '@src/app/services/snack-message.service';
 import { UserService } from '@src/app/services/user.service';
 import { Subscription } from 'rxjs';
 import { NgcCookieConsentService, NgcStatusChangeEvent } from 'ngx-cookieconsent';
+import { ReCaptchaService } from 'angular-recaptcha3';
+import { RecaptchaValidationService } from '@src/app/services/recaptcha-validation.service';
 
 
 @Component({
@@ -65,7 +67,8 @@ export class SignupComponent implements OnInit, OnDestroy {
               private translateService: TranslateService,
               private formBuilder: FormBuilder,
               private snackMessageService: SnackMessageService,
-              private userService: UserService) {
+              private userService: UserService,
+              private captchaValidationService: RecaptchaValidationService) {
 
     this.isRegisterHidden = false;
     this.loginFormGroup = formBuilder.group({
@@ -134,7 +137,7 @@ export class SignupComponent implements OnInit, OnDestroy {
 
 
   enterEvent(formName: string): void{
-    if(!this.isCaptchaValid){
+    if (!this.isCaptchaValid){
       return;
     }
 
@@ -156,7 +159,7 @@ export class SignupComponent implements OnInit, OnDestroy {
   }
 
   loginSubmit(): void{
-    if (this.loginFormGroup.valid){
+    if (this.loginFormGroup.valid && this.isCaptchaValid){
       const nick = this.loginFormGroup.get('login_nick');
       const password = this.loginFormGroup.get('login_password');
 
@@ -182,7 +185,7 @@ export class SignupComponent implements OnInit, OnDestroy {
   }
 
   registerSubmit(): void{
-    if (this.registerFormGroup.valid){
+    if (this.registerFormGroup.valid  && this.isCaptchaValid){
       const nick = this.registerFormGroup.get('signup_nick');
       const mail = this.registerFormGroup.get('signup_mail');
       const imEditor = this.registerFormGroup.value.im_editor;
@@ -214,7 +217,7 @@ export class SignupComponent implements OnInit, OnDestroy {
   }
 
   recoverySubmit(): void{
-    if (this.recoveryFormGroup.valid){
+    if (this.recoveryFormGroup.valid  && this.isCaptchaValid){
       const nick = this.recoveryFormGroup.get('recovery_nick');
       const mail = this.recoveryFormGroup.get('recovery_mail');
 
@@ -261,7 +264,24 @@ export class SignupComponent implements OnInit, OnDestroy {
     this.isCaptchaValid = false;
   }
 
-  onCaptchaResponse(event: any): void {
-      console.log(event);
+  onCaptchaResponse(event: string): void {
+      this.sendTokenToBackend(event);
+  }
+
+  sendTokenToBackend(token: string): void {
+    const captchaSuscription = this.captchaValidationService.sendToken(token).subscribe(
+      data => {
+        if (data.success !== undefined && data.success){
+          this.isCaptchaValid = true;
+        }
+
+        captchaSuscription.unsubscribe();
+      },
+      err => {
+        console.log(err);
+        captchaSuscription.unsubscribe();
+      },
+      () => {}
+    );
   }
 }

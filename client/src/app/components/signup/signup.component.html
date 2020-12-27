@@ -1,13 +1,15 @@
 <ng-container *ngIf="this.isAcceptedCookies">
+    <form>
+        <recaptcha 
+            [size]="'normal'"
+            [hide]="false" 
+            (captchaResponse)="onCaptchaResponse($event)">
+        </recaptcha>
+    </form>
+
     <ng-container *ngIf="!this.isRecoveringPassword">  
         <section>
             <h2>{{'SIGNUP.ALREADY_HAVE_ACCONUT' | translate}}</h2>
-
-            <recaptcha 
-                [size]="'invisible'"
-                (captchaResponse)="onCaptchaResponse($event)"
-                (captchaExpired)="onCaptchaExpired()">
-            </recaptcha>
 
             <p class="recovery_link">
                 <a (click)="this.isRecoveringPassword = true">🔗  {{'SIGNUP.NOT_REMEMBER_ACCOUNT' | translate}}</a>
@@ -98,7 +100,7 @@
                     <mat-checkbox formControlName="im_reviewer"></mat-checkbox>
                     <span> {{'SIGNUP.IM_REVIEWER' | translate}}</span>               
                     <mat-checkbox formControlName="im_editor"></mat-checkbox>
-                    <span> {{'SIGNUP.EDITOR' | translate}}</span>
+                    <span> {{'SIGNUP.IM_EDITOR' | translate}}</span>
                 </p>     
                 
                 <section>                    
@@ -117,14 +119,6 @@
                 </section>
             </form>
         </section>
-
-        <form>
-            <recaptcha 
-                [size]="'normal'"
-                [hide]="false" 
-                (captchaResponse)="onCaptchaResponse($event)">
-            </recaptcha>
-        </form>
 
         <section class="privacy">
             <h3>{{'SIGNUP.PRIVACY_SECURITY' | translate}}</h3>
@@ -197,7 +191,7 @@
                 <mat-hint>{{'SIGNUP.HINT_PASSWORD_AGAIN' | translate}}</mat-hint>
             </mat-form-field>  
         </ng-container>     
-        <button [disabled]="!recoveryFormSecondStageGroup.valid" type="submit" mat-flat-button color="primary">{{'SIGNUP.CHANGE_PASSWORD' | translate}}</button>
+        <button [disabled]="!recoveryFormSecondStageGroup.valid || !isCaptchaValid" type="submit" mat-flat-button color="primary">{{'SIGNUP.CHANGE_PASSWORD' | translate}}</button>
         </form>
     </ng-container>
 </ng-container>
