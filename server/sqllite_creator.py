@@ -45,8 +45,8 @@ try:
                         idImpactType INTEGER NOT NULL,
                         idArea INTEGER NOT NULL,
                         
-                        FOREIGN KEY(idArea) REFERENCES area(idArea),
-                        FOREIGN KEY(idImpactType) REFERENCES impact_type(idImpactType)   
+                        FOREIGN KEY(idArea) REFERENCES area(idArea) ON DELETE CASCADE,
+                        FOREIGN KEY(idImpactType) REFERENCES impact_type(idImpactType) ON DELETE CASCADE   
                 )
         """
     )
@@ -61,7 +61,7 @@ try:
                         keywords_plus TEXT,
                         idJournal INTEGER,
                         
-                        FOREIGN KEY(idJournal) REFERENCES journal(idJournal)
+                        FOREIGN KEY(idJournal) REFERENCES journal(idJournal) ON DELETE CASCADE
                 )
         """
     )
@@ -93,8 +93,8 @@ try:
                         idRole INTEGER NOT NULL,
                         
                         PRIMARY KEY(idUser,idRole),
-                        FOREIGN KEY(idUser) REFERENCES user(idUser),              
-                        FOREIGN KEY(idRole) REFERENCES role(idRole)              
+                        FOREIGN KEY(idUser) REFERENCES user(idUser) ON DELETE CASCADE,              
+                        FOREIGN KEY(idRole) REFERENCES role(idRole) ON DELETE CASCADE             
                 )
         """
     )
@@ -111,10 +111,10 @@ try:
                         score INTEGER NOT NULL,                       
                         
                         
-                        FOREIGN KEY(idUser) REFERENCES user(idUser),
-                        FOREIGN KEY(idArticle) REFERENCES article(idArticle),
-                        FOREIGN KEY(userAnswerImpact) REFERENCES impact_type(userAnswerImpact),
-                        FOREIGN KEY(realImpact) REFERENCES impact_type(idImpactType)
+                        FOREIGN KEY(idUser) REFERENCES user(idUser) ON DELETE CASCADE,
+                        FOREIGN KEY(idArticle) REFERENCES article(idArticle) ON DELETE CASCADE,
+                        FOREIGN KEY(userAnswerImpact) REFERENCES impact_type(userAnswerImpact) ON DELETE CASCADE,
+                        FOREIGN KEY(realImpact) REFERENCES impact_type(idImpactType) ON DELETE CASCADE
                                                                
                 )
         """
@@ -138,7 +138,7 @@ try:
                         cookie_token TEXT UNIQUE NOT NULL,
                         timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
                         
-                        FOREIGN KEY(idUser) REFERENCES user(idUser)                                  
+                        FOREIGN KEY(idUser) REFERENCES user(idUser) ON DELETE CASCADE                                  
                 )
         """
     )

@@ -44,6 +44,7 @@ import { PrivacyComponent } from '@src/app/components/privacy/privacy.component'
 
 import { ReCaptchaModule } from 'angular-recaptcha3';
 import { ConfigurableFocusTrap } from '@angular/cdk/a11y';
+import { UserProfileComponent } from '@src/app/components/user-profile/user-profile.component';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
@@ -81,7 +82,8 @@ const cookieConfig: NgcCookieConsentConfig = {
     WelcomeComponent,
     KeywordsPipe,
     ConfusionMatrixComponent,
-    PrivacyComponent
+    PrivacyComponent,
+    UserProfileComponent
   ],
   exports: [
     HeaderComponent

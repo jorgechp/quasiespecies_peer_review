@@ -8,7 +8,6 @@ import { SnackMessageService } from '@src/app/services/snack-message.service';
 import { UserService } from '@src/app/services/user.service';
 import { Subscription } from 'rxjs';
 import { NgcCookieConsentService, NgcStatusChangeEvent } from 'ngx-cookieconsent';
-import { ReCaptchaService } from 'angular-recaptcha3';
 import { RecaptchaValidationService } from '@src/app/services/recaptcha-validation.service';
 
 

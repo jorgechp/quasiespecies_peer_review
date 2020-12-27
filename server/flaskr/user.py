@@ -143,4 +143,86 @@ def construct_user_blueprint(user_manager: UserManager, cors_exception: str):
             response = process_response({'message': 'Duplicated user'})
             return response, 400
         return process_response(new_user, authorization__required=False, cors_header="*"), 200
+
+    @bp.route('/mail', methods=['POST'])
+    @cross_origin(origin=cors_exception, headers=['Content- Type', 'Authorization'])
+    def change_mail():
+        json_request = request.get_json(force=True)
+
+        if 'nick' not in json_request or 'mail' not in json_request:
+            response = process_response({'message': 'User data not provided'})
+            return response, 400
+
+        if 'username' not in session:
+            response = process_response({'message': 'Not authorized'})
+            return response, 401
+
+        nick = json_request['nick']
+        plain_mail = json_request['mail']
+
+        user_id = user_manager.get_user_id(nick)
+
+        is_correct_login = False
+        if is_correct_login:
+            response = user_manager.change_mail(user_id, plain_mail)
+        else:
+            response = process_response({'message': 'Incorrect login'})
+            return response, 401
+
+        return process_response(response, authorization__required=False, cors_header="*"), 200
+
+    @bp.route('/password', methods=['POST'])
+    @cross_origin(origin=cors_exception, headers=['Content- Type', 'Authorization'])
+    def change_password():
+        json_request = request.get_json(force=True)
+
+        if 'current_password' not in json_request:
+            response = process_response({'message': 'User data not provided'})
+            return response, 400
+
+        if 'username' not in session:
+            response = process_response({'message': 'Not authorized'})
+            return response, 401
+
+        plain_password = json_request['current_password']
+        plain_new_password = json_request['new_password']
+
+        is_correct_login = user_manager.check_user_password(session['username'], plain_password)
+        if is_correct_login:
+            response = user_manager.change_password(session['username'], plain_new_password)
+        else:
+            response = process_response({'message': 'Incorrect login'})
+            return response, 401
+
+        return process_response(response), 200
+
+    @bp.route('/', methods=['DELETE'])
+    @cross_origin(origin=cors_exception, headers=['Content- Type', 'Authorization'])
+    def remove_user():
+        json_request = request.get_json(force=True)
+
+        if 'nick' not in json_request or 'password' not in json_request:
+            response = process_response({'message': 'User data not provided'})
+            return response, 400
+
+        if 'username' not in session:
+            response = process_response({'message': 'Not authorized'})
+            return response, 401
+
+        nick = json_request['nick']
+        plain_password = json_request['password']
+
+        user_id = user_manager.get_user_id(nick)
+
+        is_correct_login = False
+        if user_id is not None:
+            is_correct_login = user_manager.check_user_password(user_id, plain_password)
+
+        if is_correct_login:
+            response = user_manager.remove_user(user_id)
+        else:
+            response = process_response({'message': 'Incorrect login'})
+            return response, 401
+
+        return process_response(response, authorization__required=False, cors_header="*"), 200
     return bp

@@ -28,7 +28,8 @@
           </button>
         </mat-menu>
 
-        <a class="flex-content--link" [matMenuTriggerFor]="menu" routerLinkActive="flex-content__right-link--active" aria-label="Language"><mat-icon>language</mat-icon>  </a>    
+        <a class="flex-content--link" [matMenuTriggerFor]="menu" routerLinkActive="flex-content__right-link--active" aria-label="Language"><mat-icon>language</mat-icon>  </a>  
+        <a class="flex-content--link" *ngIf="this.isLogged == true;" [routerLink]="['/profile']" routerLinkActive="flex-content__right-link--active" aria-label="Profile"><mat-icon>person</mat-icon>  </a>    
         <a class="flex-content--link" [routerLink]="['/help']" routerLinkActive="flex-content__right-link--active" aria-label="Help"><mat-icon>help_outline</mat-icon>    </a>   
         <button class="mat-icon-button" mat-icon-button 
             *ngIf="this.isLogged == true;"
