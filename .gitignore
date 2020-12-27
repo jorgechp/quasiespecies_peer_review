@@ -753,3 +753,5 @@ captcha_validation/node_modules/verror/LICENSE
 captcha_validation/node_modules/verror/package.json
 captcha_validation/node_modules/verror/README.md
 captcha_validation/config.js
+ 
+client/src/app/config.ts

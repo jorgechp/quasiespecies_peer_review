@@ -1,6 +1,0 @@
-export const CONFIG = {
-  HOST: 'http://localhost',
-  PORT: '7000',
-  RECAPTCHA_KEY_V2: '6LcPBhYaAAAAALUtRQbHnPgluJ62tn1bkBXAR64U',
-  RECAPTCHA_KEY_V3: '6LcZrBUaAAAAAKQWBCHGjMK4ECoD8et-72K34PD9',
-};
