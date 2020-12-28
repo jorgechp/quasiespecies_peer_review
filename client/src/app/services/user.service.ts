@@ -4,14 +4,17 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { NewUserInterface } from '@src/app/models/new-user-interface.model';
 import { tap } from 'rxjs/operators';
+import { AbstractControl } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
+
   private registerUserUrl = CONFIG.HOST + ':' + CONFIG.PORT + '/user/';
   private loginUserUrl = CONFIG.HOST + ':' + CONFIG.PORT + '/user/login';
   private logoutUserUrl = CONFIG.HOST + ':' + CONFIG.PORT + '/user/logout';
+  private changePasswordUserUrl = CONFIG.HOST + ':' + CONFIG.PORT + '/user/password';
   private recoveryUserUrl = CONFIG.HOST + ':' + CONFIG.PORT + '/user/login/recovery';
   private recoveryUserSecondStageUrl = CONFIG.HOST + ':' + CONFIG.PORT + '/user/login/recovery/token';
 
@@ -53,6 +56,11 @@ export class UserService {
   userRecoveryPassword(userNick: string, userMail: string): Observable<boolean>{
     const userData = {nick: userNick, mail: userMail};
     return this.httpClient.post<boolean>(this.recoveryUserUrl, JSON.stringify(userData), { withCredentials: true });
+  }
+
+  userChangePassword(currentPassword: string, password1: string): Observable<boolean> {
+    const userData = {current_password: currentPassword, new_password: password1};
+    return this.httpClient.post<boolean>(this.changePasswordUserUrl, JSON.stringify(userData), { withCredentials: true });
   }
 
   userRecoveryChangePassword(recoveryToken: string, newPassword: string): Observable<boolean>{

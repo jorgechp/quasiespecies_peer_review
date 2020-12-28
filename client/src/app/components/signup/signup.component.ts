@@ -1,13 +1,14 @@
 import { TranslateService } from '@ngx-translate/core';
 import { Router } from '@angular/router';
-import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
-import { FormGroup, FormControl, FormBuilder, AbstractControl, Form } from '@angular/forms';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { FormGroup, FormControl, FormBuilder, AbstractControl } from '@angular/forms';
 import { Validators } from '@angular/forms';
 import { NewUserInterface } from '@src/app/models/new-user-interface.model';
 import { SnackMessageService } from '@src/app/services/snack-message.service';
 import { UserService } from '@src/app/services/user.service';
 import { Subscription } from 'rxjs';
 import { NgcCookieConsentService, NgcStatusChangeEvent } from 'ngx-cookieconsent';
+import { RecaptchaValidationService } from '@src/app/services/recaptcha-validation.service';
 
 
 @Component({
@@ -26,6 +27,7 @@ export class SignupComponent implements OnInit, OnDestroy {
   isRecoveringPassword = false;
   isRecoveringPasswordFirstStep = true;
   isRegisterHidden: boolean;
+  isCaptchaValid = false;
 
   isLogged = true;
   isAcceptedCookies = true;
@@ -64,7 +66,8 @@ export class SignupComponent implements OnInit, OnDestroy {
               private translateService: TranslateService,
               private formBuilder: FormBuilder,
               private snackMessageService: SnackMessageService,
-              private userService: UserService) {
+              private userService: UserService,
+              private captchaValidationService: RecaptchaValidationService) {
 
     this.isRegisterHidden = false;
     this.loginFormGroup = formBuilder.group({
@@ -127,11 +130,16 @@ export class SignupComponent implements OnInit, OnDestroy {
 
   get login_form(): { [key: string]: AbstractControl; } { return this.loginFormGroup.controls; }
   get signup_form(): { [key: string]: AbstractControl; } { return this.registerFormGroup.controls; }
-  get recovery_form(): { [key: string]: AbstractControl; } { return this.recoveryFormGroup.controls; }
+  get recovery_form(): { [key: string]: AbstractControl; } { return this.recoveryFormGroup.controls; }  
   get recovery_second_stage_form(): { [key: string]: AbstractControl; } { return this.recoveryFormSecondStageGroup.controls; }
   get password_form(): FormGroup { return this.passwordFormGroup; }
 
+
   enterEvent(formName: string): void{
+    if (!this.isCaptchaValid){
+      return;
+    }
+
     if (formName === 'login' && this.loginFormGroup.valid){
       this.loginSubmit();
     }
@@ -150,7 +158,7 @@ export class SignupComponent implements OnInit, OnDestroy {
   }
 
   loginSubmit(): void{
-    if (this.loginFormGroup.valid){
+    if (this.loginFormGroup.valid && this.isCaptchaValid){
       const nick = this.loginFormGroup.get('login_nick');
       const password = this.loginFormGroup.get('login_password');
 
@@ -176,7 +184,7 @@ export class SignupComponent implements OnInit, OnDestroy {
   }
 
   registerSubmit(): void{
-    if (this.registerFormGroup.valid){
+    if (this.registerFormGroup.valid  && this.isCaptchaValid){
       const nick = this.registerFormGroup.get('signup_nick');
       const mail = this.registerFormGroup.get('signup_mail');
       const imEditor = this.registerFormGroup.value.im_editor;
@@ -208,7 +216,7 @@ export class SignupComponent implements OnInit, OnDestroy {
   }
 
   recoverySubmit(): void{
-    if (this.recoveryFormGroup.valid){
+    if (this.recoveryFormGroup.valid  && this.isCaptchaValid){
       const nick = this.recoveryFormGroup.get('recovery_nick');
       const mail = this.recoveryFormGroup.get('recovery_mail');
 
@@ -249,5 +257,30 @@ export class SignupComponent implements OnInit, OnDestroy {
           }
         );
     }
+  }
+
+  onCaptchaExpired(): void {
+    this.isCaptchaValid = false;
+  }
+
+  onCaptchaResponse(event: string): void {
+      this.sendTokenToBackend(event);
+  }
+
+  sendTokenToBackend(token: string): void {
+    const captchaSuscription = this.captchaValidationService.sendToken(token).subscribe(
+      data => {
+        if (data.success !== undefined && data.success){
+          this.isCaptchaValid = true;
+        }
+
+        captchaSuscription.unsubscribe();
+      },
+      err => {
+        console.log(err);
+        captchaSuscription.unsubscribe();
+      },
+      () => {}
+    );
   }
 }

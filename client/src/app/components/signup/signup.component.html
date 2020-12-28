@@ -1,7 +1,16 @@
 <ng-container *ngIf="this.isAcceptedCookies">
+    <form>
+        <recaptcha 
+            [size]="'normal'"
+            [hide]="false" 
+            (captchaResponse)="onCaptchaResponse($event)">
+        </recaptcha>
+    </form>
+
     <ng-container *ngIf="!this.isRecoveringPassword">  
         <section>
             <h2>{{'SIGNUP.ALREADY_HAVE_ACCONUT' | translate}}</h2>
+
             <p class="recovery_link">
                 <a (click)="this.isRecoveringPassword = true">🔗  {{'SIGNUP.NOT_REMEMBER_ACCOUNT' | translate}}</a>
             </p>
@@ -28,7 +37,9 @@
                     <mat-hint>{{'SIGNUP.PASSWORD' | translate}}</mat-hint>
                 </mat-form-field>
                 <section>
-                    <button [disabled]="!loginFormGroup.valid" type="submit" mat-flat-button color="primary">{{'SIGNUP.LOG_IN' | translate}}</button>
+                    <button [disabled]="!loginFormGroup.valid || !isCaptchaValid" 
+                            type="submit" 
+                            mat-flat-button color="primary">{{'SIGNUP.LOG_IN' | translate}}</button>
                 </section>
             </form>
         </section>
@@ -102,7 +113,9 @@
                     </span>
                 </section>
                 <section>
-                    <button [disabled]="!registerFormGroup.valid" type="submit" mat-flat-button color="primary">{{'SIGNUP.REGISTER' | translate}}</button>
+                    <button [disabled]="!registerFormGroup.valid || !isCaptchaValid" 
+                            type="submit" 
+                            mat-flat-button color="primary">{{'SIGNUP.REGISTER' | translate}}</button>
                 </section>
             </form>
         </section>
@@ -178,7 +191,7 @@
                 <mat-hint>{{'SIGNUP.HINT_PASSWORD_AGAIN' | translate}}</mat-hint>
             </mat-form-field>  
         </ng-container>     
-        <button [disabled]="!recoveryFormSecondStageGroup.valid" type="submit" mat-flat-button color="primary">{{'SIGNUP.CHANGE_PASSWORD' | translate}}</button>
+        <button [disabled]="!recoveryFormSecondStageGroup.valid || !isCaptchaValid" type="submit" mat-flat-button color="primary">{{'SIGNUP.CHANGE_PASSWORD' | translate}}</button>
         </form>
     </ng-container>
 </ng-container>

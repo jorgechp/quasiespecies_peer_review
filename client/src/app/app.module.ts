@@ -1,3 +1,5 @@
+import { CONFIG } from '@src/app/config';
+
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -40,11 +42,15 @@ import { KeywordsPipe } from '@src/app/pipes/keywords.pipe';
 import { ConfusionMatrixComponent } from '@src/app/components/stats/confusion-matrix/confusion-matrix.component';
 import { PrivacyComponent } from '@src/app/components/privacy/privacy.component';
 
+import { ReCaptchaModule } from 'angular-recaptcha3';
+import { ConfigurableFocusTrap } from '@angular/cdk/a11y';
+import { UserProfileComponent } from '@src/app/components/user-profile/user-profile.component';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
   return new TranslateHttpLoader(http);
 }
+
 
 const cookieConfig: NgcCookieConsentConfig = {
   cookie: {
@@ -76,7 +82,8 @@ const cookieConfig: NgcCookieConsentConfig = {
     WelcomeComponent,
     KeywordsPipe,
     ConfusionMatrixComponent,
-    PrivacyComponent
+    PrivacyComponent,
+    UserProfileComponent
   ],
   exports: [
     HeaderComponent
@@ -89,6 +96,15 @@ const cookieConfig: NgcCookieConsentConfig = {
         useFactory: HttpLoaderFactory,
         deps: [HttpClient]
       }
+    }),
+    ReCaptchaModule.forRoot({
+      invisible: {
+          sitekey: CONFIG.RECAPTCHA_KEY_V3
+      },
+      normal: {
+          sitekey: CONFIG.RECAPTCHA_KEY_V2
+      },
+      language: 'en'
     }),
     NgcCookieConsentModule.forRoot(cookieConfig),
     BrowserModule,
@@ -108,7 +124,7 @@ const cookieConfig: NgcCookieConsentConfig = {
     MatCheckboxModule,
     MatMenuModule
   ],
-  providers: [ {provide: HTTP_INTERCEPTORS , useClass: InterceptorHttp, multi: true}],
+  providers: [ { provide: HTTP_INTERCEPTORS , useClass: InterceptorHttp, multi: true} ],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

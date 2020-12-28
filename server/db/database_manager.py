@@ -141,7 +141,6 @@ class DatabaseManager(object):
                        )
         DatabaseManager.close_connections(db, cursor)
 
-
     def add_user(self, nick: str, mail: str, password: bytes, is_editor: bool, is_reviewer: bool) -> int:
         db, cursor = self.__get_cursor()
 
@@ -166,12 +165,40 @@ class DatabaseManager(object):
 
         except sqlite3.IntegrityError:
             return -1
-
-
-
         db.commit()
         DatabaseManager.close_connections(db, cursor)
         return response
+
+    def remove_user(self, user_id: str) -> bool:
+        db, cursor = self.__get_cursor()
+        try:
+            cursor.execute("""DELETE FROM user WHERE idUser = '{}' """.format(user_id))
+        except sqlite3.IntegrityError:
+            return False
+        db.commit()
+        DatabaseManager.close_connections(db, cursor)
+        return True
+
+    def change_mail(self, user_id: str, new_mail: str) -> bool:
+        db, cursor = self.__get_cursor()
+        try:
+            cursor.execute("""UPDATE user SET mail = '{}' WHERE idUser = '{}' """.format(user_id, new_mail))
+        except sqlite3.IntegrityError:
+            return False
+        db.commit()
+        DatabaseManager.close_connections(db, cursor)
+        return True
+
+    def change_password(self, user_id: str, new_password: str) -> bool:
+        db, cursor = self.__get_cursor()
+
+        try:
+            cursor.execute("""UPDATE user SET password = '{}' WHERE idUser = '{}' """.format(new_password, user_id))
+        except sqlite3.IntegrityError:
+            return False
+        db.commit()
+        DatabaseManager.close_connections(db, cursor)
+        return True
 
     def get_user_by_nick(self, user_id: str):
         db, cursor = self.__get_cursor()

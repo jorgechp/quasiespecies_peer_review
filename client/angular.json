@@ -134,6 +134,7 @@
   },
   "defaultProject": "quasispecies-peer-review",
   "cli": {
-    "defaultCollection": "@nativescript/schematics"
+    "defaultCollection": "@nativescript/schematics",
+    "analytics": "9f18b02b-ea46-403c-a09c-37715cba3d23"
   }
 }

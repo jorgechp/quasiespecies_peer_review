@@ -16,6 +16,7 @@ import { WelcomeComponent } from '@src/app/components/welcome/welcome.component'
 import { InfoMessageComponent } from '@src/app/components/info-message/info-message.component';
 import { ConfussionMatrixComponent } from '@src/app/components/stats/confusion-matrix/node_modules/@src/app/app/stats/confussion-matrix/confussion-matrix.component';
 import { PrivacyComponent } from '@src/app/components/privacy/privacy.component';
+import { UserProfileComponent } from '@src/app/components/user-profile/user-profile.component';
 
 
 // Uncomment and add to NgModule imports if you need to use two-way binding and/or HTTP wrapper
@@ -37,6 +38,7 @@ import { PrivacyComponent } from '@src/app/components/privacy/privacy.component'
     InfoMessageComponent,
     ConfussionMatrixComponent,
     PrivacyComponent,
+    UserProfileComponent,
   ],
   imports: [
     NativeScriptModule,

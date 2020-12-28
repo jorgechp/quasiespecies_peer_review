@@ -35,12 +35,26 @@ class UserManager(object):
             return id_user
         return User(id_user, nick, plain_mail)
 
+    def remove_user(self, user_id: int) -> bool:
+        return self._database_manager.remove_user(user_id)
+
     def get_user_id(self, nick: str) -> int:
         return self._database_manager.get_user_by_nick(nick)
 
     def check_user_password(self, user_id: int, plain_password: str) -> bool:
         hashed_password = self._database_manager.get_user_password(user_id)
         return self._security_manager.check_hashed_password(plain_password,hashed_password)
+
+    def change_mail(self, user_id: str, new_mail: str) -> bool:
+        encrypted_mail = self._security_manager.encrypt_mail(new_mail).decode()
+        return self._database_manager.change_mail(user_id, encrypted_mail)
+
+    def change_password(self, user_id: str, plain_password: str) -> bool:
+        hashed_password = self._security_manager.hash_password(plain_password)
+        return self._database_manager.change_password(user_id, hashed_password)
+
+    def remove_user(self, user_id: int) -> bool:
+        return self._database_manager.remove_user(user_id)
 
     def get_user_mail(self, user_id: str, mail: str):
         user_mail_encrypted = self._database_manager.get_user_mail(user_id)
