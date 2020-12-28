@@ -1,8 +1,11 @@
+import { Router } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { UserService } from '@src/app/services/user.service';
 import { SnackMessageService } from '@src/app/services/snack-message.service';
+
 
 @Component({
   selector: 'app-user-profile',
@@ -19,15 +22,16 @@ export class UserProfileComponent implements OnInit, OnDestroy {
   currentMail = '';
   currentPasswordValue = '';
   hidePassword = true;
-  isLogged = false; 
+  isLogged = false;
   isDeleteConfirmationVisible = false;
-  
+
   private passwordSubscription: Subscription | undefined;
-  private loginSuscription: Subscription | undefined;
-  private userMailSuscription: Subscription | undefined;
-  private roleSuscription: Subscription | undefined;
-  private roleRetrieveSuscription: Subscription | undefined;
-  private deleteAccountSuscription: Subscription | undefined;
+  private loginSubscription: Subscription | undefined;
+  private userMailSubscription: Subscription | undefined;
+  private roleSubscription: Subscription | undefined;
+  private roleRetrieveSubscription: Subscription | undefined;
+  private deleteAccountSubscription: Subscription | undefined;
+  private translationSubscription: Subscription | undefined;
 
   private validatePasswords(group: FormGroup): null | object {
     const password = group.get('password1');
@@ -49,19 +53,30 @@ export class UserProfileComponent implements OnInit, OnDestroy {
   }
 
   private createMailFormGroup(value: string): void{
-    this.mailFormGroup = this.formBuilder.group({      
+    this.mailFormGroup = this.formBuilder.group({
       mail: new FormControl(value, [Validators.required, Validators.email]),
     });
   }
 
   private createRolesFormGroup(isEditor: boolean, isReviewer: boolean): void{
-    this.roleFormGroup = this.formBuilder.group({      
+    this.roleFormGroup = this.formBuilder.group({
       im_editor: new FormControl(isEditor),
       im_reviewer: new FormControl(isReviewer),
-    });   
+    });
+  }
+
+  private showSnackMessage(message: string): void{
+    this.translationSubscription = this.translateService.get(message).subscribe(
+      (translated: string) => {
+        this.snackMessageService.notifyNewSnackMessage(this.translateService.instant(translated));
+        this.translationSubscription?.unsubscribe();
+      }
+    );
   }
 
   constructor(private formBuilder: FormBuilder,
+              private router: Router,
+              private translateService: TranslateService,
               private userService: UserService,
               private snackMessageService: SnackMessageService) {
 
@@ -71,44 +86,48 @@ export class UserProfileComponent implements OnInit, OnDestroy {
       }, {validator: this.validatePasswords}
     );
 
-    this.passwordFormGroup = this.formBuilder.group({      
+    this.passwordFormGroup = this.formBuilder.group({
       passwords: this.newPasswordFormGroup
     });
 
-    this.mailFormGroup = this.formBuilder.group({      
+    this.mailFormGroup = this.formBuilder.group({
       mail: new FormControl('', [Validators.required, Validators.email]),
-    });    
+    });
 
-    this.roleFormGroup = this.formBuilder.group({      
+    this.roleFormGroup = this.formBuilder.group({
       im_editor: new FormControl(''),
       im_reviewer: new FormControl(''),
-    });   
+    });
   }
 
-  ngOnInit(): void { 
+  ngOnInit(): void {
     this.subscribeCheckLogin();
     this.subscribeUserMail();
     this.subscribeUserRoles();
+
   }
 
   ngOnDestroy(): void {
-    if (this.loginSuscription !== undefined){
-      this.loginSuscription.unsubscribe();
+    if (this.loginSubscription !== undefined){
+      this.loginSubscription.unsubscribe();
     }
     if (this.passwordSubscription !== undefined){
       this.passwordSubscription.unsubscribe();
     }
-    if (this.userMailSuscription !== undefined){
-      this.userMailSuscription.unsubscribe();
+    if (this.userMailSubscription !== undefined){
+      this.userMailSubscription.unsubscribe();
     }
-    if (this.roleSuscription !== undefined){
-      this.roleSuscription.unsubscribe();
+    if (this.roleSubscription !== undefined){
+      this.roleSubscription.unsubscribe();
     }
-    if (this.roleRetrieveSuscription !== undefined){
-      this.roleRetrieveSuscription.unsubscribe();
-    }   
-    if (this.deleteAccountSuscription !== undefined){
-      this.deleteAccountSuscription.unsubscribe();
+    if (this.roleRetrieveSubscription !== undefined){
+      this.roleRetrieveSubscription.unsubscribe();
+    }
+    if (this.deleteAccountSubscription !== undefined){
+      this.deleteAccountSubscription.unsubscribe();
+    }
+    if (this.translationSubscription !== undefined){
+      this.translationSubscription.unsubscribe();
     }
   }
 
@@ -117,7 +136,7 @@ export class UserProfileComponent implements OnInit, OnDestroy {
   get new_password_form(): FormGroup { return this.newPasswordFormGroup; }
 
   subscribeUserMail(): void{
-    this.userMailSuscription = this.userService.userMail().subscribe(
+    this.userMailSubscription = this.userService.userMail().subscribe(
       (mail: string) => {
         this.currentMail = mail;
         this.createMailFormGroup(mail);
@@ -126,7 +145,7 @@ export class UserProfileComponent implements OnInit, OnDestroy {
   }
 
   subscribeUserRoles(): void{
-    this.roleRetrieveSuscription = this.userService.getUserRole().subscribe(
+    this.roleRetrieveSubscription = this.userService.getUserRole().subscribe(
       (roles: Array<string>) => {
         const isEditor = roles.includes('editor');
         const isReviewer = roles.includes('reviewer');
@@ -136,7 +155,7 @@ export class UserProfileComponent implements OnInit, OnDestroy {
   }
 
   subscribeCheckLogin(): void{
-    this.loginSuscription = this.userService.checkLogin().subscribe(
+    this.loginSubscription = this.userService.checkLogin().subscribe(
       (isLogged: boolean) => {
         this.isLogged = isLogged;
       }
@@ -145,9 +164,9 @@ export class UserProfileComponent implements OnInit, OnDestroy {
 
   enterEvent(eventType: string): void{
     const a = this.mailFormGroup;
-    if(this.currentPasswordValue.length > 0){
+    if (this.currentPasswordValue.length > 0){
       switch (eventType){
-        case 'password':          
+        case 'password':
           this.changePassword();
           break;
         case 'mail':
@@ -161,24 +180,29 @@ export class UserProfileComponent implements OnInit, OnDestroy {
   }
 
   changePassword(): void {
-    if (this.passwordFormGroup.valid){      
+    if (this.passwordFormGroup.valid){
       const password1 = this.newPasswordFormGroup.get('password1');
       const password2 = this.newPasswordFormGroup.get('password2');
 
-      if (this.currentPasswordValue && password1 && password2 && this.currentPasswordValue.length > 0 && password2.value === password2.value){
+      if (this.currentPasswordValue
+          && password1
+          && password2
+          && this.currentPasswordValue.length > 0
+          && password2.value === password2.value){
+
         this.passwordSubscription = this.userService.userChangePassword(this.currentPasswordValue, password1.value).subscribe(
           (response: boolean) => {
             if (response){
-              this.snackMessageService.notifyNewSnackMessage('PROFILE.CHANGE_PASSWORD_OK');
+              this.showSnackMessage('PROFILE.CHANGE_PASSWORD_OK');
             }else{
-              this.snackMessageService.notifyNewSnackMessage('PROFILE.CHANGE_PASSWORD_FAILED');
+              this.showSnackMessage('PROFILE.CHANGE_PASSWORD_FAILED');
             }
-          },(error) => {
+          }, (error) => {
             if (error.status === 400){
-              this.snackMessageService.notifyNewSnackMessage('PROFILE.ERROR_DATA');
+              this.showSnackMessage('PROFILE.ERROR_DATA');
             }
             else if (error.status === 401){
-              this.snackMessageService.notifyNewSnackMessage('PROFILE.NOT_AUTHORIZED');
+              this.showSnackMessage('PROFILE.NOT_AUTHORIZED');
             }
           }
         );
@@ -187,24 +211,24 @@ export class UserProfileComponent implements OnInit, OnDestroy {
   }
 
   changeMail(): void {
-    if (this.mailFormGroup !== undefined && this.mailFormGroup.valid){      
+    if (this.mailFormGroup !== undefined && this.mailFormGroup.valid){
       const newMail = this.mailFormGroup.get('mail');
 
-      if (this.currentPasswordValue && newMail && this.currentPasswordValue.length > 0 && newMail.value != this.currentMail){
+      if (this.currentPasswordValue && newMail && this.currentPasswordValue.length > 0 && newMail.value !== this.currentMail){
         this.passwordSubscription = this.userService.userChangeMail(this.currentPasswordValue, newMail.value).subscribe(
           (response: boolean) => {
             if (response){
               this.currentMail = newMail.value;
-              this.snackMessageService.notifyNewSnackMessage('PROFILE.CHANGE_MAIL_OK');
+              this.showSnackMessage('PROFILE.CHANGE_MAIL_OK');
             }else{
-              this.snackMessageService.notifyNewSnackMessage('PROFILE.CHANGE_MAIL_FAILED');
+              this.showSnackMessage('PROFILE.CHANGE_MAIL_FAILED');
             }
-          },(error) => {
+          }, (error) => {
             if (error.status === 400){
-              this.snackMessageService.notifyNewSnackMessage('PROFILE.ERROR_DATA');
+              this.showSnackMessage('PROFILE.ERROR_DATA');
             }
             else if (error.status === 401){
-              this.snackMessageService.notifyNewSnackMessage('PROFILE.NOT_AUTHORIZED');
+              this.showSnackMessage('PROFILE.NOT_AUTHORIZED');
             }
           }
         );
@@ -216,39 +240,40 @@ export class UserProfileComponent implements OnInit, OnDestroy {
     const imEditor = this.roleFormGroup.value.im_editor;
     const imReviewer = this.roleFormGroup.value.im_reviewer;
 
-    this.roleSuscription = this.userService.userChangeRole(this.currentPasswordValue, imEditor, imReviewer).subscribe(
+    this.roleSubscription = this.userService.userChangeRole(this.currentPasswordValue, imEditor, imReviewer).subscribe(
       (response: boolean) => {
-        if(response){
-          this.snackMessageService.notifyNewSnackMessage('PROFILE.CHANGE_ROLE_OK');
+        if (response){
+          this.showSnackMessage('PROFILE.CHANGE_ROLE_OK');
         }else{
-          this.snackMessageService.notifyNewSnackMessage('PROFILE.CHANGE_ROLE_FAILED');
+          this.showSnackMessage('PROFILE.CHANGE_ROLE_FAILED');
         }
-      },(error) => {
+      }, (error) => {
         if (error.status === 400){
-          this.snackMessageService.notifyNewSnackMessage('PROFILE.ERROR_DATA');
+          this.showSnackMessage('PROFILE.ERROR_DATA');
         }
         else if (error.status === 401){
-          this.snackMessageService.notifyNewSnackMessage('PROFILE.NOT_AUTHORIZED');
+          this.showSnackMessage('PROFILE.NOT_AUTHORIZED');
         }
       }
     );
   }
 
   deleteAccount(): void{
-    this.deleteAccountSuscription = this.userService.deleteAccount(this.currentPasswordValue).subscribe(
+    this.deleteAccountSubscription = this.userService.deleteAccount(this.currentPasswordValue).subscribe(
       (response: boolean) => {
-        if(response){
-          this.snackMessageService.notifyNewSnackMessage('PROFILE.DELETE_OK');
+        if (response){
+          this.showSnackMessage('PROFILE.DELETE_OK');
           this.isLogged = false;
+          this.router.navigateByUrl('/');
         }else{
-          this.snackMessageService.notifyNewSnackMessage('PROFILE.DELETE_FAILED');
+          this.showSnackMessage('PROFILE.DELETE_FAILED');
         }
-      },(error) => {
+      }, (error) => {
         if (error.status === 400){
-          this.snackMessageService.notifyNewSnackMessage('PROFILE.ERROR_DATA');
+          this.showSnackMessage('PROFILE.ERROR_DATA');
         }
         else if (error.status === 401){
-          this.snackMessageService.notifyNewSnackMessage('PROFILE.NOT_AUTHORIZED');
+          this.showSnackMessage('PROFILE.NOT_AUTHORIZED');
         }
       }
     );

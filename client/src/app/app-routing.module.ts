@@ -1,3 +1,4 @@
+import { AuthGuard } from '@src/app/guards/auth.guard';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { TrainComponent } from '@src/app/components/train/train.component';
@@ -11,10 +12,10 @@ import { PrivacyComponent } from '@src/app/components/privacy/privacy.component'
 
 const routes: Routes = [
   {path: '', component: WelcomeComponent},
-  {path: 'train', component: TrainComponent},
-  {path: 'stats', component: StatsComponent},
+  {path: 'train', component: TrainComponent, canActivate: [AuthGuard]},
+  {path: 'stats', component: StatsComponent, canActivate: [AuthGuard]},
+  {path: 'profile', component: UserProfileComponent, canActivate: [AuthGuard]},
   {path: 'help', component: HelpComponent},
-  {path: 'profile', component: UserProfileComponent},
   {path: 'about', component: AboutComponent},
   {path: 'privacy', component: PrivacyComponent},
 ];

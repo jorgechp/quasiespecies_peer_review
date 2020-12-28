@@ -1,6 +1,3 @@
-<section *ngIf="!this.isLogged">
-    <app-signup></app-signup>
-</section>
 <section *ngIf="this.isLogged">
     <h2>{{'PROFILE.TITLE' | translate}}</h2>
 
@@ -83,7 +80,7 @@
         <form [formGroup]="roleFormGroup"  (ngSubmit)="changeRole()" (keyup.enter)="enterEvent('role')">
             <mat-checkbox formControlName="im_reviewer"></mat-checkbox>
             <span> {{'SIGNUP.IM_REVIEWER' | translate}}</span>               
-            <mat-checkbox formControlName="im_editor"></mat-checkbox>
+            <mat-checkbox class='roleForm__right-checkbox' formControlName="im_editor"></mat-checkbox>
             <span> {{'SIGNUP.IM_EDITOR' | translate}}</span>
             <section>      
                 <button [disabled]="this.roleFormGroup !== undefined && !this.roleFormGroup.dirty" 

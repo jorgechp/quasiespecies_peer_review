@@ -177,6 +177,7 @@ class DatabaseManager(object):
     def remove_user(self, user_id: str) -> bool:
         db, cursor = self.__get_cursor()
         try:
+            cursor.execute("PRAGMA foreign_keys=ON")
             cursor.execute("""DELETE FROM user WHERE idUser = '{}' """.format(user_id))
         except sqlite3.IntegrityError:
             return False
@@ -304,6 +305,7 @@ class DatabaseManager(object):
     def remove_user_tokens(self, user_id: str):
         db, cursor = self.__get_cursor()
         try:
+            cursor.execute("PRAGMA foreign_keys=ON")
             cursor.execute("""
                                   DELETE FROM user_tokens WHERE idUser ='{}'
                               """.format(user_id)
@@ -343,6 +345,7 @@ class DatabaseManager(object):
         db, cursor = self.__get_cursor()
 
         try:
+            cursor.execute("PRAGMA foreign_keys=ON")
             cursor.execute("""DELETE FROM user_has_role WHERE idUser = '{}' """.format(user_id))
             self.__change_role(is_editor, is_reviewer, cursor, user_id)
         except sqlite3.Error:

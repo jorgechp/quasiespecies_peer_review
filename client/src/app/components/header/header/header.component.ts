@@ -21,13 +21,12 @@ export class HeaderComponent implements OnInit, OnDestroy {
   isAcceptedCookies = true;
   currentLanguage: string;
 
-  constructor(private translate: TranslateService,
-              private ccService: NgcCookieConsentService,
+  constructor(private ccService: NgcCookieConsentService,
               private router: Router,
               private translateService: TranslateService,
               private snackMessageService: SnackMessageService,
               private userService: UserService) {
-                this.currentLanguage = translate.currentLang;
+                this.currentLanguage = translateService.currentLang;
               }
 
   ngOnInit(): void {
@@ -60,7 +59,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   doLogout(): void{
     this.logoutSuscription = this.userService.logout().subscribe(
-      (response: boolean) => {
+      () => {
         console.log('Logout');
         this.snackMessageService.notifyNewSnackMessage(this.translateService.instant('SNACK.HEADER_LOGOUT'));
         this.router.navigateByUrl('/');
@@ -71,12 +70,12 @@ export class HeaderComponent implements OnInit, OnDestroy {
   changeLanguage(newLanguage: string): void{
     switch (newLanguage){
       case 'es':
-        this.translate.use('es');
+        this.translateService.use('es');
         this.currentLanguage = 'es';
         break;
       case 'en':
       default:
-        this.translate.use('en');
+        this.translateService.use('en');
         this.currentLanguage = 'en';
         break;
     }

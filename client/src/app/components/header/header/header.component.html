@@ -6,13 +6,13 @@
           <a class="flex-content--link flex-content-link--welcome" [routerLink]="['']" routerLinkActive="flex-content__right-link--active" aria-label="Welcome page">
             <mat-icon class="mat-icon">home</mat-icon>    </a>   
 
-          <a *ngIf="this.isAcceptedCookies" class="flex-content--link" [routerLink]="['/train']" routerLinkActive="flex-content__right-link--active" >
+          <a *ngIf="this.isAcceptedCookies && this.isLogged == true;" class="flex-content--link" [routerLink]="['/train']" routerLinkActive="flex-content__right-link--active" >
             <mat-icon class="mat-icon">psychology</mat-icon>        
             <span>{{'HEADER.TRAIN' | translate}}</span>
           </a>   
         </div>     
         <div class="icon-with-text">
-          <a *ngIf="this.isAcceptedCookies" class="flex-content--link" [routerLink]="['/stats']" routerLinkActive="flex-content__right-link--active" >
+          <a *ngIf="this.isAcceptedCookies && this.isLogged == true;"  class="flex-content--link" [routerLink]="['/stats']" routerLinkActive="flex-content__right-link--active" >
             <mat-icon class="mat-icon">show_chart</mat-icon>       
             <span>{{'HEADER.STATS' | translate}}</span>
           </a>

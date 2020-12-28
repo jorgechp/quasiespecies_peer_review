@@ -1,12 +1,14 @@
 <ng-container *ngIf="this.isAcceptedCookies">
-    <form>
+    
+    <div #captchaContainer>        
         <recaptcha 
+            #captcha
             [size]="'normal'"
             [hide]="false" 
             (captchaResponse)="onCaptchaResponse($event)">
         </recaptcha>
-    </form>
-
+   
+    </div>
     <ng-container *ngIf="!this.isRecoveringPassword">  
         <section>
             <h2>{{'SIGNUP.ALREADY_HAVE_ACCONUT' | translate}}</h2>
@@ -98,15 +100,14 @@
                 </ng-container>  
                 <p class="register-field__user-role">
                     <mat-checkbox formControlName="im_reviewer"></mat-checkbox>
-                    <span> {{'SIGNUP.IM_REVIEWER' | translate}}</span>               
+                    <span>{{'SIGNUP.IM_REVIEWER' | translate}}</span>               
                     <mat-checkbox formControlName="im_editor"></mat-checkbox>
-                    <span> {{'SIGNUP.IM_EDITOR' | translate}}</span>
+                    <span>{{'SIGNUP.IM_EDITOR' | translate}}</span>
                 </p>     
                 
                 <section>                    
                     <mat-checkbox formControlName="conditionsAgree"></mat-checkbox>                  
-                    <span>
-                        {{'SIGNUP.AGREE_1' | translate}} <a [routerLink]="['/privacy']" 
+                    <span> {{'SIGNUP.AGREE_1' | translate}} <a [routerLink]="['/privacy']" 
                                                             routerLinkActive="router-link-active" 
                                                             title="{{'GENERAL.PRIVACY' | translate}}">{{'GENERAL.PRIVACY' | translate}}</a>
                         {{'SIGNUP.AGREE_2' | translate}}
@@ -119,7 +120,6 @@
                 </section>
             </form>
         </section>
-
         <section class="privacy">
             <h3>{{'SIGNUP.PRIVACY_SECURITY' | translate}}</h3>
             {{'SIGNUP.PRIVACY_TEXT_1' | translate}}

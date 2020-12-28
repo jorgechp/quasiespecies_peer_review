@@ -113,7 +113,7 @@ try:
                         
                         FOREIGN KEY(idUser) REFERENCES user(idUser) ON DELETE CASCADE,
                         FOREIGN KEY(idArticle) REFERENCES article(idArticle) ON DELETE CASCADE,
-                        FOREIGN KEY(userAnswerImpact) REFERENCES impact_type(userAnswerImpact) ON DELETE CASCADE,
+                        FOREIGN KEY(userAnswerImpact) REFERENCES impact_type(idImpactType) ON DELETE CASCADE,
                         FOREIGN KEY(realImpact) REFERENCES impact_type(idImpactType) ON DELETE CASCADE
                                                                
                 )
