@@ -4,63 +4,105 @@
 <section *ngIf="this.isLogged">
     <h2>{{'PROFILE.TITLE' | translate}}</h2>
 
-    <h3>{{'PROFILE.CHANGE_PASSWORD' | translate}}</h3>
-        <form [formGroup]="passwordFormGroup" (ngSubmit)="changePassword()" (keyup.enter)="enterEvent('password')">
-            <mat-form-field class="register-field" appearance="legacy">
-                <mat-label>{{'PROFILE.CURRENT_PASSWORD' | translate}}</mat-label>
-                <input matInput [type]="hidePassword ? 'password' : 'text'" formControlName="currentPassword">
-                <button mat-icon-button matSuffix type="button"
-                    (click)="hidePassword = !hidePassword" 
-                    [attr.aria-label]="'Hide password'" 
-                    [attr.aria-pressed]="hidePassword"
-                    tabindex="-1">
-                        <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>    
-                </button>
-                <mat-icon matSuffix *ngIf="!password_form.errors">done</mat-icon>
-                <mat-icon matSuffix *ngIf="password_form.errors">close</mat-icon>
-                <mat-hint>{{'PROFILE.CURRENT_PASSWORD' | translate}}</mat-hint>
-            </mat-form-field>
-            <ng-container formGroupName="passwords">
-                <mat-form-field class="register-field" appearance="legacy">
-                    <mat-label>{{'PROFILE.PASSWORD' | translate}}</mat-label>
-                    <input matInput [type]="hidePassword ? 'password' : 'text'" formControlName="password1">
-                    <button mat-icon-button matSuffix type="button"
-                        (click)="hidePassword = !hidePassword" 
-                        [attr.aria-label]="'Hide password'" 
-                        [attr.aria-pressed]="hidePassword"
-                        tabindex="-1">
-                            <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>    
+    <h3>{{'PROFILE.INSERT_CURRENT_PASSWORD' | translate}}</h3>
+        <mat-form-field class="register-field" appearance="legacy">
+            <mat-label>{{'PROFILE.CURRENT_PASSWORD' | translate}}</mat-label>
+            <input matInput [type]="hidePassword ? 'password' : 'text'" [(ngModel)]='this.currentPasswordValue' autofocus>
+            <button mat-icon-button matSuffix type="button"
+                (click)="hidePassword = !hidePassword" 
+                [attr.aria-label]="'Hide password'" 
+                [attr.aria-pressed]="hidePassword"
+                tabindex="-1">
+                    <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>    
+            </button>
+            <mat-icon matSuffix *ngIf="this.currentPasswordValue.length > 0">done</mat-icon>
+            <mat-icon matSuffix *ngIf="this.currentPasswordValue.length == 0">close</mat-icon>
+            <mat-hint>{{'PROFILE.CURRENT_PASSWORD' | translate}}</mat-hint>
+        </mat-form-field>
+
+    <ng-section *ngIf="this.currentPasswordValue.length > 0">
+        <h3>{{'PROFILE.CHANGE_PASSWORD' | translate}}</h3>
+            <form [formGroup]="passwordFormGroup" (ngSubmit)="changePassword()" (keyup.enter)="enterEvent('password')">
+                <ng-container formGroupName="passwords">
+                    <mat-form-field class="register-field" appearance="legacy">
+                        <mat-label>{{'PROFILE.NEW_PASSWORD' | translate}}</mat-label>
+                        <input matInput [type]="hidePassword ? 'password' : 'text'" formControlName="password1">
+                        <button mat-icon-button matSuffix type="button"
+                            (click)="hidePassword = !hidePassword" 
+                            [attr.aria-label]="'Hide password'" 
+                            [attr.aria-pressed]="hidePassword"
+                            tabindex="-1">
+                                <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>    
+                        </button>
+                        <mat-icon matSuffix *ngIf="!new_password_form.hasError('notSame') && new_password_form.controls.password1.valid">done</mat-icon>
+                        <mat-icon matSuffix *ngIf="new_password_form.hasError('notSame') || !new_password_form.controls.password1.valid">close</mat-icon>
+                        <mat-hint>{{'PROFILE.NEW_PASSWORD' | translate}}</mat-hint>
+                    </mat-form-field>
+                    <mat-form-field class="register-field" appearance="legacy">
+                        <mat-label>{{'PROFILE.NEW_PASSWORD_AGAIN' | translate}}</mat-label>
+                        <input matInput [type]="hidePassword ? 'password' : 'text'" formControlName="password2">
+                        <button mat-icon-button matSuffix type="button"
+                            (click)="hidePassword = !hidePassword" 
+                            [attr.aria-label]="'Hide password'" 
+                            [attr.aria-pressed]="hidePassword"
+                            tabindex="-1">
+                                <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>    
+                        </button>
+                        <mat-icon matSuffix *ngIf="!new_password_form.hasError('notSame') && new_password_form.controls.password2.valid">done</mat-icon>
+                        <mat-icon matSuffix *ngIf="new_password_form.hasError('notSame') || !new_password_form.controls.password2.valid">close</mat-icon>
+                        <mat-hint>{{'PROFILE.NEW_PASSWORD_AGAIN' | translate}}</mat-hint>
+                    </mat-form-field>
+                </ng-container>
+                <section>        
+                    <button [disabled]="!passwordFormGroup.valid || this.currentPasswordValue == new_password_form.controls.password1.value" 
+                            type="submit" 
+                            mat-flat-button color="primary">{{'PROFILE.CHANGE_PASSWORD' | translate}}
                     </button>
-                    <mat-icon matSuffix *ngIf="!new_password_form.hasError('notSame') && new_password_form.controls.password1.valid">done</mat-icon>
-                    <mat-icon matSuffix *ngIf="new_password_form.hasError('notSame') || !new_password_form.controls.password1.valid">close</mat-icon>
-                    <mat-hint>{{'PROFILE.PASSWORD' | translate}}</mat-hint>
-                </mat-form-field>
+                </section>
+            </form>
+
+        <h3>{{'PROFILE.CHANGE_MAIL' | translate}}</h3>
+            <form [formGroup]="mailFormGroup"  (ngSubmit)="changeMail()" (keyup.enter)="enterEvent('mail')">
                 <mat-form-field class="register-field" appearance="legacy">
-                    <mat-label>{{'PROFILE.PASSWORD' | translate}}</mat-label>
-                    <input matInput [type]="hidePassword ? 'password' : 'text'" formControlName="password2">
-                    <button mat-icon-button matSuffix type="button"
-                        (click)="hidePassword = !hidePassword" 
-                        [attr.aria-label]="'Hide password'" 
-                        [attr.aria-pressed]="hidePassword"
-                        tabindex="-1">
-                            <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>    
-                    </button>
-                    <mat-icon matSuffix *ngIf="!new_password_form.hasError('notSame') && new_password_form.controls.password2.valid">done</mat-icon>
-                    <mat-icon matSuffix *ngIf="new_password_form.hasError('notSame') || !new_password_form.controls.password2.valid">close</mat-icon>
-                    <mat-hint>{{'PROFILE.PASSWORD' | translate}}</mat-hint>
+                    <mat-label>{{'SIGNUP.MAIL' | translate}}</mat-label>
+                    <input matInput placeholder="Placeholder" id="mail" formControlName="mail">
+                    <mat-icon matSuffix *ngIf="!mail_form.mail.errors">done</mat-icon>
+                    <mat-icon matSuffix *ngIf="mail_form.mail.errors">close</mat-icon>
+                    <mat-hint>{{'SIGNUP.HINT_MAIL' | translate}}</mat-hint>
                 </mat-form-field>
-            </ng-container>
-            <section>         
-                <button [disabled]="!passwordFormGroup.valid" 
+                <section>      
+                    <button [disabled]="this.mailFormGroup !== undefined && !this.mailFormGroup.valid || this.currentMail == mail_form.mail.value" 
+                            type="submit" 
+                            mat-flat-button color="primary">{{'PROFILE.CHANGE_MAIL' | translate}}
+                    </button>
+                </section>
+            </form>
+
+        <h3>{{'PROFILE.CHANGE_ROLE' | translate}}</h3>
+
+        <form [formGroup]="roleFormGroup"  (ngSubmit)="changeRole()" (keyup.enter)="enterEvent('role')">
+            <mat-checkbox formControlName="im_reviewer"></mat-checkbox>
+            <span> {{'SIGNUP.IM_REVIEWER' | translate}}</span>               
+            <mat-checkbox formControlName="im_editor"></mat-checkbox>
+            <span> {{'SIGNUP.IM_EDITOR' | translate}}</span>
+            <section>      
+                <button [disabled]="this.roleFormGroup !== undefined && !this.roleFormGroup.dirty" 
                         type="submit" 
-                        mat-flat-button color="primary">{{'PROFILE.CHANGE_PASSWORD' | translate}}
+                        mat-flat-button color="primary">{{'PROFILE.CHANGE_ROLE' | translate}}
                 </button>
             </section>
         </form>
 
-    <h3>{{'SIGNUP.CHANGE_MAIL' | translate}}</h3>
+        <h3>{{'PROFILE.DELETE_ACCOUNT' | translate}}</h3>
+        <section>      
+            <button mat-flat-button color="primary" [disabled]='this.isDeleteConfirmationVisible' (click)="this.isDeleteConfirmationVisible = true">
+                {{'PROFILE.DELETE_ACCOUNT_REQUEST' | translate}}
+            </button>
+           
+            <button type="submit" *ngIf="this.isDeleteConfirmationVisible" mat-flat-button color="warn" (click)='deleteAccount()'>
+                {{'PROFILE.DELETE_ACCOUNT_CONFIRMATION' | translate}}
+            </button>
+        </section>
 
-    <h3>{{'SIGNUP.CHANGE_ROLE' | translate}}</h3>
-
-    <h3>{{'SIGNUP.DELETE_ACCOUNT' | translate}}</h3>
+    </ng-section>
 </section>
