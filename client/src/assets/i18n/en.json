@@ -168,5 +168,29 @@
         "PRIVACY_28": "If you have any questions about our privacy policy, the data we hold on you, or you would like to exercise one of your data protection rights, please do not hesitate to contact us.",        
         "PRIVACY_29": "In addition, we also collect a password to keep secured your account from unwanted access an we store all your responses in the ",        
         "PRIVACY_30": "We don't share your data with third parties."     
-    }
+    },
+    "PROFILE":{
+        "TITLE": "User profile",
+        "INSERT_CURRENT_PASSWORD": "To change your user data, please, type your password first",
+        "CURRENT_PASSWORD": "Password",
+        "NEW_PASSWORD": "New password",
+        "NEW_PASSWORD_AGAIN": "Retype the new password",
+        "CHANGE_PASSWORD": "Change password",
+        "CURRENT_PASSWORD_AGAIN": "Retype the new password",
+        "CHANGE_MAIL": "Change e-mail",
+        "CHANGE_ROLE": "Change roles",
+        "DELETE_ACCOUNT": "Delete account",
+        "DELETE_ACCOUNT_REQUEST": "I want to delete my account",
+        "DELETE_ACCOUNT_CONFIRMATION": "I CONFIRM I WANT TO DELETE MY ACCOUNT",
+        "CHANGE_PASSWORD_OK": "Your password has been updated.",
+        "CHANGE_PASSWORD_FAILED": "We can't change your password at this moment. Sorry for the inconvenience.",
+        "ERROR_DATA": "There was an error processing your request. Sorry for the inconvenience.",
+        "NOT_AUTHORIZED": "Please, check your login details. We can't process your request.",
+        "CHANGE_MAIL_OK": "Your mail has been updated.",
+        "CHANGE_MAIL_FAILED": "We can't change your mail at this moment. Sorry for the inconvenience.",
+        "CHANGE_ROLE_OK": "Your roles have been updated.",
+        "CHANGE_ROLE_FAILED": "We can't change your roles at this moment. Sorry for the inconvenience.",
+        "DELETE_OK": "Your account have been remove. See you soon!",
+        "DELETE_FAILED": "We can't delete your account at this moment. Sorry for the inconvenience"
+        }
 }

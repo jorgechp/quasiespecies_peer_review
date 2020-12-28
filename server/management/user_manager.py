@@ -53,14 +53,31 @@ class UserManager(object):
         hashed_password = self._security_manager.hash_password(plain_password)
         return self._database_manager.change_password(user_id, hashed_password)
 
+    def get_user_role(self, user_id: str) -> []:
+        roles_list = []
+        roles_row = self._database_manager.get_user_role(user_id)
+
+        for role_row in roles_row:
+            id_role = role_row['idRole']
+            role_name = self._database_manager.get_role_name(id_role)
+            roles_list.append(role_name)
+
+        return roles_list
+
+    def change_user_role(self, user_id: str, is_editor: bool, is_reviewer: bool) -> bool:
+        return self._database_manager.change_user_role(user_id, is_editor, is_reviewer)
+
     def remove_user(self, user_id: int) -> bool:
         return self._database_manager.remove_user(user_id)
 
-    def get_user_mail(self, user_id: str, mail: str):
+    def get_user_mail(self, user_id: int) -> str:
         user_mail_encrypted = self._database_manager.get_user_mail(user_id)
         if user_mail_encrypted == -1:
             return user_mail_encrypted
-        decrypted_mail = self._security_manager.decrypt_mail(user_mail_encrypted)
+        return self._security_manager.decrypt_mail(user_mail_encrypted)
+
+    def check_user_mail(self, user_id: int, mail: str):
+        decrypted_mail = self.get_user_mail(user_id)
         if mail != decrypted_mail:
             return -1
         return decrypted_mail

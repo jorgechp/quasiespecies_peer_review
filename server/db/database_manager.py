@@ -141,6 +141,20 @@ class DatabaseManager(object):
                        )
         DatabaseManager.close_connections(db, cursor)
 
+    def __change_role(self, is_editor: bool, is_reviewer: bool, cursor: sqlite3.Cursor, user_id: int) -> None:
+        try:
+            user_has_role_query = """
+                            INSERT INTO user_has_role(idUser, idRole) 
+                            VALUES ({},{})
+                        """
+
+            if is_editor:
+                cursor.execute(user_has_role_query.format(user_id, 1))
+            if is_reviewer:
+                cursor.execute(user_has_role_query.format(user_id, 2))
+        except sqlite3.IntegrityError as err:
+            return -1
+
     def add_user(self, nick: str, mail: str, password: bytes, is_editor: bool, is_reviewer: bool) -> int:
         db, cursor = self.__get_cursor()
 
@@ -152,18 +166,9 @@ class DatabaseManager(object):
                            )
 
             response = cursor.lastrowid
+            self.__change_role(is_editor, is_reviewer, cursor, response)
 
-            user_has_role_query = """
-                            INSERT INTO user_has_role(idUser, idRole) 
-                            VALUES ({},{})
-                        """
-
-            if is_editor:
-                cursor.execute(user_has_role_query.format(response, 1))
-            if is_reviewer:
-                cursor.execute(user_has_role_query.format(response, 2))
-
-        except sqlite3.IntegrityError:
+        except sqlite3.IntegrityError as err:
             return -1
         db.commit()
         DatabaseManager.close_connections(db, cursor)
@@ -182,8 +187,8 @@ class DatabaseManager(object):
     def change_mail(self, user_id: str, new_mail: str) -> bool:
         db, cursor = self.__get_cursor()
         try:
-            cursor.execute("""UPDATE user SET mail = '{}' WHERE idUser = '{}' """.format(user_id, new_mail))
-        except sqlite3.IntegrityError:
+            cursor.execute("""UPDATE user SET mail = '{}' WHERE idUser = '{}' """.format(new_mail, user_id))
+        except sqlite3.Error:
             return False
         db.commit()
         DatabaseManager.close_connections(db, cursor)
@@ -194,7 +199,7 @@ class DatabaseManager(object):
 
         try:
             cursor.execute("""UPDATE user SET password = '{}' WHERE idUser = '{}' """.format(new_password, user_id))
-        except sqlite3.IntegrityError:
+        except sqlite3.Error:
             return False
         db.commit()
         DatabaseManager.close_connections(db, cursor)
@@ -288,9 +293,9 @@ class DatabaseManager(object):
         DatabaseManager.close_connections(db, cursor)
         return response
 
-    def get_user_mail(self, user_id: str):
+    def get_user_mail(self, user_nick: str):
         db, cursor = self.__get_cursor()
-        cursor.execute("""SELECT mail FROM user WHERE nick = '{}';""".format(user_id))
+        cursor.execute("""SELECT mail FROM user WHERE idUser = '{}';""".format(user_nick))
         data = cursor.fetchone()
         response = data[0] if data is not None else None
         DatabaseManager.close_connections(db, cursor)
@@ -308,6 +313,43 @@ class DatabaseManager(object):
         db.commit()
         DatabaseManager.close_connections(db, cursor)
         return 0
+
+    def get_role_name(self, id_role: int) -> str:
+        db, cursor = self.__get_cursor()
+        try:
+            cursor.execute("""SELECT name FROM role WHERE idRole = '{}' """.format(id_role))
+            data = cursor.fetchone()
+            response = data[0] if data is not None else None
+            DatabaseManager.close_connections(db, cursor)
+            return response
+        except sqlite3.Error:
+            return ""
+
+    def get_user_role(self, user_id: str):
+        db, cursor = self.__get_cursor()
+
+        try:
+            cursor.execute("""SELECT idRole FROM user_has_role WHERE idUser = '{}' """.format(user_id))
+
+        except sqlite3.Error:
+            return False
+        db.commit()
+        data = cursor.fetchall()
+        response = data if data is not None else None
+        DatabaseManager.close_connections(db, cursor)
+        return response
+
+    def change_user_role(self, user_id: int, is_editor: bool, is_reviewer: bool) -> bool:
+        db, cursor = self.__get_cursor()
+
+        try:
+            cursor.execute("""DELETE FROM user_has_role WHERE idUser = '{}' """.format(user_id))
+            self.__change_role(is_editor, is_reviewer, cursor, user_id)
+        except sqlite3.Error:
+            return False
+        db.commit()
+        DatabaseManager.close_connections(db, cursor)
+        return True
 
     def add_user_token(self, user_id: str, client_token: str, cookie_token: str) -> int:
         db, cursor = self.__get_cursor()

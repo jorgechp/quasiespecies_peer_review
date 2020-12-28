@@ -4,17 +4,18 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { NewUserInterface } from '@src/app/models/new-user-interface.model';
 import { tap } from 'rxjs/operators';
-import { AbstractControl } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
-
-  private registerUserUrl = CONFIG.HOST + ':' + CONFIG.PORT + '/user/';
+  private userUrl = CONFIG.HOST + ':' + CONFIG.PORT + '/user/';
+  private userDeleteUrl = CONFIG.HOST + ':' + CONFIG.PORT + '/user/delete';
   private loginUserUrl = CONFIG.HOST + ':' + CONFIG.PORT + '/user/login';
   private logoutUserUrl = CONFIG.HOST + ':' + CONFIG.PORT + '/user/logout';
   private changePasswordUserUrl = CONFIG.HOST + ':' + CONFIG.PORT + '/user/password';
+  private mailUserUrl = CONFIG.HOST + ':' + CONFIG.PORT + '/user/mail';
+  private roleUserUrl = CONFIG.HOST + ':' + CONFIG.PORT + '/user/role';
   private recoveryUserUrl = CONFIG.HOST + ':' + CONFIG.PORT + '/user/login/recovery';
   private recoveryUserSecondStageUrl = CONFIG.HOST + ':' + CONFIG.PORT + '/user/login/recovery/token';
 
@@ -43,7 +44,7 @@ export class UserService {
                     password: userPassword,
                     editor: isEditor,
                     reviewer: isReviewer};
-    return this.httpClient.post<NewUserInterface>(this.registerUserUrl, JSON.stringify(newUser));
+    return this.httpClient.post<NewUserInterface>(this.userUrl, JSON.stringify(newUser));
   }
 
   loginUser(userNick: string, userPassword: string): Observable<boolean>{
@@ -63,9 +64,32 @@ export class UserService {
     return this.httpClient.post<boolean>(this.changePasswordUserUrl, JSON.stringify(userData), { withCredentials: true });
   }
 
+  userMail(): Observable<string>{    
+    return this.httpClient.get<string>(this.mailUserUrl, { withCredentials: true });
+  }
+
+  userChangeMail(currentPassword: string, mail: string): Observable<boolean> {
+    const userData = {current_password: currentPassword, new_mail: mail};
+    return this.httpClient.post<boolean>(this.mailUserUrl, JSON.stringify(userData), { withCredentials: true });
+  }
+
   userRecoveryChangePassword(recoveryToken: string, newPassword: string): Observable<boolean>{
     const userData = {token: recoveryToken, password: newPassword};
     return this.httpClient.post<boolean>(this.recoveryUserSecondStageUrl, JSON.stringify(userData), { withCredentials: true });
+  }
+
+  getUserRole(): Observable<Array<string>> {    
+    return this.httpClient.get<Array<string>>(this.roleUserUrl, { withCredentials: true });
+  }
+
+  userChangeRole(currentPasswordValue: string, imEditor: boolean, imReviewer: boolean): Observable<boolean> {
+    const userData = {current_password: currentPasswordValue, editor: imEditor, reviewer: imReviewer};
+    return this.httpClient.post<boolean>(this.roleUserUrl, JSON.stringify(userData), { withCredentials: true });
+  }
+
+  deleteAccount(currentPasswordValue: string) {
+    const userData = {current_password: currentPasswordValue};
+    return this.httpClient.post<boolean>(this.userDeleteUrl, JSON.stringify(userData), { withCredentials: true });
   }
 
   logout(): Observable<boolean>{
