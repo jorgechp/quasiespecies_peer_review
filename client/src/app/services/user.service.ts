@@ -64,7 +64,7 @@ export class UserService {
     return this.httpClient.post<boolean>(this.changePasswordUserUrl, JSON.stringify(userData), { withCredentials: true });
   }
 
-  userMail(): Observable<string>{    
+  userMail(): Observable<string>{
     return this.httpClient.get<string>(this.mailUserUrl, { withCredentials: true });
   }
 
@@ -78,7 +78,7 @@ export class UserService {
     return this.httpClient.post<boolean>(this.recoveryUserSecondStageUrl, JSON.stringify(userData), { withCredentials: true });
   }
 
-  getUserRole(): Observable<Array<string>> {    
+  getUserRole(): Observable<Array<string>> {
     return this.httpClient.get<Array<string>>(this.roleUserUrl, { withCredentials: true });
   }
 
@@ -87,7 +87,7 @@ export class UserService {
     return this.httpClient.post<boolean>(this.roleUserUrl, JSON.stringify(userData), { withCredentials: true });
   }
 
-  deleteAccount(currentPasswordValue: string) {
+  deleteAccount(currentPasswordValue: string): Observable<boolean>  {
     const userData = {current_password: currentPasswordValue};
     return this.httpClient.post<boolean>(this.userDeleteUrl, JSON.stringify(userData), { withCredentials: true });
   }
