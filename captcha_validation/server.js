@@ -12,7 +12,7 @@ const port = config.port;
 */
 
 var corsOptions = {
-  origin: 'http://172.25.203.21/',
+  origin: config.cors_origin,
   optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
 }
 app.use(cors(corsOptions))
