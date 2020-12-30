@@ -1,6 +1,7 @@
 const config = require('./config');
 
-const express = require('express')
+const express = require('express');
+const cors = require('cors');
 const bodyParser = require("body-parser");
 const request = require("request");
 const app = express();
@@ -10,11 +11,15 @@ const port = config.port;
 * https://medium.com/@samuelhenshaw2020/recaptcha-v2-in-angular-8-with-back-end-verification-with-nodejs-9574f297fdef
 */
 
+var corsOptions = {
+  origin: 'http://172.25.203.21/',
+  optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+}
+app.use(cors(corsOptions))
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.post('/token_validate', (req, res)=>{
-
+app.post('/token_validate', cors(corsOptions), (req, res)=>{
 
       
   let token = req.body.recaptcha;
@@ -44,6 +49,7 @@ app.post('/token_validate', (req, res)=>{
      }
     
     //if passed response success message to client
+    console.log("success");
      res.send({"success": true, 'message': "recaptcha passed"});
     
   })
