@@ -1,6 +1,6 @@
 import { TranslateService } from '@ngx-translate/core';
 import { Router } from '@angular/router';
-import { Component, OnInit, OnDestroy, ChangeDetectorRef, ViewChild, ViewContainerRef, ComponentFactoryResolver } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, ViewContainerRef, ComponentFactoryResolver } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, AbstractControl } from '@angular/forms';
 import { Validators } from '@angular/forms';
 import { NewUserInterface } from '@src/app/models/new-user-interface.model';
@@ -9,7 +9,8 @@ import { UserService } from '@src/app/services/user.service';
 import { Subscription } from 'rxjs';
 import { NgcCookieConsentService, NgcStatusChangeEvent } from 'ngx-cookieconsent';
 import { RecaptchaValidationService } from '@src/app/services/recaptcha-validation.service';
-import { ReCaptchaComponent, ReCaptchaService } from 'angular-recaptcha3';
+import { ReCaptchaService } from 'angular-recaptcha3';
+import { CONFIG } from '@src/app/config';
 
 
 @Component({
@@ -31,14 +32,14 @@ export class SignupComponent implements OnInit, OnDestroy {
   isRecoveringPassword = false;
   isRecoveringPasswordFirstStep = true;
   isRegisterHidden: boolean;
-  isCaptchaValid = false;
+  isCaptchaValid = !CONFIG.IS_RECAPTCHA;
 
   isLogged = true;
   isAcceptedCookies = true;
 
   hideLogin = true;
   hideSignUp = true;
-  hideCaptcha = true;
+  isCaptcha = CONFIG.IS_RECAPTCHA;
 
   private cookiesStatusChangeSubscription: Subscription | undefined ;
   private createUserSuscription: Subscription | undefined;

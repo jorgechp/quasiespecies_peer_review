@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { SnackMessageService } from './snack-message.service';
+import { SnackMessageService } from '@src/app/services/snack-message.service';
 
 describe('SnackMessageService', () => {
   let service: SnackMessageService;
