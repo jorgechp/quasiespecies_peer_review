@@ -278,9 +278,10 @@ class DatabaseManager(object):
                             idAnswer IN(
                                                 SELECT idAnswer 
                                                   FROM user_answer_article
+                                                  WHERE  idUser = {}
                                                   ORDER BY date ASC
                                                   LIMIT {});                    
-                     """.format(user_id, id_user_impact, id_real_impact, first)
+                     """.format(user_id, id_user_impact, id_real_impact, user_id, first)
         else:
             query = """
                             SELECT COUNT(userAnswerImpact)
