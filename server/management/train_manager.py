@@ -232,6 +232,7 @@ class TrainManager(object):
 
         user_matrix_relative_values = user_matrix_full_values / np.sum(user_matrix_full_values)
         user_matrix_relative_column = user_matrix_full_values / user_matrix_full_values.sum(axis=1, keepdims=True)
+        user_matrix_relative_column[np.isnan(user_matrix_relative_column)] = 0
 
         user_stats['score_table'] = score_table
         user_stats['user_partitions'] = self.__get_user_partition(user_matrix_relative_column, user_matrix_relative_values)
