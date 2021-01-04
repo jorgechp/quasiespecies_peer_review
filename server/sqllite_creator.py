@@ -81,7 +81,8 @@ try:
                         idUser INTEGER PRIMARY KEY,
                         nick TEXT UNIQUE NOT NULL,
                         password TEXT NOT NULL,
-                        mail TEXT NOT NULL                      
+                        mail TEXT NOT NULL,
+                        language TEXT DEFAULT 'en'                     
                 )
         """
     )

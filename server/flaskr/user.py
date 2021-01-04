@@ -7,7 +7,7 @@ from flaskr.utils import process_response
 from management.user_manager import UserManager
 
 
-def construct_user_blueprint(user_manager: UserManager, cors_exception: str):
+def construct_user_blueprint(user_manager: UserManager, cors_exception: str, default_language= 'en'):
     bp = Blueprint('user', __name__, url_prefix='/user')
 
     CORS(bp, resources={r"/user*": {"origins": cors_exception}}, headers=['Content-Type', 'Authorization'],
@@ -270,4 +270,28 @@ def construct_user_blueprint(user_manager: UserManager, cors_exception: str):
             return response, 401
 
         return process_response(response), 200
+
+    @bp.route('/language', methods=['GET'])
+    @cross_origin(origin=cors_exception, headers=['Content- Type', 'Authorization'])
+    def get_user_language():
+        if 'username' not in session:
+            response = default_language
+        else:
+            response = user_manager.get_user_language(session['username'])
+
+        return process_response(response), 200
+
+    @bp.route('/language', methods=['PUT'])
+    @cross_origin(origin=cors_exception, headers=['Content- Type', 'Authorization'])
+    def set_user_language():
+        json_request = request.get_json(force=True)
+        if 'username' not in session:
+            response = process_response({'message': 'Not authorized'})
+            return response, 401
+
+        language_code = json_request['language']
+        response = user_manager.set_user_language(session['username'], language_code)
+
+        return process_response(response), 200
+
     return bp

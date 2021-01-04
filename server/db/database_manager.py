@@ -303,6 +303,22 @@ class DatabaseManager(object):
         DatabaseManager.close_connections(db, cursor)
         return response
 
+    def get_user_language(self, user_nick: str):
+        db, cursor = self.__get_cursor()
+        cursor.execute("""SELECT language FROM user WHERE idUser = '{}';""".format(user_nick))
+        data = cursor.fetchone()
+        response = data[0] if data is not None else None
+        DatabaseManager.close_connections(db, cursor)
+        return response
+
+    def set_user_language(self, user_nick: str, language: str):
+        db, cursor = self.__get_cursor()
+        cursor.execute("""UPDATE user SET language = '{}' WHERE idUser = '{}';""".format(language, user_nick))
+        data = cursor.fetchone()
+        response = data[0] if data is not None else None
+        DatabaseManager.close_connections(db, cursor)
+        return response
+
     def remove_user_tokens(self, user_id: str):
         db, cursor = self.__get_cursor()
         try:

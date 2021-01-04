@@ -110,3 +110,9 @@ class UserManager(object):
 
     def remove_user_token(self, id_user_token: str) -> None:
         self._database_manager.remove_user_tokens(id_user_token)
+
+    def get_user_language(self, user_id: str) -> str:
+        return self._database_manager.get_user_language(user_id)
+
+    def set_user_language(self, user_id: str, language: str) -> str:
+        return self._database_manager.set_user_language(user_id, language)
