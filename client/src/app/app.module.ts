@@ -29,6 +29,7 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {MatTableModule} from '@angular/material/table';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatMenuModule} from '@angular/material/menu';
+import {MatExpansionModule} from '@angular/material/expansion';
 
 import { FooterComponent } from '@src/app/components/footer/footer.component';
 import { TrainComponent } from '@src/app/components/train/train.component';
@@ -43,7 +44,6 @@ import { ConfusionMatrixComponent } from '@src/app/components/stats/confusion-ma
 import { PrivacyComponent } from '@src/app/components/privacy/privacy.component';
 
 import { ReCaptchaModule } from 'angular-recaptcha3';
-import { ConfigurableFocusTrap } from '@angular/cdk/a11y';
 import { UserProfileComponent } from '@src/app/components/user-profile/user-profile.component';
 
 // AoT requires an exported function for factories
@@ -122,7 +122,8 @@ const cookieConfig: NgcCookieConsentConfig = {
     MatSnackBarModule,
     MatTableModule,
     MatCheckboxModule,
-    MatMenuModule
+    MatMenuModule,
+    MatExpansionModule
   ],
   providers: [ { provide: HTTP_INTERCEPTORS , useClass: InterceptorHttp, multi: true} ],
   bootstrap: [AppComponent],

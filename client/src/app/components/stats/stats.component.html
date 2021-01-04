@@ -17,6 +17,23 @@
         <section class="stats__legend">        
             * {{'STATS.DARK_CELLS' | translate}} <span class="stats__legend--square">■</span> {{'STATS.DARK_CELLS_2' | translate}} {{this.limit}}.
         </section>
+        <section>
+            <mat-expansion-panel class='stats__mat-expansion'>
+                <mat-expansion-panel-header>
+                  <mat-panel-title>
+                    {{'STATS.HELP_1_TITLE' | translate}}    
+                  </mat-panel-title>        
+                </mat-expansion-panel-header>
+                <section class='stats__mat-expansion__content'> 
+                    <p>
+                        {{'STATS.HELP_1_1' | translate}} 
+                    </p>          
+                    <p>
+                        {{'STATS.HELP_1_2' | translate}} 
+                    </p>          
+                </section>
+              </mat-expansion-panel>
+        </section>
         <h2 *ngIf="this.submissionProfile !== undefined || this.evolutionItems !== undefined">
             {{'STATS.PARTITION_SUBMISSION_PROFILE' | translate}}
         </h2>
@@ -43,7 +60,7 @@
             </p>   
             <p class="output_string" *ngIf="this.partition.id_partition == 4"> 
                 <!-- (s1,s2,s3) -->
-                <span>K<sub>F</sub> = &#123;&#123;S<sub>1</sub>, S<sub>2</sub>&#125;,&#123;S<sub>3</sub>&#125;&#125;</span>
+                <span>K<sub>C</sub> = &#123;&#123;S<sub>1</sub>, S<sub>2</sub>&#125;,&#123;S<sub>3</sub>&#125;&#125;</span>
             </p>   
             <p class="output_string" *ngIf="this.partition.id_partition == 5"> 
                 <!-- (s1),(s2),(s3) -->
@@ -59,7 +76,7 @@
                 <span *ngFor="let submissionProfile of this.submissionProfile.partitions let last = last;">
                     <ng-container *ngIf="submissionProfile.impact == TypeOfJournal.LOW">{{'GENERAL.LOW_IMPACT' | translate}}</ng-container>             
                     <ng-container *ngIf="submissionProfile.impact == TypeOfJournal.MEDIUM">{{'GENERAL.MEDIUM_IMPACT' | translate}}</ng-container>             
-                    <ng-container *ngIf="submissionProfile.impact == TypeOfJournal.HIGH">{{'GENERAL.HIGH_' | translate}}</ng-container>             
+                    <ng-container *ngIf="submissionProfile.impact == TypeOfJournal.HIGH">{{'GENERAL.HIGH_IMPACT' | translate}}</ng-container>             
                     <ng-container *ngIf="!last">, </ng-container>     
                 </span>
                 )
@@ -72,6 +89,45 @@
                 </span>
                 {{'STATS.PROFILE_2' | translate}}
             </p>
+        </section>
+        <section>
+            <mat-expansion-panel class='stats__mat-expansion'>
+                <mat-expansion-panel-header>
+                  <mat-panel-title>
+                    {{'STATS.HELP_2_TITLE' | translate}}    
+                  </mat-panel-title>        
+                </mat-expansion-panel-header>
+                <section class='stats__mat-expansion__content'> 
+                    <p>
+                        {{'STATS.HELP_2_1' | translate}}                     
+                    </p>          
+                    <p>
+                        {{'STATS.HELP_2_2' | translate}}        
+                        <span>K<sub>C</sub> = &#123;&#123;S<sub>1</sub>, S<sub>2</sub>, S<sub>3</sub>&#125;&#125;</span>
+                    </p>       
+                    <p>
+                        {{'STATS.HELP_2_3' | translate}} 
+                        <span>K<sub>F</sub> = &#123;&#123;S<sub>1</sub>&#125;,&#123;S<sub>2</sub>&#125;,&#123;S<sub>3</sub>&#125;&#125;</span>.
+                        {{'STATS.HELP_2_4' | translate}} 
+
+                        <span>K<sub>F<sub>2</sub></sub> = &#123;&#123;S<sub>1</sub>, S<sub>3</sub>&#125;,&#123;S<sub>2</sub>&#125;&#125;</span>
+                    </p>  
+                    <p>
+                        {{'STATS.HELP_2_5' | translate}} 
+                    </p>    
+                    <p>
+                        {{'STATS.HELP_2_6' | translate}} 
+                        (<span>K<sub>F</sub> = &#123;&#123;S<sub>1</sub>&#125;,&#123;S<sub>2</sub>&#125;,&#123;S<sub>3</sub>&#125;&#125;</span>)
+                        {{'STATS.HELP_2_7' | translate}}                         
+                    </p>
+                    <p>
+                        {{'STATS.HELP_2_8' | translate}} <sub>F<sub>2</sub></sub> {{'STATS.HELP_2_9' | translate}} 
+                    </p>
+                    <p>
+                        {{'STATS.HELP_2_10' | translate}} 
+                    </p>
+                </section>
+              </mat-expansion-panel>
         </section>
         <section *ngIf="this.evolutionItems !== undefined">
             <h2>
@@ -116,12 +172,24 @@
                 <ng-container matColumnDef="id_submission_profile">
                     <th mat-header-cell *matHeaderCellDef> {{'STATS.SUBMISSION_PROFILE' | translate}} </th>
                     <td mat-cell class="submission_profile_cell" *matCellDef="let element"> {{element.id_submission_profile}} </td>
-                </ng-container>          
-
-                
+                </ng-container>         
                 <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
                 <tr mat-row *matRowDef="let row; columns: columnsToDisplay;"></tr>
             </table>
+        </section>
+        <section>
+            <mat-expansion-panel class='stats__mat-expansion'>
+                <mat-expansion-panel-header>
+                  <mat-panel-title>
+                    {{'STATS.HELP_3_TITLE' | translate}}                     
+                  </mat-panel-title>        
+                </mat-expansion-panel-header>
+                <section class='stats__mat-expansion__content'> 
+                    <p>
+                        {{'STATS.HELP_3_1' | translate}}                         
+                    </p>                    
+                </section>
+              </mat-expansion-panel>
         </section>
     </ng-container>
     <ng-container *ngIf="this.numberOfAnswers == 0">
