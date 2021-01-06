@@ -5,6 +5,7 @@ import { UserService } from '@src/app/services/user.service';
 import { Subscription } from 'rxjs';
 import {Router} from '@angular/router';
 import { SnackMessageService } from '@src/app/services/snack-message.service';
+import { CONFIG } from '@src/app/config';
 
 @Component({
   selector: 'app-header',
@@ -68,17 +69,17 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   changeLanguage(newLanguage: string): void{
-    switch (newLanguage){
-      case 'es':
-        this.translateService.use('es');
-        this.currentLanguage = 'es';
-        break;
-      case 'en':
-      default:
-        this.translateService.use('en');
-        this.currentLanguage = 'en';
-        break;
+    console.log(CONFIG.VALID_LANGUAGES);
+    if (CONFIG.VALID_LANGUAGES.includes(newLanguage)){
+      const userLanguageSuscription = this.userService.setUserLanguage(newLanguage).subscribe(
+        (response: boolean) => {
+          if (response){
+            this.translateService.use(newLanguage);
+            this.currentLanguage = newLanguage;
+          }
+          userLanguageSuscription.unsubscribe();
+        }
+      );
     }
   }
-
 }

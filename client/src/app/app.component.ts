@@ -1,3 +1,4 @@
+import { UserService } from '@src/app/services/user.service';
 import { Component, OnInit, OnDestroy  } from '@angular/core';
 import {TranslateService} from '@ngx-translate/core';
 
@@ -5,9 +6,9 @@ import {MatSnackBar, MatSnackBarRef, TextOnlySnackBar} from '@angular/material/s
 import { SnackMessageService } from '@src/app/services/snack-message.service';
 import { Subscription } from 'rxjs';
 import { SnackBarConfiguration } from '@src/app/models/snackbar-config-interface';
+import { CONFIG } from '@src/app/config';
 
-const ENABLED_LANGUAGES = ['en', 'es'];
-const DEFAULT_LANGUAGE = 'en';
+
 
 @Component({
   selector: 'app-root',
@@ -23,14 +24,27 @@ export class AppComponent implements OnInit, OnDestroy{
 
   constructor(private translate: TranslateService,
               private snackBar: MatSnackBar,
-              private snackService: SnackMessageService){
-                translate.setDefaultLang(DEFAULT_LANGUAGE);
-                const browserLanguage = translate.getBrowserCultureLang();
-                if (ENABLED_LANGUAGES.includes(browserLanguage)){
-                  translate.use(browserLanguage);
-                }else{
-                  translate.use(DEFAULT_LANGUAGE);
-                }
+              private snackService: SnackMessageService,
+              private userService: UserService){
+                this.translate.setDefaultLang(CONFIG.DEFAULT_LANGUAGE);
+                this.translate.use(CONFIG.DEFAULT_LANGUAGE);
+
+                const userLoginSuscription = this.userService.checkLogin().subscribe(
+                  (isLogged: boolean) => {
+                    if (isLogged){
+                      const userLanguageServicesSuscription = this.userService.getUserLanguage().subscribe(
+                        (language: string ) => {
+                          this.translate.use(language);
+                          userLanguageServicesSuscription.unsubscribe();
+                        }
+                      );
+                    }else{
+                      const browserLang = this.translate.getBrowserCultureLang();
+                      this.translate.use(browserLang);
+                    }
+                    userLoginSuscription.unsubscribe();
+                  }
+                );
               }
 
   ngOnInit(): void {

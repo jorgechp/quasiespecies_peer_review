@@ -11,6 +11,7 @@ import { tap } from 'rxjs/operators';
 export class UserService {
   private userUrl = CONFIG.HOST + ':' + CONFIG.PORT + '/user/';
   private userDeleteUrl = CONFIG.HOST + ':' + CONFIG.PORT + '/user/delete';
+  private userLanguageUrl = CONFIG.HOST + ':' + CONFIG.PORT + '/user/language';
   private loginUserUrl = CONFIG.HOST + ':' + CONFIG.PORT + '/user/login';
   private logoutUserUrl = CONFIG.HOST + ':' + CONFIG.PORT + '/user/logout';
   private changePasswordUserUrl = CONFIG.HOST + ':' + CONFIG.PORT + '/user/password';
@@ -80,6 +81,15 @@ export class UserService {
 
   getUserRole(): Observable<Array<string>> {
     return this.httpClient.get<Array<string>>(this.roleUserUrl, { withCredentials: true });
+  }
+
+  getUserLanguage(): Observable<string>{
+    return this.httpClient.get<string>(this.userLanguageUrl, { withCredentials: true });
+  }
+
+  setUserLanguage(newLanguage: string): Observable<boolean>{
+    const userLanguage = {language: newLanguage};
+    return this.httpClient.post<boolean>(this.userLanguageUrl, JSON.stringify(userLanguage), { withCredentials: true });
   }
 
   userChangeRole(currentPasswordValue: string, imEditor: boolean, imReviewer: boolean): Observable<boolean> {

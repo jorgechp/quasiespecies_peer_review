@@ -4,4 +4,6 @@ export const CONFIG = {
   RECAPTCHA_KEY_V2: 'ABCDE',
   RECAPTCHA_KEY_V3: 'ABCDE',
   IS_RECAPTCHA: false,
+  DEFAULT_LANGUAGE: 'en',
+  VALID_LANGUAGES: ['en', 'es']
 };

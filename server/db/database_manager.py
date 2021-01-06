@@ -311,13 +311,14 @@ class DatabaseManager(object):
         DatabaseManager.close_connections(db, cursor)
         return response
 
-    def set_user_language(self, user_nick: str, language: str):
+    def set_user_language(self, user_nick: str, language: str) -> bool :
         db, cursor = self.__get_cursor()
-        cursor.execute("""UPDATE user SET language = '{}' WHERE idUser = '{}';""".format(language, user_nick))
-        data = cursor.fetchone()
-        response = data[0] if data is not None else None
-        DatabaseManager.close_connections(db, cursor)
-        return response
+        try:
+            cursor.execute("""UPDATE user SET language = '{}' WHERE idUser = '{}';""".format(language, user_nick))
+            DatabaseManager.close_connections(db, cursor)
+            return True
+        except sqlite3.Error:
+            return False
 
     def remove_user_tokens(self, user_id: str):
         db, cursor = self.__get_cursor()

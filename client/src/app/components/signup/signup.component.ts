@@ -172,6 +172,12 @@ export class SignupComponent implements OnInit, OnDestroy {
         this.loginSuscription = this.userService.loginUser(nick.value, password.value).subscribe(
           (response: boolean) => {
             if (response){
+              const userLanguageService = this.userService.getUserLanguage().subscribe(
+                (language: string ) => {
+                  this.translateService.use(language);
+                  userLanguageService.unsubscribe();
+                }
+              );
               this.snackMessageService.notifyNewSnackMessage(this.translateService.instant('SNACK.LOGIN_OK') + ' ' + nick.value + '!');
               this.router.navigateByUrl('/');
             }

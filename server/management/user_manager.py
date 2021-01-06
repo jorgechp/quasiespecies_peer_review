@@ -114,5 +114,5 @@ class UserManager(object):
     def get_user_language(self, user_id: str) -> str:
         return self._database_manager.get_user_language(user_id)
 
-    def set_user_language(self, user_id: str, language: str) -> str:
+    def set_user_language(self, user_id: str, language: str) -> bool:
         return self._database_manager.set_user_language(user_id, language)
