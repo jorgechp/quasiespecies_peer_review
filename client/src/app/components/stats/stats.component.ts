@@ -1,3 +1,4 @@
+import { UserScoreProfile } from '@src/app/models/user-score.model';
 import { SubmissionProfileSubPartition } from '@src/app/models/submission-profile-interface';
 import { UserScore, UserScoreRow } from '@src/app/models/user-score.model';
 import { TrainService } from '@src/app/services/train.service';
@@ -23,6 +24,8 @@ export class StatsComponent implements OnInit, OnDestroy {
   private partitionsKey: [] | undefined;
   private partitions: (number)[][] | undefined;
 
+  public submissionProfileScore: number;
+
   public confusionMatrixDataFull: UserScoreTable | undefined;
   public partition: UserScorePartition | undefined;
   public submissionProfile: SubmissionProfileInterface | undefined;
@@ -45,6 +48,7 @@ export class StatsComponent implements OnInit, OnDestroy {
   constructor(private trainService: TrainService,
               private userService: UserService) {
     this.confusionMatrixDataFull = undefined;
+    this.submissionProfileScore = 0;
   }
 
   ngOnInit(): void {
@@ -120,20 +124,12 @@ export class StatsComponent implements OnInit, OnDestroy {
     return partitionsSorted;
   }
 
-  private processSubmissionProfile(submissionProfileResponse: Array<UserScoreRow>): Array<SubmissionProfileSubPartition>{
+  private processSubmissionProfile(submissionProfileResponse: UserScoreProfile): Array<SubmissionProfileSubPartition>{
     const submissionProfile: SubmissionProfileSubPartition[] = [];
-    submissionProfileResponse.forEach((score: UserScoreRow) => {
-      const scoreRowAsList = [
-        {impact: TypeOfJournal.HIGH, score: score.HIGH},
-        {impact: TypeOfJournal.MEDIUM, score: score.MEDIUM},
-        {impact: TypeOfJournal.LOW, score: score.LOW},
-      ];
+    this.submissionProfileScore = submissionProfileResponse['1'];
 
-      const max = scoreRowAsList.reduce((prev, current) => {
-        return (prev.score > current.score) ? prev : current;
-      });
-
-      submissionProfile.push(max);
+    submissionProfileResponse['0'].forEach((subProfile: TypeOfJournal) => {
+      submissionProfile.push({impact: subProfile});
     });
     return submissionProfile;
   }
@@ -154,17 +150,7 @@ export class StatsComponent implements OnInit, OnDestroy {
           submissionProfileString.push('(');
           bestSubmissionProfile.partitions.forEach(
             (profile) => {
-              switch (profile.impact){
-                case TypeOfJournal.LOW:
-                  submissionProfileString.push('LOW-Impact');
-                  break;
-                case TypeOfJournal.MEDIUM:
-                  submissionProfileString.push('MEDIUM-Impact');
-                  break;
-                case TypeOfJournal.HIGH:
-                  submissionProfileString.push('HIGH-Impact');
-                  break;
-              }
+              submissionProfileString.push(profile.impact + '-Impact');
               submissionProfileString.push(', ');
             }
           );
@@ -178,7 +164,6 @@ export class StatsComponent implements OnInit, OnDestroy {
       }
     );
     this.evolutionItems = itemsTable;
-    console.log(this.evolutionItems);
   }
 
 

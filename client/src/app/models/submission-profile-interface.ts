@@ -6,5 +6,4 @@ export interface SubmissionProfileInterface{
 
 export interface SubmissionProfileSubPartition{
     impact: TypeOfJournal;
-    score: number;
 }

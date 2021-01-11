@@ -1,3 +1,4 @@
+import { TypeOfJournal } from '@src/app/models/type-of-journal.enum';
 export interface UserScore{
     score_table: UserScoreTable;
     user_partitions: UserScorePartitions;
@@ -24,4 +25,9 @@ export interface UserScorePartitions{
 export interface UserScorePartition{
     id_partition: number;
     score_partition: number;
+}
+
+export interface UserScoreProfile{
+    0: Array<TypeOfJournal>;
+    1: number;
 }

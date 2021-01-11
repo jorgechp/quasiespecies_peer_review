@@ -6,7 +6,6 @@ from dataclasses_json import dataclass_json
 from enum import Enum
 from db.database_manager import DatabaseManager
 
-
 class Impact(Enum):
     LOW = 'LOW'
     MEDIUM = 'MEDIUM'
@@ -133,8 +132,12 @@ class TrainManager(object):
         submission_profile = dict()
         for partition_index, partition_score in partitions_dict.items():
 
-            partition = partitions_list[partition_index]
+            partition = partitions_list[partition_index]#
+
             sub_partition_score = []
+            sub_partition_impact = []
+            current_sub_partition_max_score = 0
+            current_sub_partition_max_impact = Impact.LOW.value
             for sub_partition in partition:
                 if len(sub_partition) == 1:
                     index = impact_to_index[sub_partition[0]]
@@ -143,17 +146,21 @@ class TrainManager(object):
                     quality_indices = [impact_to_index[impact] for impact in sub_partition]
                     roi_matrix = user_matrix_relative_values[quality_indices]
 
-                profile_impact_dict = dict()
+                prob_subpartition = np.sum(roi_matrix)
+
                 for impact_type in Impact:
                     impact_index = impact_to_index[impact_type]
-                    profile_score = np.sum(roi_matrix[:, impact_index]) * partition_score
-                    profile_impact_dict[impact_type.value] = profile_score
 
-                profile_impact_dict = {k: v for k, v in sorted(profile_impact_dict.items(),
-                                         key=lambda item: item[1],
-                                         reverse=True)}
-                sub_partition_score.append(profile_impact_dict)
-            submission_profile[partition_index] = sub_partition_score
+                    prob_impact_subpartition = np.sum(roi_matrix[:, impact_index])
+                    prob = prob_impact_subpartition / prob_subpartition
+                    if current_sub_partition_max_score < prob:
+                        current_sub_partition_max_score = prob
+                        current_sub_partition_max_impact = impact_type.value
+
+                sub_partition_score.append(current_sub_partition_max_score)
+                sub_partition_impact.append(current_sub_partition_max_impact)
+
+            submission_profile[partition_index] = sub_partition_impact, np.prod(sub_partition_score) * partition_score
 
         return submission_profile
 

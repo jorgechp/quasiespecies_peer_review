@@ -70,24 +70,18 @@
 
         <section class="stats_submission_profiles" *ngIf="this.submissionProfile !== undefined">
             <p>
-                {{'STATS.DETERMINE_PROFILE' | translate}}
+                {{'STATS.DETERMINE_PROFILE' | translate}}:
             </p>
             <div class="output_string output_string_table_evolution">(
-                <span *ngFor="let submissionProfile of this.submissionProfile.partitions let last = last;">
-                    <ng-container *ngIf="submissionProfile.impact == TypeOfJournal.LOW">{{'GENERAL.LOW_IMPACT' | translate}}</ng-container>             
-                    <ng-container *ngIf="submissionProfile.impact == TypeOfJournal.MEDIUM">{{'GENERAL.MEDIUM_IMPACT' | translate}}</ng-container>             
-                    <ng-container *ngIf="submissionProfile.impact == TypeOfJournal.HIGH">{{'GENERAL.HIGH_IMPACT' | translate}}</ng-container>             
+                <span *ngFor="let submissionProfile of this.submissionProfile.partitions let last = last;">   
+                    <ng-container>{{submissionProfile.impact}}-Impact</ng-container>    
                     <ng-container *ngIf="!last">, </ng-container>     
                 </span>
                 )
             </div>
             <p>
-                {{'STATS.PROFILE_1' | translate}}
-                <span class="text-bold" *ngFor="let submissionProfile of this.submissionProfile.partitions let last = last;">
-                    <ng-container>{{(submissionProfile.score * 100) | number: '1.2-2'}}%</ng-container>             
-                    <ng-container *ngIf="!last"> and </ng-container>     
-                </span>
-                {{'STATS.PROFILE_2' | translate}}
+                {{'STATS.PROFILE_1' | translate}}                
+                <span>{{(submissionProfileScore * 100) | number: '1.2-2'}}%.</span>            
             </p>
         </section>
         <section>
