@@ -6,7 +6,7 @@ import { AnswerResult } from '@src/app/models/answer-result-model';
 import { UserScore } from '@src/app/models/user-score.model';
 import { CONFIG } from '@src/app/config';
 
-const EVOLUTION_ROWS_PER_STEP = 15;
+const EVOLUTION_ROWS_PER_STEP = 30;
 
 @Injectable({
   providedIn: 'root'
