@@ -89,8 +89,8 @@
     },
     "STATS":{
         "TITLE": "General stats",
-        "INTRO_1": "You have answered",
-        "INTRO_TIMES": "times",
+        "INTRO_1": "We are taking into account your last",
+        "INTRO_TIMES": "responses",
         "INTRO_2": "Down below you can see your confusion matrix:",
         "DARK_CELLS": "Dark cells",
         "DARK_CELLS_2": "contains values equal or greater than",
