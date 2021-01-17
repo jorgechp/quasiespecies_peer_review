@@ -56,7 +56,7 @@ def read_articles_list(article_csv, cursorObj : sqlite3.Cursor):
     with open(article_csv) as csvfile:
         reader = csv.DictReader(csvfile, delimiter="\t")
         for row in reader:
-            if len(row['TI'] > 0 and len(row['AB']) > 0):
+            if len(row['TI']) > 0 and len(row['AB']) > 0:
                 article_title = s = row['TI'].replace("'","")
                 article_abstract = row['AB'].replace("'","")
                 article_authors_keywords = re.sub(r'[^a-zA-Z0-9 ]', '', row['DE'])
