@@ -56,22 +56,23 @@ def read_articles_list(article_csv, cursorObj : sqlite3.Cursor):
     with open(article_csv) as csvfile:
         reader = csv.DictReader(csvfile, delimiter="\t")
         for row in reader:
-            article_title = s = row['TI'].replace("'","")
-            article_abstract = row['AB'].replace("'","")
-            article_authors_keywords = re.sub(r'[^a-zA-Z0-9 ]', '', row['DE'])
-            article_keywords_plus = re.sub(r'[^a-zA-Z0-9 ]', '', row['ID'])
-            article_journal = row['SO'].upper()
+            if len(row['TI'] > 0 and len(row['AB']) > 0):
+                article_title = s = row['TI'].replace("'","")
+                article_abstract = row['AB'].replace("'","")
+                article_authors_keywords = re.sub(r'[^a-zA-Z0-9 ]', '', row['DE'])
+                article_keywords_plus = re.sub(r'[^a-zA-Z0-9 ]', '', row['ID'])
+                article_journal = row['SO'].upper()
 
-            if article_journal in general_journal_name_id_dict:
-                article_area = general_journal_name_id_dict[article_journal]
+                if article_journal in general_journal_name_id_dict:
+                    article_area = general_journal_name_id_dict[article_journal]
 
-                cursorObj.execute(
-                    """
-                    INSERT INTO article(title,abstract,authors_keywords,keywords_plus,idJournal) 
-                    VALUES
-                        ('{}','{}','{}','{}',{})            
-                    """.format(article_title, article_abstract, article_authors_keywords, article_keywords_plus,article_area)
-                )
+                    cursorObj.execute(
+                        """
+                        INSERT INTO article(title,abstract,authors_keywords,keywords_plus,idJournal) 
+                        VALUES
+                            ('{}','{}','{}','{}',{})            
+                        """.format(article_title, article_abstract, article_authors_keywords, article_keywords_plus,article_area)
+                    )
 
 
 JOURNAL_LIST = "peer_review/journals/"
