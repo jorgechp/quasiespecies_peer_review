@@ -149,13 +149,14 @@ class TrainManager(object):
                 prob_subpartition = np.sum(roi_matrix)
 
                 for impact_type in Impact:
-                    impact_index = impact_to_index[impact_type]
+                    if impact_type in sub_partition:
+                        impact_index = impact_to_index[impact_type]
 
-                    prob_impact_subpartition = np.sum(roi_matrix[:, impact_index])
-                    prob = prob_impact_subpartition / prob_subpartition
-                    if current_sub_partition_max_score < prob:
-                        current_sub_partition_max_score = prob
-                        current_sub_partition_max_impact = impact_type.value
+                        prob_impact_subpartition = np.sum(roi_matrix[:, impact_index])
+                        prob = prob_impact_subpartition / prob_subpartition
+                        if current_sub_partition_max_score < prob:
+                            current_sub_partition_max_score = prob
+                            current_sub_partition_max_impact = impact_type.value
 
                 sub_partition_score.append(current_sub_partition_max_score)
                 sub_partition_impact.append(current_sub_partition_max_impact)
