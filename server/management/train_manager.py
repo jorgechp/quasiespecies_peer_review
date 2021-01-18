@@ -136,9 +136,9 @@ class TrainManager(object):
 
             sub_partition_score = []
             sub_partition_impact = []
-            current_sub_partition_max_score = 0
-            current_sub_partition_max_impact = Impact.LOW.value
             for sub_partition in partition:
+                current_sub_partition_max_score = 0
+                current_sub_partition_max_impact = Impact.LOW.value
                 if len(sub_partition) == 1:
                     index = impact_to_index[sub_partition[0]]
                     roi_matrix = user_matrix_relative_values[index].reshape((1,3))
