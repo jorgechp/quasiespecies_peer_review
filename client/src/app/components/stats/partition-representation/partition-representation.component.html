@@ -1,0 +1,20 @@
+<ng-container *ngIf="this.partitionId == 0">
+    <!-- (s1,s2)(s3) -->
+    <span>K<sub>F<sub>1</sub></sub> = &#123;&#123;S<sub>1</sub>, S<sub>2</sub>&#125;,&#123;S<sub>3</sub>&#125;&#125;</span>
+</ng-container>
+<ng-container *ngIf="this.partitionId == 1">
+    <!-- (s1,s3)(s2) -->
+    <span>K<sub>F<sub>2</sub></sub> = &#123;&#123;S<sub>1</sub>, S<sub>3</sub>&#125;,&#123;S<sub>2</sub>&#125;&#125;</span>
+</ng-container>     
+<ng-container *ngIf="this.partitionId == 2">
+    <!-- (s2,s3)(s1) -->
+    <span>K<sub>F<sub>3</sub></sub> = &#123;&#123;S<sub>2</sub>, S<sub>3</sub>&#125;,&#123;S<sub>1</sub>&#125;&#125;</span>
+</ng-container>     
+<ng-container *ngIf="this.partitionId == 3">
+    <!-- (s1,s2,s3) -->
+    <span>K<sub>C</sub> = &#123;&#123;S<sub>1</sub>, S<sub>2</sub>, S<sub>3</sub>&#125;&#125;</span>
+</ng-container>     
+<ng-container *ngIf="this.partitionId == 4">
+    <!-- (s1),(s2),(s3) -->
+    <span>K<sub>F</sub> = &#123;&#123;S<sub>1</sub>&#125;,&#123;S<sub>2</sub>&#125;,&#123;S<sub>3</sub>&#125;&#125;</span>
+</ng-container> 
