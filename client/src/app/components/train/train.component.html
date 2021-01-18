@@ -5,7 +5,10 @@
         </p>
         <section class="section_times">
             <span>{{'TRAIN.NUMBER_OF_ANSWERS' | translate}}: {{this.numberOfAnswers}} </span>    
-            <span *ngIf="this.numberOfAnswers < 30">/ 30</span>
+            <span *ngIf="this.numberOfAnswers < 15">/ 30</span>
+            <span *ngIf="this.numberOfAnswers >= 15 && this.numberOfAnswers < 30">/ 30 
+                (<a [routerLink]="[ '/stats' ]" title="Stats">{{'TRAIN.STATS_AVAILABLE' | translate}}</a>)
+            </span>
             <span *ngIf="this.numberOfAnswers >= 30">(<a [routerLink]="[ '/stats' ]" title="Stats">{{'TRAIN.STATS_AVAILABLE' | translate}}</a>)</span>
         </section>
         <section class="section__paper">

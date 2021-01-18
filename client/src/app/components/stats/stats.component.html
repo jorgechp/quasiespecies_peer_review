@@ -1,6 +1,6 @@
 <section *ngIf="this.isLogged">
     <h2>{{'STATS.TITLE' | translate}}</h2>
-    <ng-container *ngIf="this.numberOfAnswers > 0">    
+    <ng-container *ngIf="this.numberOfAnswers >= 15">    
         <section>
             {{'STATS.INTRO_1' | translate}} {{this.numberOfAnswers}} {{'STATS.INTRO_TIMES' | translate}}. {{'STATS.INTRO_2' | translate}}
         </section>
@@ -186,7 +186,7 @@
               </mat-expansion-panel>
         </section>
     </ng-container>
-    <ng-container *ngIf="this.numberOfAnswers == 0">
+    <ng-container *ngIf="this.numberOfAnswers < 15">
         <section>
             {{'STATS.NOT_ENOUGH_DATA_1' | translate}} <a [routerLink]="[ '/train']" title="{{'GENERAL.TRAIN' | translate}}">{{'GENERAL.TRAIN' | translate}}</a> 
             {{'STATS.NOT_ENOUGH_DATA_2' | translate}}

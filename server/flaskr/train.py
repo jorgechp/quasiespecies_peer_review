@@ -104,6 +104,7 @@ def construct_train_blueprint(train_manager: TrainManager, cors_exception: str):
             score_tables.append(train_manager.get_user_score_table(session['username'], first=-1))
         else:
             number_of_results = train_manager.count_user_score_table(session['username'])
+            rows_per_step = rows_per_step if rows_per_step < number_of_results else number_of_results
             number_of_steps = int(number_of_results / rows_per_step) + 1
             for step in range(1, number_of_steps):
                 number_of_rows = rows_per_step * step
