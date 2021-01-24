@@ -99,7 +99,7 @@
         "PARTITION_2": "with a probability of",
         "PARTITION_3": "your partition is",
         "DETERMINE_PROFILE": "In addition, we can determine your submission profile",
-        "PROFILE_1": "With a probability of",        
+        "PROFILE_1": "With a normalized score [0-1] of",        
         "EVOLUTION": "Your evolution",
         "STEP": "Step",
         "ID_PARTITION": "Id Partition",
