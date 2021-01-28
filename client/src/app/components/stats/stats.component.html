@@ -45,6 +45,9 @@
             <p class="output_string">
                 <app-partition-representation [partitionId]="this.partition.id_partition" ></app-partition-representation>     
             </p>
+            <p class="text-bold">
+                {{'STATS.PARTITION_EXPLANATION_' + this.partition.id_partition | translate}}
+            </p>
         </section>
 
         <section class="stats_submission_profiles" *ngIf="this.submissionProfile !== undefined">
@@ -62,6 +65,15 @@
                 {{'STATS.PROFILE_1' | translate}}                
                 <span>{{(submissionProfileScore) | number: '1.2-2'}}/1.0.</span>            
             </p>
+            
+                <ul *ngFor="let submissionProfile of this.submissionProfile.partitions; let indexOfelement=index;">         
+                    <li class="text-bold" *ngIf="this.partition !== undefined">
+                        {{indexOfelement | submissionProfileExplanation: this.partition.id_partition | translate}}:
+                        {{submissionProfile.impact}}-Impact.
+                    </li>    
+                </ul>
+            
+            
         </section>
         <section>
             <mat-expansion-panel class='stats__mat-expansion'>

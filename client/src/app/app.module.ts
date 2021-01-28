@@ -46,6 +46,7 @@ import { PrivacyComponent } from '@src/app/components/privacy/privacy.component'
 import { ReCaptchaModule } from 'angular-recaptcha3';
 import { UserProfileComponent } from '@src/app/components/user-profile/user-profile.component';
 import { PartitionRepresentationComponent } from '@src/app/components/stats/partition-representation/partition-representation.component';
+import { SubmissionProfileExplanationPipe } from './pipes/submission-profile-explanation.pipe';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
@@ -85,7 +86,8 @@ const cookieConfig: NgcCookieConsentConfig = {
     ConfusionMatrixComponent,
     PrivacyComponent,
     UserProfileComponent,
-    PartitionRepresentationComponent
+    PartitionRepresentationComponent,
+    SubmissionProfileExplanationPipe
   ],
   exports: [
     HeaderComponent
