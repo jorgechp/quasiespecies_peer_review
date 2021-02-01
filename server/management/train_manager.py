@@ -159,13 +159,15 @@ class TrainManager(object):
 
         return submission_profile
 
-    def __compute_partition_scores(self, matrix_relative_quality: np.array, matrix_relative: np.array, partition_list: list) -> dict:
+    def __compute_partition_scores(self, matrix_relative: np.array, partition_list: list) -> dict:
         probabilities_per_impact = dict()
         probabilities_sum = np.sum(matrix_relative, axis=1)
 
         for impact in Impact:
             index = impact_to_index[impact]
             probabilities_per_impact[impact] = probabilities_sum[index]
+
+        total_probabilities = np.sum(probabilities_sum)
 
         partition_scores = dict()
         for index_partition, partition in enumerate(partition_list):
@@ -174,23 +176,28 @@ class TrainManager(object):
                 if len(sub_partition) == 1:
                     impact = sub_partition[0]
                     index_impact = impact_to_index[impact]
-                    partition_probab += matrix_relative_quality[index_impact][index_impact] \
-                                       * probabilities_per_impact[impact]
+                    partition_probab += (matrix_relative[index_impact][index_impact]
+                                         / probabilities_per_impact[impact]) \
+                                       * (probabilities_per_impact[impact]/total_probabilities)
                 else:
-                    impacts_to_preserve = set([impact_to_index[impact] for impact in sub_partition])
-                    for quality in sub_partition:
-                        index_quality = impact_to_index[quality]
-                        impacts_to_preserve_fixed_quality = list(impacts_to_preserve - {index_quality})
-                        matrix_roi = matrix_relative_quality[:,impacts_to_preserve_fixed_quality]
-                        partition_probab += np.prod(matrix_roi[index_quality]) * probabilities_per_impact[quality]
+                    for impact_fixed in sub_partition:
+                        index_impact_fixed = impact_to_index[impact_fixed]
+                        impact_probability = probabilities_per_impact[impact_fixed]
+                        partial_prob = impact_probability / total_probabilities
+                        for impact_to_compute in sub_partition:
+                            if impact_fixed is not impact_to_compute:
+                                index_impact_to_compute = impact_to_index[impact_to_compute]
+                                partial_prob *= matrix_relative[index_impact_fixed][index_impact_to_compute] \
+                                                / impact_probability
+                        partition_probab += partial_prob
+
             partition_scores[index_partition] = partition_probab
         return partition_scores
 
-    def __get_user_partition(self, user_matrix_relative_column: np.array, user_matrix_relative_values: np.array) -> dict:
+    def __get_user_partition(self, user_matrix_relative_values: np.array) -> dict:
         scores = dict()
 
         partition_scores = self.__compute_partition_scores(
-            user_matrix_relative_column,
             user_matrix_relative_values,
             PARTITIONS)
 
@@ -237,7 +244,7 @@ class TrainManager(object):
         user_matrix_relative_column[np.isnan(user_matrix_relative_column)] = 0
 
         user_stats['score_table'] = score_table
-        user_stats['user_partitions'] = self.__get_user_partition(user_matrix_relative_column, user_matrix_relative_values)
+        user_stats['user_partitions'] = self.__get_user_partition( user_matrix_relative_values)
 
         return user_stats
 
