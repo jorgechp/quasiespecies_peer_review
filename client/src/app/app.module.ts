@@ -45,10 +45,12 @@ import { PrivacyComponent } from '@src/app/components/privacy/privacy.component'
 
 import { ReCaptchaModule } from 'angular-recaptcha3';
 import { UserProfileComponent } from '@src/app/components/user-profile/user-profile.component';
+import { PartitionRepresentationComponent } from '@src/app/components/stats/partition-representation/partition-representation.component';
+import { SubmissionProfileExplanationPipe } from './pipes/submission-profile-explanation.pipe';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
-  return new TranslateHttpLoader(http);
+  return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }
 
 
@@ -83,7 +85,9 @@ const cookieConfig: NgcCookieConsentConfig = {
     KeywordsPipe,
     ConfusionMatrixComponent,
     PrivacyComponent,
-    UserProfileComponent
+    UserProfileComponent,
+    PartitionRepresentationComponent,
+    SubmissionProfileExplanationPipe
   ],
   exports: [
     HeaderComponent

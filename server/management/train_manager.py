@@ -1,6 +1,6 @@
 
 import numpy as np
-
+import itertools
 from dataclasses import dataclass
 from dataclasses_json import dataclass_json
 from enum import Enum
@@ -128,43 +128,38 @@ class TrainManager(object):
                           positives,
                           negatives)
 
+    def __compute_submission_profile_score(self, user_matrix: np.matrix, partition, submission_profile):
+        diagonal = np.diag(user_matrix)
+        impact_mask = np.zeros(3)
+
+        for sub_partition, sub_impact in zip(partition, submission_profile):
+            for impact_part in sub_partition:
+                if impact_part == sub_impact:
+                    impact_index = impact_to_index[impact_part]
+                    impact_mask[impact_index] = 1
+
+        return np.sum(diagonal * impact_mask)
+
     def __compute_submission_profile(self, user_matrix_relative_values: np.matrix, partitions_dict: dict, partitions_list: list) -> list:
         submission_profile = dict()
         for partition_index, partition_score in partitions_dict.items():
 
             partition = partitions_list[partition_index]#
+            list_of_profiles = list(itertools.product(list(Impact), repeat=len(partition)))
 
-            sub_partition_score = []
-            sub_partition_impact = []
-            current_sub_partition_max_score = 0
-            current_sub_partition_max_impact = Impact.LOW.value
-            for sub_partition in partition:
-                if len(sub_partition) == 1:
-                    index = impact_to_index[sub_partition[0]]
-                    roi_matrix = user_matrix_relative_values[index].reshape((1,3))
-                else:
-                    quality_indices = [impact_to_index[impact] for impact in sub_partition]
-                    roi_matrix = user_matrix_relative_values[quality_indices]
+            max_submission_score = 0
+            better_profile = list_of_profiles[0]
+            for profile in list_of_profiles:
+                submission_score = self.__compute_submission_profile_score(user_matrix_relative_values, partition,profile)
+                if submission_score > max_submission_score:
+                    max_submission_score = submission_score
+                    better_profile = profile
 
-                prob_subpartition = np.sum(roi_matrix)
-
-                for impact_type in Impact:
-                    impact_index = impact_to_index[impact_type]
-
-                    prob_impact_subpartition = np.sum(roi_matrix[:, impact_index])
-                    prob = prob_impact_subpartition / prob_subpartition
-                    if current_sub_partition_max_score < prob:
-                        current_sub_partition_max_score = prob
-                        current_sub_partition_max_impact = impact_type.value
-
-                sub_partition_score.append(current_sub_partition_max_score)
-                sub_partition_impact.append(current_sub_partition_max_impact)
-
-            submission_profile[partition_index] = sub_partition_impact, np.prod(sub_partition_score) * partition_score
+            submission_profile[partition_index] = [p.value for p in better_profile], max_submission_score
 
         return submission_profile
 
-    def __compute_partition_scores(self, matrix_relative_quality: np.array, matrix_relative: np.array, partition_list: list) -> dict:
+    def __compute_partition_scores(self, matrix_relative: np.array, partition_list: list) -> dict:
         probabilities_per_impact = dict()
         probabilities_sum = np.sum(matrix_relative, axis=1)
 
@@ -172,30 +167,37 @@ class TrainManager(object):
             index = impact_to_index[impact]
             probabilities_per_impact[impact] = probabilities_sum[index]
 
+        total_probabilities = np.sum(probabilities_sum)
+
         partition_scores = dict()
         for index_partition, partition in enumerate(partition_list):
-            partition_score = 0
+            partition_probab = 0
             for sub_partition in partition:
                 if len(sub_partition) == 1:
                     impact = sub_partition[0]
                     index_impact = impact_to_index[impact]
-                    partition_score += matrix_relative_quality[index_impact][index_impact] \
-                                       * probabilities_per_impact[impact]
+                    partition_probab += (matrix_relative[index_impact][index_impact]
+                                         / probabilities_per_impact[impact]) \
+                                       * (probabilities_per_impact[impact]/total_probabilities)
                 else:
-                    impacts_to_preserve = set([impact_to_index[impact] for impact in sub_partition])
-                    for quality in sub_partition:
-                        index_quality = impact_to_index[quality]
-                        impacts_to_preserve_fixed_quality = list(impacts_to_preserve - {index_quality})
-                        matrix_roi = matrix_relative_quality[:,impacts_to_preserve_fixed_quality]
-                        partition_score += np.prod(matrix_roi[index_quality]) * probabilities_per_impact[quality]
-            partition_scores[index_partition] = partition_score
+                    for impact_fixed in sub_partition:
+                        index_impact_fixed = impact_to_index[impact_fixed]
+                        impact_probability = probabilities_per_impact[impact_fixed]
+                        partial_prob = impact_probability / total_probabilities
+                        for impact_to_compute in sub_partition:
+                            if impact_fixed is not impact_to_compute:
+                                index_impact_to_compute = impact_to_index[impact_to_compute]
+                                partial_prob *= matrix_relative[index_impact_fixed][index_impact_to_compute] \
+                                                / impact_probability
+                        partition_probab += partial_prob
+
+            partition_scores[index_partition] = partition_probab
         return partition_scores
 
-    def __get_user_partition(self, user_matrix_relative_column: np.array, user_matrix_relative_values: np.array) -> dict:
+    def __get_user_partition(self, user_matrix_relative_values: np.array) -> dict:
         scores = dict()
 
         partition_scores = self.__compute_partition_scores(
-            user_matrix_relative_column,
             user_matrix_relative_values,
             PARTITIONS)
 
@@ -242,7 +244,7 @@ class TrainManager(object):
         user_matrix_relative_column[np.isnan(user_matrix_relative_column)] = 0
 
         user_stats['score_table'] = score_table
-        user_stats['user_partitions'] = self.__get_user_partition(user_matrix_relative_column, user_matrix_relative_values)
+        user_stats['user_partitions'] = self.__get_user_partition( user_matrix_relative_values)
 
         return user_stats
 

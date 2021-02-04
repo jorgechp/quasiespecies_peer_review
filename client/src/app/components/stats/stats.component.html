@@ -42,30 +42,12 @@
                 {{'STATS.PARTITION_1' | translate}}
                 {{'STATS.PARTITION_2' | translate}} <span class="text-bold">{{(this.partition.score_partition * 100) | number: '1.2-2'}}%</span> {{'STATS.PARTITION_3' | translate}}:   
             </p>     
-            <p class="output_string" *ngIf="this.partition.id_partition == 0"> 
-                <!-- (s1,s2)(s3) -->
-                <span>K<sub>F<sub>1</sub></sub> = &#123;&#123;S<sub>1</sub>, S<sub>2</sub>&#125;,&#123;S<sub>3</sub>&#125;&#125;</span>
-            </p>        
-            <p class="output_string" *ngIf="this.partition.id_partition == 1"> 
-                <!-- (s1,s3)(s2) -->
-                <span>K<sub>F<sub>2</sub></sub> = &#123;&#123;S<sub>1</sub>, S<sub>3</sub>&#125;,&#123;S<sub>2</sub>&#125;&#125;</span>
-            </p>   
-            <p class="output_string" *ngIf="this.partition.id_partition == 2"> 
-                <!-- (s2,s3),(s1) -->
-                <span>K<sub>F<sub>3</sub></sub> = &#123;&#123;S<sub>2</sub>, S<sub>3</sub>&#125;,&#123;S<sub>1</sub>&#125;&#125;</span>
-            </p>   
-            <p class="output_string" *ngIf="this.partition.id_partition == 3"> 
-                <!-- (s1,s2)(s3) -->
-                <span>K<sub>F<sub>4</sub></sub> = &#123;&#123;S<sub>1</sub>, S<sub>2</sub>, S<sub>3</sub>&#125;&#125;</span>
-            </p>   
-            <p class="output_string" *ngIf="this.partition.id_partition == 4"> 
-                <!-- (s1,s2,s3) -->
-                <span>K<sub>C</sub> = &#123;&#123;S<sub>1</sub>, S<sub>2</sub>&#125;,&#123;S<sub>3</sub>&#125;&#125;</span>
-            </p>   
-            <p class="output_string" *ngIf="this.partition.id_partition == 5"> 
-                <!-- (s1),(s2),(s3) -->
-                <span>K<sub>F</sub> = &#123;&#123;S<sub>1</sub>&#125;,&#123;S<sub>2</sub>&#125;,&#123;S<sub>3</sub>&#125;&#125;</span>
-            </p>   
+            <p class="output_string">
+                <app-partition-representation [partitionId]="this.partition.id_partition" ></app-partition-representation>     
+            </p>
+            <p class="text-bold">
+                {{'STATS.PARTITION_EXPLANATION_' + this.partition.id_partition | translate}}
+            </p>
         </section>
 
         <section class="stats_submission_profiles" *ngIf="this.submissionProfile !== undefined">
@@ -81,8 +63,17 @@
             </div>
             <p>
                 {{'STATS.PROFILE_1' | translate}}                
-                <span>{{(submissionProfileScore * 100) | number: '1.2-2'}}%.</span>            
+                <span>{{(submissionProfileScore) | number: '1.2-2'}}/1.0.</span>            
             </p>
+            
+                <ul *ngFor="let submissionProfile of this.submissionProfile.partitions; let indexOfelement=index;">         
+                    <li class="text-bold" *ngIf="this.partition !== undefined">
+                        {{indexOfelement | submissionProfileExplanation: this.partition.id_partition | translate}}:
+                        {{submissionProfile.impact}}-Impact.
+                    </li>    
+                </ul>
+            
+            
         </section>
         <section>
             <mat-expansion-panel class='stats__mat-expansion'>
@@ -136,30 +127,7 @@
                 <ng-container matColumnDef="id_partition">
                     <th mat-header-cell *matHeaderCellDef> {{'STATS.ID_PARTITION' | translate}}  </th>
                     <td mat-cell class="partition_cell" *matCellDef="let element"> 
-                        <ng-container *ngIf="element.id_partition == 0">
-                            <!-- (s1,s2)(s3) -->
-                            <span>K<sub>F<sub>1</sub></sub> = &#123;&#123;S<sub>1</sub>, S<sub>2</sub>&#125;,&#123;S<sub>3</sub>&#125;&#125;</span>
-                        </ng-container>
-                        <ng-container *ngIf="element.id_partition == 1">
-                            <!-- (s1,s3)(s2) -->
-                            <span>K<sub>F<sub>2</sub></sub> = &#123;&#123;S<sub>1</sub>, S<sub>3</sub>&#125;,&#123;S<sub>2</sub>&#125;&#125;</span>
-                        </ng-container>     
-                        <ng-container *ngIf="element.id_partition == 2">
-                            <!-- (s2,s3)(s1) -->
-                            <span>K<sub>F<sub>3</sub></sub> = &#123;&#123;S<sub>2</sub>, S<sub>3</sub>&#125;,&#123;S<sub>1</sub>&#125;&#125;</span>
-                        </ng-container>     
-                        <ng-container *ngIf="element.id_partition == 3">
-                            <!-- (s1,s2,s3) -->
-                            <span>K<sub>C</sub> = &#123;&#123;S<sub>1</sub>, S<sub>2</sub>, S<sub>3</sub>&#125;&#125;</span>
-                        </ng-container>     
-                        <ng-container *ngIf="element.id_partition == 4">
-                            <!-- (s1,s2),(s3) -->
-                            <span>K<sub>F<sub>4</sub></sub> = &#123;&#123;S<sub>1</sub>, S<sub>2</sub>&#125;,&#123;S<sub>3</sub>&#125;&#125;</span>
-                        </ng-container> 
-                        <ng-container *ngIf="element.id_partition == 5">
-                            <!-- (s1),(s2),(s3) -->
-                            <span>K<sub>F</sub> = &#123;&#123;S<sub>1</sub>&#125;,&#123;S<sub>2</sub>&#125;,&#123;S<sub>3</sub>&#125;&#125;</span>
-                        </ng-container>                            
+                        <app-partition-representation [partitionId]="element.id_partition" ></app-partition-representation>                        
                     </td>
                 </ng-container>            
         
