@@ -29,6 +29,7 @@ export class TrainComponent implements OnInit, OnDestroy {
   loginSuscription: Subscription | undefined;
   snackMessageSubscription: Subscription | undefined;
   numberOfUserAnswersSuscription: Subscription | undefined;
+  currentResponseTime: number = 0;
 
   constructor(private trainService: TrainService,
               private router: Router,
@@ -78,6 +79,7 @@ export class TrainComponent implements OnInit, OnDestroy {
     this.getLastArticleSuscription = this.trainService.getLastArticle().subscribe(
       (article: Article) => {
           this.currentArticle = article;
+          this.currentResponseTime = performance.now();
       },
       error => {
         switch (error.status){
@@ -100,6 +102,7 @@ export class TrainComponent implements OnInit, OnDestroy {
       (article: Article) => {
           this.currentArticle = article;
           this.getArticleSuscription?.unsubscribe();
+          this.currentResponseTime = performance.now();
       },
       error => {
         switch (error.status){
@@ -126,7 +129,8 @@ export class TrainComponent implements OnInit, OnDestroy {
   doArticleAnswer(response: string): void{
     this.isButtonsDisabled = true;
     if (response !== undefined){
-      this.userAnswerSuscription = this.trainService.answer(response).subscribe(
+      const totalResponseTime = performance.now() - this.currentResponseTime;
+      this.userAnswerSuscription = this.trainService.answer(response, totalResponseTime).subscribe(
         (answer: AnswerResult) => {
           this.numberOfAnswers = answer.total_answers;
           if (answer.user_score === 1){

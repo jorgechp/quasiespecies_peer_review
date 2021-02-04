@@ -109,7 +109,8 @@ try:
                         date DATETIME DEFAULT CURRENT_TIMESTAMP,
                         userAnswerImpact INTEGER NOT NULL, 
                         realImpact INTEGER NOT NULL,            
-                        score INTEGER NOT NULL,                       
+                        score INTEGER NOT NULL,
+                        time  INTEGER DEFAULT 0,                     
                         
                         
                         FOREIGN KEY(idUser) REFERENCES user(idUser) ON DELETE CASCADE,

@@ -112,7 +112,7 @@ class DatabaseManager(object):
         DatabaseManager.close_connections(db, cursor)
         return response
 
-    def add_user_answer(self, id_user: int, id_article: int, impact: str, score: int) -> None or bool:
+    def add_user_answer(self, id_user: int, id_article: int, impact: str, score: int, time:int) -> None or bool:
         db, cursor = self.__get_cursor()
 
         cursor.execute("""
@@ -135,9 +135,10 @@ class DatabaseManager(object):
                                                             idArticle,
                                                             userAnswerImpact,
                                                             realImpact,
-                                                            score) 
-                            VALUES ({},{},{},{},{})
-                        """.format(id_user, id_article, id_anwer_impact, id_real_impact, score)
+                                                            score,
+                                                            time) 
+                            VALUES ({},{},{},{},{},{})
+                        """.format(id_user, id_article, id_anwer_impact, id_real_impact, score, time)
                        )
         DatabaseManager.close_connections(db, cursor)
 

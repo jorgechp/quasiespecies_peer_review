@@ -38,8 +38,8 @@ export class TrainService {
     return this.httpClient.get<Array<UserScore>>(this.userScoreTableEvolutionUrl, { withCredentials: true });
   }
 
-  answer(response: string): Observable<AnswerResult>{
-    const answer = {impact: response};
+  answer(response: string, totalResponseTime: number): Observable<AnswerResult>{
+    const answer = {impact: response, time: totalResponseTime};
     return this.httpClient.post<AnswerResult>(this.userAnswerUrl, JSON.stringify(answer), { withCredentials: true });
   }
 
