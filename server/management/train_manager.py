@@ -99,12 +99,12 @@ class TrainManager(object):
     def get_quartile_of_journal(self, article_to_check : Article) -> int:
         return self._database_manager.get_quartile_from_article(article_to_check.id)
 
-    def answer_from_user(self, id_user: int, id_article: int, impact: str) -> AnswerResult:
+    def answer_from_user(self, id_user: int, id_article: int, impact: str, time: int) -> AnswerResult:
         real_journal_impact = self._database_manager.get_impact_type(id_article)
 
         score = 1 if real_journal_impact == impact else 0
 
-        self._database_manager.add_user_answer(id_user, id_article, impact, score)
+        self._database_manager.add_user_answer(id_user, id_article, impact, score, time)
         number_of_answers = self._database_manager.count_user_score_table(id_user)
 
         return AnswerResult(real_journal_impact, impact, score, number_of_answers)

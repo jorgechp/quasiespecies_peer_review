@@ -71,7 +71,8 @@ def construct_train_blueprint(train_manager: TrainManager, cors_exception: str):
         json_request = request.get_json(force=True)
         if 'impact' in json_request:
             impact = json_request['impact']
-            score = train_manager.answer_from_user(session['username'], session['last_article'], impact)
+            time = json_request['time'] if 'time' in json_request else 0
+            score = train_manager.answer_from_user(session['username'], session['last_article'], impact, time)
             del session['last_article']
             response = process_response(score, authorization__required=True)
             return response, 200
