@@ -173,13 +173,14 @@ class TrainManager(object):
         for index_partition, partition in enumerate(partition_list):
             partition_probab = 0
             for sub_partition in partition:
-                if len(sub_partition) == 1:
+                sub_partition_len = len(sub_partition)
+                if sub_partition_len == 1:
                     impact = sub_partition[0]
                     index_impact = impact_to_index[impact]
                     partition_probab += (matrix_relative[index_impact][index_impact]
                                          / probabilities_per_impact[impact]) \
                                        * (probabilities_per_impact[impact]/total_probabilities)
-                else:
+                elif sub_partition_len == 2:
                     for impact_fixed in sub_partition:
                         index_impact_fixed = impact_to_index[impact_fixed]
                         impact_probability = probabilities_per_impact[impact_fixed]
@@ -190,6 +191,23 @@ class TrainManager(object):
                                 partial_prob *= matrix_relative[index_impact_fixed][index_impact_to_compute] \
                                                 / impact_probability
                         partition_probab += partial_prob
+                else: #Coarse partition
+                    pr_li_real_mi_author = matrix_relative[0][1]
+                    pr_li_real_hi_author = matrix_relative[0][2]
+                    pr_li_real = np.sum(matrix_relative[0])
+
+                    pr_hi_real_li_author = matrix_relative[2][0]
+                    pr_hi_real_mi_author = matrix_relative[2][1]
+                    pr_hi_real = np.sum(matrix_relative[2])
+
+                    pr_mi_real_mi_author = matrix_relative[1][0]
+                    pr_mi_real_hi_author = matrix_relative[1][2]
+                    pr_mi_real = np.sum(matrix_relative[1])
+
+                    partition_probab = (pr_li_real_mi_author + pr_li_real_hi_author) * pr_li_real
+                    partition_probab += (pr_hi_real_li_author + pr_hi_real_mi_author) * pr_hi_real
+                    partition_probab += (pr_mi_real_mi_author + pr_mi_real_hi_author) * pr_mi_real
+
 
             partition_scores[index_partition] = partition_probab
         return partition_scores
