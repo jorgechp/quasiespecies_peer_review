@@ -1,5 +1,5 @@
 import os
-
+import configparser
 from flask_cors import CORS
 
 from flask import Flask
@@ -16,7 +16,6 @@ from management.user_manager import UserManager
 def launch_api(instance_path=None,test_config=None, key=None, cors_allowed='*') -> Flask:
     # create and configure the app
     app = Flask(__name__, instance_relative_config=True, instance_path=instance_path)
-
 
 
     app.config.from_mapping(
@@ -60,3 +59,11 @@ def launch_api(instance_path=None,test_config=None, key=None, cors_allowed='*') 
     app.register_blueprint(construct_user_blueprint(user_manager, cors_allowed))
 
     return app
+
+
+config = configparser.ConfigParser()
+config.read('security/config.ini')
+default_config = config['GENERAL']
+security_config = config['SECURITY']
+api_config = config['API']
+app = launch_api(key=security_config['key'], cors_allowed=api_config['cors_allowed_origin'])
