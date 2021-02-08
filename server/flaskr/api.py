@@ -53,7 +53,7 @@ def launch_api(instance_path=None,test_config=None, key=None, cors_allowed='*') 
 
 
     #Enable CORS on all domains
-    CORS(app, resources={r"/*": {"origins": "http://localhost/port"}})
+    CORS(app, resources={r"/*": {"origins": "https://localhost/port"}})
 
     app.register_blueprint(construct_train_blueprint(train_manager, cors_allowed))
     app.register_blueprint(construct_user_blueprint(user_manager, cors_allowed))
