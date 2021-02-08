@@ -27,7 +27,7 @@ def construct_train_blueprint(train_manager: TrainManager, cors_exception: str):
     bp = Blueprint('train', __name__, url_prefix='/train')
 
 
-    CORS(bp, resources={r"/train*": {"origins": "http://localhost/*"}},headers=['Content-Type', 'Authorization'],
+    CORS(bp, resources={r"/train*": {"origins": "https://localhost/*"}},headers=['Content-Type', 'Authorization'],
      expose_headers='Authorization')
 
 
