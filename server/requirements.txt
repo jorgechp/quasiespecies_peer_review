@@ -5,4 +5,5 @@ numpy
 bcrypt
 cryptography
 gunicorn
+requests
 dataclasses-json>=0.5.2
