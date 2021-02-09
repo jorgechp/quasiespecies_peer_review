@@ -17,7 +17,6 @@ def construct_user_blueprint(user_manager: UserManager, cors_exception: str, def
     @bp.route('/login', methods=['GET', 'POST', 'OPTIONS'])
     @cross_origin(origin=cors_exception, headers=['Content- Type', 'Authorization'])
     def user_session():
-        print("hola")
         if request.method == 'GET':
             return check_login()
         elif request.method == 'POST':
