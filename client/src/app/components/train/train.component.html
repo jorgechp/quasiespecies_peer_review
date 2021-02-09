@@ -41,5 +41,10 @@
                     [disabled]='this.isButtonsDisabled'
                     (click)="this.doArticleAnswer('HIGH')">{{'TRAIN.HIGH_IMPACT_JOURNAL' | translate}}</button>
         </div>
+        <div class="train__buttons">
+            <button mat-flat-button
+                    [disabled]='this.isButtonsDisabled'
+                    (click)="this.getArticle()">{{'TRAIN.NEXT_ARTICLE' | translate}}</button>
+        </div>
     </section>
 </section>

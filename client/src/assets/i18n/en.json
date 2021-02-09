@@ -85,7 +85,8 @@
         "DECISION_QUESTION": "Which type of journal do you think is the most suitable for the paper?",
         "LOW_IMPACT_JOURNAL": "Low impact Journal",
         "MEDIUM_IMPACT_JOURNAL": "Medium impact Journal",
-        "HIGH_IMPACT_JOURNAL": "High impact Journal"
+        "HIGH_IMPACT_JOURNAL": "High impact Journal",
+        "NEXT_ARTICLE": "Go to the next article"
     },
     "STATS":{
         "TITLE": "General stats",

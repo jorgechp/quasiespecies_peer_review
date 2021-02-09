@@ -85,7 +85,8 @@
         "DECISION_QUESTION": "¿Qué tipo de revista crees que es la más adecuada para este artículo?",
         "LOW_IMPACT_JOURNAL": "Revista de bajo impacto",
         "MEDIUM_IMPACT_JOURNAL": "Revista de impacto medio",
-        "HIGH_IMPACT_JOURNAL": "Revista de alto impacto"
+        "HIGH_IMPACT_JOURNAL": "Revista de alto impacto",
+        "NEXT_ARTICLE": "Pasar al siguiente artículo"
     },
     "STATS":{
         "TITLE": "Estadística generales",
