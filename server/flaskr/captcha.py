@@ -29,7 +29,10 @@ def construct_captcha_blueprint(secret_key: str, cors_exception: str):
 
         response = req.get(url)
         if response.ok:
-            response = process_response({'success': True, 'message': 'Captcha passed'})
+            response = process_response({'success': True, 'message': 'recaptcha passed'})
             return response, 200
+        else:
+            response = process_response({'success': False, 'message': 'recaptcha failed'})
+            return response, 400
 
     return bp
