@@ -12,6 +12,6 @@ export class RecaptchaValidationService {
 
 
   sendToken(token: string): Observable<any>{
-    return this.http.post<any>(CONFIG.TOKEN_VALIDATOR_HOST + ':' + CONFIG.TOKEN_VALIDATOR_PORT + '/token_validate' , {recaptcha: token});
+    return this.http.post<any>(CONFIG.HOST + ':' + CONFIG.PORT + '/captcha/token_validate' , {recaptcha: token});
   }
 }

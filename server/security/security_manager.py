@@ -25,9 +25,7 @@ class SecurityManager(object):
         return SecurityManager.__instance
 
     def __init__(self):
-        if SecurityManager.__instance is not None:
-            raise Exception("This class is a singleton")
-        else:
+        if SecurityManager.__instance is None:
             SecurityManager.__instance = self
 
     def set_file_path(self, path:str) -> None:

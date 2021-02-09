@@ -6,6 +6,7 @@ from flask import Flask
 from flask import g
 
 from . import db
+from .captcha import construct_captcha_blueprint
 from .train import construct_train_blueprint
 from .user import construct_user_blueprint
 from db.database_manager import DatabaseManager
@@ -57,6 +58,7 @@ def launch_api(instance_path=None,test_config=None, key=None, cors_allowed='*') 
 
     app.register_blueprint(construct_train_blueprint(train_manager, cors_allowed))
     app.register_blueprint(construct_user_blueprint(user_manager, cors_allowed))
+    app.register_blueprint(construct_captcha_blueprint(config['SECURITY']['captcha_secret_key'], cors_allowed))
 
     return app
 
