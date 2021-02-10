@@ -43,3 +43,9 @@
     gap: 15px;
     margin-bottom: 5px;
 }
+
+.train__buttons_no-response{
+    margin-top: 20px;
+    white-space: pre-wrap;
+    line-height: 15px;
+}
