@@ -86,7 +86,7 @@
         "LOW_IMPACT_JOURNAL": "Low impact Journal",
         "MEDIUM_IMPACT_JOURNAL": "Medium impact Journal",
         "HIGH_IMPACT_JOURNAL": "High impact Journal",
-        "NEXT_ARTICLE": "Go to the next article"
+        "NEXT_ARTICLE": "I don't know. \n Go to next article."
     },
     "STATS":{
         "TITLE": "General stats",
