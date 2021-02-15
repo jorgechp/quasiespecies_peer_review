@@ -29,6 +29,7 @@ export class SignupComponent implements OnInit, OnDestroy {
   recoveryFormGroup: FormGroup;
   recoveryFormSecondStageGroup: FormGroup;
 
+
   isRecoveringPassword = false;
   isRecoveringPasswordFirstStep = true;
   isRegisterHidden: boolean;
@@ -52,7 +53,6 @@ export class SignupComponent implements OnInit, OnDestroy {
     const password = group.get('password1');
     const password2 = group.get('password2');
 
-
     if (password && password2){
       if (password.value.length < 5 || password2.value.length < 5){
         return { minimumLength: true };
@@ -67,6 +67,25 @@ export class SignupComponent implements OnInit, OnDestroy {
     }
   }
 
+  public isPasswordValid(): boolean{
+    const password = this.passwordFormGroup.get('password1');
+    const password2 = this.passwordFormGroup.get('password2');
+
+    if (password && password2){
+      if (password.value.length < 5 || password2.value.length < 5){
+        return false;
+      }
+      if ( password.value === password2.value){
+        return true;
+      }else{
+        return false;
+      }
+    }else{
+      return false;
+    }
+  }
+
+ 
   constructor(private ccService: NgcCookieConsentService,
               private router: Router,
               private translateService: TranslateService,

@@ -114,7 +114,7 @@
                     </span>
                 </section>
                 <section>
-                    <button [disabled]="!registerFormGroup.valid || !isCaptchaValid" 
+                    <button [disabled]="!registerFormGroup.valid  || !this.isPasswordValid() || !isCaptchaValid" 
                             type="submit" 
                             mat-flat-button color="primary">{{'SIGNUP.REGISTER' | translate}}</button>
                 </section>
