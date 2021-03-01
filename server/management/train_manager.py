@@ -129,7 +129,7 @@ class TrainManager(object):
                           negatives)
 
     def __compute_submission_profile_score(self, user_matrix: np.matrix, partition, submission_profile):
-        diagonal = np.diag(user_matrix)
+        diagonal = np.sum(user_matrix, axis=0)
         impact_mask = np.zeros(3)
 
         for sub_partition, sub_impact in zip(partition, submission_profile):
@@ -192,17 +192,18 @@ class TrainManager(object):
                                                 / impact_probability
                         partition_probab += partial_prob
                 else: #Coarse partition
-                    pr_li_real_mi_author = matrix_relative[0][1]
-                    pr_li_real_hi_author = matrix_relative[0][2]
                     pr_li_real = np.sum(matrix_relative[0])
+                    pr_li_real_mi_author = matrix_relative[0][1] / pr_li_real
+                    pr_li_real_hi_author = matrix_relative[0][2] / pr_li_real
 
-                    pr_hi_real_li_author = matrix_relative[2][0]
-                    pr_hi_real_mi_author = matrix_relative[2][1]
                     pr_hi_real = np.sum(matrix_relative[2])
+                    pr_hi_real_li_author = matrix_relative[2][0] / pr_hi_real
+                    pr_hi_real_mi_author = matrix_relative[2][1] / pr_hi_real
 
-                    pr_mi_real_mi_author = matrix_relative[1][0]
-                    pr_mi_real_hi_author = matrix_relative[1][2]
                     pr_mi_real = np.sum(matrix_relative[1])
+                    pr_mi_real_mi_author = matrix_relative[1][0] / pr_mi_real
+                    pr_mi_real_hi_author = matrix_relative[1][2] / pr_mi_real
+
 
                     partition_probab = (pr_li_real_mi_author + pr_li_real_hi_author) * pr_li_real
                     partition_probab += (pr_hi_real_li_author + pr_hi_real_mi_author) * pr_hi_real
@@ -256,6 +257,7 @@ class TrainManager(object):
         user_matrix_full_values[2][0] = score_table['HIGH']['LOW']
         user_matrix_full_values[2][1] = score_table['HIGH']['MEDIUM']
         user_matrix_full_values[2][2] = score_table['HIGH']['HIGH']
+
 
         user_matrix_relative_values = user_matrix_full_values / np.sum(user_matrix_full_values)
         user_matrix_relative_column = user_matrix_full_values / user_matrix_full_values.sum(axis=1, keepdims=True)
