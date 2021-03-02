@@ -88,6 +88,15 @@ class TrainManager(object):
         self._database_manager = database_manager
         self._num_articles = database_manager.get_number_of_articles()
 
+        total_low = self._database_manager.get_num_articles_per_impact('LOW')
+        total_med = self._database_manager.get_num_articles_per_impact('MEDIUM')
+        total_high = self._database_manager.get_num_articles_per_impact('HIGH')
+
+        total_articles = total_low + total_med + total_high
+        self._freq_low = total_low / total_articles
+        self._freq_med = total_med / total_articles
+        self._freq_high = total_high / total_articles
+
     def get_random_article(self) -> Article:
         returned_article_information = self._database_manager.get_random_article()
         return Article(returned_article_information[0],
@@ -128,8 +137,9 @@ class TrainManager(object):
                           positives,
                           negatives)
 
-    def __compute_submission_profile_score(self, user_matrix: np.matrix, partition, submission_profile):
-        diagonal = np.sum(user_matrix, axis=0)
+    def __compute_submission_profile_score(self, partition, submission_profile):
+
+        diagonal = np.array([self._freq_low, self._freq_med, self._freq_high])
         impact_mask = np.zeros(3)
 
         for sub_partition, sub_impact in zip(partition, submission_profile):
@@ -150,7 +160,7 @@ class TrainManager(object):
             max_submission_score = 0
             better_profile = list_of_profiles[0]
             for profile in list_of_profiles:
-                submission_score = self.__compute_submission_profile_score(user_matrix_relative_values, partition,profile)
+                submission_score = self.__compute_submission_profile_score(partition,profile)
                 if submission_score > max_submission_score:
                     max_submission_score = submission_score
                     better_profile = profile

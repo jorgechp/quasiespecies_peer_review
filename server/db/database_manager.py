@@ -62,8 +62,21 @@ class DatabaseManager(object):
         DatabaseManager.close_connections(db, cursor)
         return response
 
-    def get_impact_type(self, id_article) -> int:
+    def get_num_articles_per_impact(self,  impact: str) -> int:
+        id_answer_impact = self.get_id_impact(impact)
+        db, cursor = self.__get_cursor()
+        cursor.execute("""
+                            SELECT COUNT(title) 
+                            FROM article 
+                            JOIN journal 
+                            ON article.idJournal = journal.idJournal                  
+                            WHERE journal.idImpactType = {}
+                    """.format(id_answer_impact))
+        response = cursor.fetchone()[0]
+        DatabaseManager.close_connections(db, cursor)
+        return response
 
+    def get_impact_type(self, id_article) -> int:
         db, cursor = self.__get_cursor()
         cursor.execute("""
                             SELECT impact_type.description 
