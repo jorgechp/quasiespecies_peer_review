@@ -1,14 +1,19 @@
 import types
 import sqlite3
+from typing import List
 
 
 class DatabaseManager(object):
 
-    def __init__(self, database_caller: types.FunctionType):
+    def __init__(self, database_caller: types.FunctionType = None, database_connection: sqlite3.Connection = None):
         self._database_caller = database_caller
+        self._db = database_connection
 
     def __get_cursor(self) -> sqlite3.Cursor:
-        db = self._database_caller()
+        if self._database_caller is not None:
+            db = self._database_caller()
+        else:
+            db = self._db
         return db, db.cursor()
 
     @staticmethod
@@ -185,6 +190,17 @@ class DatabaseManager(object):
         except sqlite3.IntegrityError as err:
             return -1
         db.commit()
+        DatabaseManager.close_connections(db, cursor)
+        return response
+
+    def get_users_nicknames(self) -> List[tuple]:
+        db, cursor = self.__get_cursor()
+        cursor.execute("""
+                            SELECT DISTINCT(nick) 
+                            FROM user
+                    """)
+        data = cursor.fetchall()
+        response = data if data is not None else None
         DatabaseManager.close_connections(db, cursor)
         return response
 

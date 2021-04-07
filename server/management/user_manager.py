@@ -1,5 +1,6 @@
 import configparser
 from dataclasses import dataclass
+from typing import List
 
 from db.database_manager import DatabaseManager
 from management.mail_management import MailManagement
@@ -40,6 +41,9 @@ class UserManager(object):
 
     def get_user_id(self, nick: str) -> int:
         return self._database_manager.get_user_by_nick(nick)
+
+    def get_users_nicknames(self) -> List[tuple]:
+        return self._database_manager.get_users_nicknames()
 
     def check_user_password(self, user_id: int, plain_password: str) -> bool:
         hashed_password = self._database_manager.get_user_password(user_id)
